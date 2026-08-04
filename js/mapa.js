@@ -26,6 +26,7 @@ new L.GPX('data/cuevas.gpx', {
     // Cuando el track carga, añadir popup al pasar el ratón
     e.target.on('mouseover', function(ev) {
         this.bindPopup(
+                '<a href="cuevas.html" style="color:#f5ead8;"><u><b>Ruta de las Cuevas</b></u></a><br>' +
             '<u><b>Ruta de las Cuevas</b></u><br>' +
             '📏 5.2 km<br>🕐 1h 30min<br><b>Dificultad:</b> Fácil',
             {closeButton: false, minWidth: 100}
