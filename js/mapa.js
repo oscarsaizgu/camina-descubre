@@ -24,49 +24,22 @@ new L.GPX('data/cuevas.gpx', {
     }
 }).on('loaded', function(e) {
 
-    var esMobil = window.matchMedia('(hover: none)').matches;
-
     var contenidoPopup = 
         '<b style="cursor:pointer; text-decoration:underline; color:#f5ead8;" ' +
         'onclick="window.location.href=\'cuevas.html\'">Ruta de las Cuevas</b><br>' +
         '📏 5.2 km&nbsp;&nbsp;🕐 1h 30min<br><b>Dificultad:</b> Fácil';
 
-    // Solo en escritorio: hover muestra popup
-    e.target.on('mouseover', function(ev) {
-        if (!esMobil) {
-            this.bindPopup(contenidoPopup, {closeButton: false, minWidth: 100})
-                .openPopup(ev.latlng);
-        }
-    });
-
-    // Solo en escritorio: cierra popup al salir
-    e.target.on('mouseout', function() {
-        if (!esMobil) {
-            var self = this;
-            setTimeout(function() { self.closePopup(); }, 1200);
-        }
-    });
-
-    // Click — comportamiento diferente según dispositivo
+    // Click — escritorio y móvil
     e.target.on('click', function(ev) {
-        if (esMobil) {
-            // Móvil: abre popup para poder pulsar el enlace
-            this.bindPopup(contenidoPopup, {closeButton: true, minWidth: 100})
-                .openPopup(ev.latlng);
-        } else {
-            // Escritorio: va directo a la ruta
-            window.location.href = 'cuevas.html';
-        }
+        this.bindPopup(contenidoPopup, {closeButton: true, minWidth: 100})
+            .openPopup(ev.latlng);
     });
 
-    // Touch — algunos móviles necesitan esto para detectar el tap en el track
+    // Touch — algunos móviles necesitan esto
     e.target.eachLayer(function(layer) {
         layer.on('click', function(ev) {
-            if (esMobil) {
-                layer.bindPopup(contenidoPopup, {closeButton: true, minWidth: 100})
-                    .openPopup(ev.latlng);
-            }
+            layer.bindPopup(contenidoPopup, {closeButton: true, minWidth: 100})
+                .openPopup(ev.latlng);
         });
     });
-
 }).addTo(mapa);
