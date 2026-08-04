@@ -24,34 +24,48 @@ new L.GPX('data/cuevas.gpx', {
     }
 }).on('loaded', function(e) {
 
+    var esMobil = window.matchMedia('(hover: none)').matches;
+
     var contenidoPopup = 
         '<b style="cursor:pointer; text-decoration:underline; color:#f5ead8;" ' +
         'onclick="window.location.href=\'cuevas.html\'">Ruta de las Cuevas</b><br>' +
         '📏 5.2 km&nbsp;&nbsp;🕐 1h 30min<br><b>Dificultad:</b> Fácil';
 
-    // Ratón — escritorio: hover muestra popup, desaparece al salir
+    // Solo en escritorio: hover muestra popup
     e.target.on('mouseover', function(ev) {
-        this.bindPopup(contenidoPopup, {closeButton: false, minWidth: 100})
-            .openPopup(ev.latlng);
+        if (!esMobil) {
+            this.bindPopup(contenidoPopup, {closeButton: false, minWidth: 100})
+                .openPopup(ev.latlng);
+        }
     });
 
-    // Pequeño retraso al salir para que dé tiempo a hacer clic en el enlace
+    // Solo en escritorio: cierra popup al salir
     e.target.on('mouseout', function() {
-        var self = this;
-        setTimeout(function() { self.closePopup(); }, 1200);
+        if (!esMobil) {
+            var self = this;
+            setTimeout(function() { self.closePopup(); }, 1200);
+        }
     });
 
-    // Click — funciona en escritorio y móvil
+    // Click — comportamiento diferente según dispositivo
     e.target.on('click', function(ev) {
-        this.bindPopup(contenidoPopup, {closeButton: true, minWidth: 100})
-            .openPopup(ev.latlng);
+        if (esMobil) {
+            // Móvil: abre popup para poder pulsar el enlace
+            this.bindPopup(contenidoPopup, {closeButton: true, minWidth: 100})
+                .openPopup(ev.latlng);
+        } else {
+            // Escritorio: va directo a la ruta
+            window.location.href = 'cuevas.html';
+        }
     });
 
     // Touch — algunos móviles necesitan esto para detectar el tap en el track
     e.target.eachLayer(function(layer) {
         layer.on('click', function(ev) {
-            layer.bindPopup(contenidoPopup, {closeButton: true, minWidth: 100})
-                .openPopup(ev.latlng);
+            if (esMobil) {
+                layer.bindPopup(contenidoPopup, {closeButton: true, minWidth: 100})
+                    .openPopup(ev.latlng);
+            }
         });
     });
 
