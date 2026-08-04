@@ -38,7 +38,7 @@ new L.GPX('data/cuevas.gpx', {
     // Pequeño retraso al salir para que dé tiempo a hacer clic en el enlace
     e.target.on('mouseout', function() {
         var self = this;
-        setTimeout(function() { self.closePopup(); }, 300);
+        setTimeout(function() { self.closePopup(); }, 1200);
     });
 
     // Click — funciona en escritorio y móvil
