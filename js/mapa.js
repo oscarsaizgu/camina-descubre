@@ -23,11 +23,9 @@ new L.GPX('data/cuevas.gpx', {
         shadowUrl: null
     }
 }).on('loaded', function(e) {
-    // Cuando el track carga, añadir popup al pasar el ratón
     e.target.on('mouseover', function(ev) {
         this.bindPopup(
-                '<a href="cuevas.html" style="color:#f5ead8;"><u><b>Ruta de las Cuevas</b></u></a><br>' +
-            '<u><b>Ruta de las Cuevas</b></u><br>' +
+            '<a href="cuevas.html" style="color:#f5ead8;"><u><b>Ruta de las Cuevas</b></u></a><br>' +
             '📏 5.2 km<br>🕐 1h 30min<br><b>Dificultad:</b> Fácil',
             {closeButton: false, minWidth: 100}
         ).openPopup(ev.latlng);
@@ -35,7 +33,11 @@ new L.GPX('data/cuevas.gpx', {
     e.target.on('mouseout', function() {
         this.closePopup();
     });
-    e.target.on('click', function() {
-        window.location.href = 'cuevas.html';
+    e.target.on('click', function(ev) {
+        this.bindPopup(
+            '<a href="cuevas.html" style="color:#f5ead8;"><u><b>Ruta de las Cuevas</b></u></a><br>' +
+            '📏 5.2 km<br>🕐 1h 30min<br><b>Dificultad:</b> Fácil',
+            {closeButton: true, minWidth: 100}
+        ).openPopup(ev.latlng);
     });
 }).addTo(mapa);
