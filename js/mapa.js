@@ -23,33 +23,36 @@ new L.GPX('data/cuevas.gpx', {
         shadowUrl: null
     }
 }).on('loaded', function(e) {
-    // Ratón — escritorio
+
+    var contenidoPopup = 
+        '<b style="cursor:pointer; text-decoration:underline; color:#f5ead8;" ' +
+        'onclick="window.location.href=\'cuevas.html\'">Ruta de las Cuevas</b><br>' +
+        '📏 5.2 km&nbsp;&nbsp;🕐 1h 30min<br><b>Dificultad:</b> Fácil';
+
+    // Ratón — escritorio: hover muestra popup, desaparece al salir
     e.target.on('mouseover', function(ev) {
-        this.bindPopup(
-            '<a href="cuevas.html" style="color:#f5ead8;"><u><b>Ruta de las Cuevas</b></u></a><br>' +
-            '📏 5.2 km<br>🕐 1h 30min<br><b>Dificultad:</b> Fácil',
-            {closeButton: false, minWidth: 100}
-        ).openPopup(ev.latlng);
+        this.bindPopup(contenidoPopup, {closeButton: false, minWidth: 100})
+            .openPopup(ev.latlng);
     });
+
+    // Pequeño retraso al salir para que dé tiempo a hacer clic en el enlace
     e.target.on('mouseout', function() {
-        this.closePopup();
+        var self = this;
+        setTimeout(function() { self.closePopup(); }, 300);
     });
-    // Click — escritorio y móvil
+
+    // Click — funciona en escritorio y móvil
     e.target.on('click', function(ev) {
-        this.bindPopup(
-            '<a href="cuevas.html" style="color:#f5ead8;"><u><b>Ruta de las Cuevas</b></u></a><br>' +
-            '📏 5.2 km<br>🕐 1h 30min<br><b>Dificultad:</b> Fácil',
-            {closeButton: true, minWidth: 100}
-        ).openPopup(ev.latlng);
+        this.bindPopup(contenidoPopup, {closeButton: true, minWidth: 100})
+            .openPopup(ev.latlng);
     });
-    // Touch — móvil (recorre cada segmento del track)
+
+    // Touch — algunos móviles necesitan esto para detectar el tap en el track
     e.target.eachLayer(function(layer) {
         layer.on('click', function(ev) {
-            layer.bindPopup(
-                '<a href="cuevas.html" style="color:#f5ead8;"><u><b>Ruta de las Cuevas</b></u></a><br>' +
-                '📏 5.2 km<br>🕐 1h 30min<br><b>Dificultad:</b> Fácil',
-                {closeButton: true, minWidth: 100}
-            ).openPopup(ev.latlng);
+            layer.bindPopup(contenidoPopup, {closeButton: true, minWidth: 100})
+                .openPopup(ev.latlng);
         });
     });
+
 }).addTo(mapa);
