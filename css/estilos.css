@@ -1,0 +1,444 @@
+/* ============================================================
+   1. VARIABLES GLOBALES
+   Colores sacados de tu guía de estilo en PDF. Los defines una
+   vez aquí y los usas en todo el archivo con var(--nombre).
+   ============================================================ */
+:root {
+    --verde: #2d4a35;
+    --crema: #f5ead8;
+}
+
+
+/* ============================================================
+   2. RESET BÁSICO
+   Quita los márgenes y paddings que el navegador pone por
+   defecto, y hace que padding/border no descuadren los anchos
+   (box-sizing: border-box).
+   ============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ============================================================
+   3. FUENTES (@font-face)
+   Aquí "registras" las fuentes personalizadas para poder
+   usarlas luego con font-family. Van todas juntas para que
+   sea fácil ver qué fuentes tienes cargadas y en qué pesos.
+   ============================================================ */
+
+/* Lovelo: solo tiene un peso (negrita), se usa en títulos */
+@font-face {
+    font-family: 'Lovelo';
+    src: url('../fonts/Lovelo Black.otf') format('opentype');
+}
+
+/* CanvaSans: la fuente de texto, en 3 variantes de peso */
+@font-face {
+    font-family: 'CanvaSans';
+    src: url('../fonts/CanvaSans-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'CanvaSans';
+    src: url('../fonts/CanvaSans-Medium.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'CanvaSans';
+    src: url('../fonts/CanvaSans-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+
+/* ============================================================
+   4. ESTILOS BASE DE LA PÁGINA
+   El fondo y el texto por defecto de todo el body, y el
+   estilo general de los títulos h1.
+   ============================================================ */
+body {
+    background-color: var(--crema);
+    color: var(--verde);
+    font-family: 'CanvaSans', serif;
+}
+
+h1 {
+    font-family: 'Lovelo', sans-serif;
+    font-size: 3rem;
+    color: var(--crema);
+    text-align: center;
+    margin-top: 2rem;
+}
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* ============================================================
+   5. CABECERA (header)
+   ============================================================ */
+header {
+    background-color: var(--verde);
+    color: var(--crema);
+    text-align: center;
+    padding: 1rem 1rem;
+    position: relative;
+}
+
+header p {
+    font-size: 1.2rem;
+    margin-top: 0.1rem;
+    font-family: 'Lovelo', sans-serif;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+
+/* ============================================================
+   6. BOTÓN FLOTANTE "VOLVER"
+   Botón fijo en pantalla (position: fixed) que se queda
+   siempre visible aunque hagas scroll.
+   ============================================================ */
+#btn-volver {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    background-color: var(--verde) !important;
+    color: var(--crema) !important;
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.9rem;
+    text-decoration: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    z-index: 1000;
+}
+
+/* Fuerza el color del texto también en estados link/visited */
+#btn-volver:link,
+#btn-volver:visited {
+    color: var(--crema) !important;
+}
+
+#btn-volver:hover {
+    opacity: 0.85;
+}
+
+
+/* ============================================================
+   7. MAPA DE PORTADA
+   El contenedor del mapa grande que aparece en la página
+   principal (antes de entrar en una ruta concreta).
+   ============================================================ */
+#mapa-portada {
+    background-color: var(--crema);
+    width: 100%;
+    height: 500px;
+    margin-top: 2rem;
+    border: 1px solid var(--verde);
+    border-radius: 8px;
+}
+
+#mapa {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+}
+
+
+/* ============================================================
+   8. MAPA DE DETALLE DE RUTA
+   El mapa más pequeño que aparece dentro de la página de cada
+   ruta individual.
+   ============================================================ */
+#mapa-ruta {
+    padding: 0.5rem 2rem;
+}
+
+#mapa-detalle {
+    height: 400px;
+    width: 100%;
+    border: 1px solid var(--verde);
+}
+/* Quitar regla del mapa */
+.leaflet-control-scale {
+    display: none !important;
+}
+
+/* Quitar borde brillante del mapa */
+.leaflet-control-mapcentercoord {
+    display: none !important;
+}
+
+/* Marcadores de puntos de interés */
+.marker-pin {
+    width: 20px;
+    height: 20px;
+    background-color: #2d4a35;
+    border: 3px solid #f5ead8;
+    border-radius: 50%;
+    transition: transform 0.2s;
+}
+
+.marker-personalizado:hover .marker-pin {
+    transform: scale(1.5);
+}
+/* Lightbox - ventana de imagen grande */
+#lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+#lightbox-contenido {
+    position: relative;
+    background-color: #2d4a35;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 600px;
+}
+
+#lightbox-contenido img {
+    width: 100%;
+    border-radius: 4px;
+}
+
+#lightbox-contenido p {
+    color: #f5ead8;
+    font-family: 'Lovelo', sans-serif;
+    margin-top: 1rem;
+    font-size: 1.2rem;
+}
+
+#lightbox-cerrar {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.8rem;
+    color: #f5ead8;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Texto descriptivo de la ruta, colocado al lado del mapa
+   de detalle mediante float: left (ocupa la mitad izquierda,
+   el mapa queda a la derecha). */
+#descripcion {
+    padding: 2rem;
+    width: 50%;
+    float: left;
+    text-align: justify;
+}
+
+/* Datos de la ruta */
+#datos-ruta {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.4rem 2rem;
+    background-color: var(--verde);
+    color: var(--crema);
+}
+
+.dato {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.dato-valor {
+    font-family: 'Lovelo', sans-serif;
+    font-size: 1.2rem;
+}
+
+.dato-label {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.1rem;
+}
+.dato img {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+/* Sección de info adicional: iconos y pinturas */
+#info-ruta {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    width: 50%;
+    float: right;
+    margin-top: 1rem;
+    position:relative;
+}
+
+/* Cuadrícula de iconos de servicios */
+#servicios {
+    display: grid;
+    grid-template-columns: 10rem 10rem;
+    gap: 0.8rem;
+}
+
+/* Cada icono con su texto */
+.servicio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--verde);
+}
+
+.servicio img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 0.4rem;
+}
+
+/* Pinturas rupestres */
+#pinturas {
+    position: relative;
+    margin-top: 1.5rem;
+    height: 300px;
+}
+
+#pinturas img:last-child {
+    position: absolute;
+    top: -5rem;
+    bottom: 0;
+    left: -4rem;
+    right: 0;
+    width: 13rem;
+    opacity: 0.6;
+}
+#pinturas img:first-child {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 5rem;
+    right: 0;
+    width: 15rem;
+    opacity: 0.6;
+}
+
+
+/* ============================================================
+   9. POPUP DEL MAPA (Leaflet)
+   Estas clases .leaflet-* son las que genera la librería
+   Leaflet automáticamente; las sobreescribes para que el
+   popup que sale al hacer clic en el mapa use tus colores.
+   ============================================================ */
+.leaflet-popup-content-wrapper {
+    background-color: var(--verde) !important;
+    color: var(--crema) !important;
+    font-family: 'CanvaSans', serif;
+    font-size: 0.8rem;
+    border-radius: 8px;
+}
+
+.leaflet-popup-content {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.leaflet-popup-tip {
+    background-color: var(--crema) !important;
+}
+
+
+/* ============================================================
+   10. PERFIL DE ELEVACIÓN (leaflet-elevation)
+   Todo lo relacionado con el gráfico de desnivel de la ruta.
+   Es la parte más "cacao" del original porque hay bastante
+   sobreescritura de estilos de la librería. Lo agrupo por
+   sub-bloques para que se entienda cada pieza.
+   ============================================================ */
+
+/* Contenedores generales del gráfico */
+#elevacion {
+overflow: hidden;
+    width: 100%;
+    height: 91px;
+}
+
+#grafico-elevacion {
+    height: auto;
+    width: 100%;
+}
+
+.leaflet-elevation-pane {
+    background-color: var(--crema);
+}
+
+/* Caja de controles del gráfico (fondo tipo "carnet") */
+.leaflet-control-elevation {
+    background-color: #fce8c6 !important;
+    border: none !important;
+}
+.elevation-control .background {
+    background-color: var(--crema) !important;
+}
+
+/* Textos de los ejes X e Y */
+.y.axis text,
+.x.axis text {
+    fill: var(--verde) !important;
+    font-family: 'CanvaSans', sans-serif;
+}
+
+/* Líneas de la cuadrícula de fondo */
+.grid line {
+    stroke: var(--verde) !important;
+    stroke-opacity: 0.2 !important;
+}
+
+/* Área rellena bajo la curva de elevación */
+.area {
+    fill: var(--verde) !important;
+    fill-opacity: 1 !important;
+}
+
+/* ⚠️ OJO: esta clase se define dos veces en el original
+   (una con stroke/fill verde y otra después con crema).
+   Como CSS aplica "el último que gana", en la práctica solo
+   se estaba usando esta segunda versión (crema). He quitado
+   la duplicada de arriba para que no despiste — si en algún
+   momento querías el trazo en verde, dímelo y lo recupero. */
+.elevation-polyline {
+    stroke: var(--crema) !important;
+}
+
+/* Elementos que se ocultan a propósito (resumen, etiquetas,
+   botón de cerrar, y el trazado de la ruta duplicado que
+   pinta Leaflet por debajo del tuyo) */
+.elevation-summary {
+    display: none !important;
+}
+.elevation-toggle {
+    display: none !important;
+}
+.elevation-label {
+    display: none !important;
+}
+.leaflet-overlay-pane path.elevation-polyline {
+    display: none !important;
+    opacity: 0 !important;
+}
+.leaflet-overlay-pane path:not(.mi-track) {
+    stroke: transparent !important;
+    fill: transparent !important;
+    display: none !important;
+}

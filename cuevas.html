@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruta de las Cuevas - Camina y Descubre</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+    <!-- Librería para el perfil de elevación -->
+<link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css">
+<script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
+</head>
+<body>
+
+    <!-- Cabecera — fuera del main para que ocupe todo el ancho -->
+    <header>
+        <h1>Ruta de las Cuevas</h1>
+        <p>Ramales de la Victoria</p>
+    </header>
+
+    <!-- Botón flotante de volver -->
+    <a href="index.html" id="btn-volver">←</a>
+
+    <!-- Contenedor principal con márgenes -->
+    <main>
+
+        <!-- Mapa de la ruta -->
+        <section id="mapa-ruta">
+            <div id="mapa-detalle"></div>
+        </section>
+
+        <!-- Perfil de elevación -->
+        <section id="elevacion">
+            <div id="grafico-elevacion"></div>
+        </section>
+
+        <!-- Datos de la ruta -->
+        <section id="datos-ruta">
+            <div class="dato">
+                <img src="iconos/distancia.png" alt="Distancia">
+                <span class="dato-valor">6 km</span>
+                <span class="dato-label">Distancia</span>
+            </div>
+            <div class="dato">
+                <img src="iconos/reloj.png" alt="Duración">
+                <span class="dato-valor">1h</span>
+                <span class="dato-label">Duración</span>
+            </div>
+            <div class="dato">
+                <img src="iconos/altitud.png" alt="Desnivel">
+                <span class="dato-valor">254m</span>
+                <span class="dato-label">Desnivel</span>
+            </div>
+            <div class="dato">
+                <img src="iconos/circular.png" alt="Tipo de ruta">
+                <span class="dato-valor">Lineal</span>
+                <span class="dato-label">Tipo</span>
+            </div>
+        </section>
+
+        <!-- Descripción de la ruta -->
+        <section id="descripcion">
+            <h2>Sobre la ruta</h2>
+            <p>Desde el Ayuntamiento, tomamos la N-629 en dirección al Puerto de Los Tornos. A 300 metros, tras pasar el cuartel de la Guardia Civil, giramos a la izquierda por una carretera que pronto se convierte en un sendero que discurre por un encinar cantábrico. El camino bordea una imponente pared vertical de roca caliza, donde empieza la via ferrata El Cáliz.</p>
+            <p>Llegamos al aparcamiento, desde donde un sendero asciende hasta el Mirador de Covalanas, con vistas espectaculares al pueblo de Ramales, el Pico San Vicente y la Sierra del Hornijo. Continuando el ascenso, alcanzamos la entrada de la Cueva de Covalanas, decorada con pinturas rupestres de ciervas de hace más de 20.000 años. Justo debajo, la Cueva del Mirón completa este núcleo arqueológico excepcional.</p>
+            <p>Siguiendo el recorrido, llegamos a la Cueva de la Luz, antes de retomar el descenso, donde unas escaleras nos llevan hasta la Cueva el Haza, una ventana natural abierta al Pico San Vicente. El recorrido culmina en la Cueva de Cullalvera, cuya monumental entrada es uno de los rincones más impresionantes de la ruta. Desde aquí regresamos al Ayuntamiento, cerrando el círculo.</p>
+        </section>
+<!-- Información adicional: iconos y pinturas -->
+<section id="info-ruta">
+    
+    <!-- Iconos de servicios -->
+    <div id="servicios">
+        <div class="servicio">
+            <img src="iconos/Zona de picnic.png" alt="Zona Picnic">
+            <span>Zona Picnic</span>
+        </div>
+        <div class="servicio">
+            <img src="iconos/Cueva.png" alt="Cueva">
+            <span>Cueva</span>
+        </div>
+        <div class="servicio">
+            <img src="iconos/Apta para niños.png" alt="Apta para niños">
+            <span>Apta para niños</span>
+        </div>
+        <div class="servicio">
+            <img src="iconos/Calzada compartida.png" alt="Calzada compartida">
+            <span>Calzada compartida</span>
+        </div>
+        <div class="servicio">
+            <img src="iconos/Apta para bicicletas.png" alt="Apta para bicicletas">
+            <span>Apta para bicicletas</span>
+        </div>
+        <div class="servicio">
+            <img src="iconos/Restaurante.png" alt="Restaurante">
+            <span>Restaurante</span>
+        </div>
+    </div>
+
+    <!-- Pinturas rupestres -->
+    <div id="pinturas">
+        <img src="iconos/Cierva.png" alt="Cierva rupestre">
+        <img src="iconos/Uro.png" alt="Uro rupestre">
+    </div>
+
+</section>
+    </main>
+
+    <!-- JavaScript del mapa -->
+    <script src="js/cuevas.js"></script>
+
+</body>
+</html>
