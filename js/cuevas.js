@@ -49,7 +49,10 @@ new L.GPX('data/cuevas.gpx', {
         shadowUrl: null
     }
 }).on('loaded', function(e) {
-    mapa.fitBounds(e.target.getBounds());
+    var bounds = e.target.getBounds();
+    mapa.fitBounds(bounds);
+    mapa.setMaxBounds(bounds.pad(0.1));
+    mapa.options.minZoom = mapa.getZoom();
 }).addTo(mapa);
 
 // Puntos de interés con fotos
