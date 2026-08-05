@@ -267,6 +267,14 @@ header p {
     width: 2.5rem;
     height: 2.5rem;
 }
+#datos-ruta .dato:first-child img {
+    width: 3.5rem;
+    height: 1.6rem;
+}
+
+#datos-ruta .dato {
+    justify-content: flex-end;
+}
 
 /* Iconos de servicios */
 #servicios-ruta {
@@ -424,6 +432,24 @@ header p {
     #descripcion   { order: 5; }
     #pinturas-seccion { order: 6; }
 
+    #datos-ruta {
+    gap: 0.5rem;
+    padding: 0.3rem 1rem;
+}
+
+.dato-valor {
+    font-size: 0.9rem;
+}
+
+.dato-label {
+    font-size: 0.65rem;
+}
+
+.dato img {
+    width: 1.8rem;
+    height: 1.8rem;
+}
+
     #descripcion {
         width: 100%;
         float: none;
@@ -466,4 +492,12 @@ header p {
         left: -1rem !important;
         top: -3rem !important;
     }
+#datos-ruta .dato:first-child img {
+    width: 3rem;
+    height: 1.2rem;
+}
+
+#datos-ruta .dato {
+    justify-content: flex-end;
+}
 }
