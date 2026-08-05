@@ -85,3 +85,43 @@ new L.GPX('data/cubillas.gpx', {
         });
     });
 }).addTo(mapa);
+
+// Carga y dibuja el track de la Ruta de Vegacorredor
+new L.GPX('data/vega.gpx', {
+    async: true,
+    polyline_options: {
+        color: '#1a5f7a',
+        weight: 4,
+        opacity: 0.9,
+        className: 'mi-track'
+    },
+    marker_options: {
+        startIconUrl: null,
+        endIconUrl: null,
+        shadowUrl: null
+    }
+}).on('loaded', function(e) {
+
+    var contenidoPopup = 
+        '<b style="cursor:pointer; text-decoration:underline; color:#f5ead8;" ' +
+        'onclick="window.location.href=\'vega.html\'">Paseo de Vegacorredor</b><br>' +
+        '📏 7 km&nbsp;&nbsp;🕐 1h 30min<br><b>Dificultad:</b> Fácil';
+
+    // Click — escritorio y móvil
+    e.target.on('click', function(ev) {
+        this.bindPopup(contenidoPopup, 
+            {closeButton: true, 
+                minWidth: 100,
+                className: 'vega-popup'
+            })
+            .openPopup(ev.latlng);
+    });
+
+    // Touch — algunos móviles necesitan esto
+    e.target.eachLayer(function(layer) {
+        layer.on('click', function(ev) {
+            layer.bindPopup(contenidoPopup, {closeButton: true, minWidth: 100, className: 'vega-popup'})
+                .openPopup(ev.latlng);
+        });
+    });
+}).addTo(mapa);
