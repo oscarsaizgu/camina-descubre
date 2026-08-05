@@ -58,14 +58,24 @@ new L.GPX('data/vega.gpx', {
 // Puntos de interés con fotos
 var puntosInteres = [
     {
-        coords: [x,y],
-        nombre: "Mirador de Covalanas",
-        foto: "fotos/mirador.jpg"
+        coords: [43.25774846886934, -3.469864953930561],
+        nombre: "Puente Romano",
+        foto: "fotos/puenteromano.jpg"
     },
     {
-        coords: [43.245467, -3.452144],
-        nombre: "Cueva de Covalanas",
-        foto: "fotos/covalanas.jpg"
+        coords: [43.25576281920719, -3.4759687744538446],
+        nombre: "Humilladero",
+        foto: "fotos/humilladero.jpg"
+    },
+     {
+        coords: [43.26158542080486, -3.4842500248869044],
+        nombre: "Parque de Vegacorredor",
+        foto: "fotos/parquevega.jpg"
+    },
+     {
+        coords: [43.25407807202895, -3.486269227709349],
+        nombre: "Fuente Iseña",
+        foto: "fotos/fuenteisenia.jpg"
     },
 ];
 
