@@ -58,14 +58,19 @@ new L.GPX('data/cubillas.gpx', {
 // Puntos de interés con fotos
 var puntosInteres = [
     {
-        coords: [x,y],
-        nombre: "Mirador de Covalanas",
-        foto: "fotos/mirador.jpg"
+        coords: [43.26362180926293, -3.4614135044247236],
+        nombre: "Puente de madera",
+        foto: "fotos/puente.jpg"
     },
     {
-        coords: [43.245467, -3.452144],
-        nombre: "Cueva de Covalanas",
-        foto: "fotos/covalanas.jpg"
+        coords: [43.264984830307064, -3.458112289614538],
+        nombre: "Parque de Cubillas",
+        foto: "fotos/parquecubillas.jpg"
+    },
+     {
+        coords: [43.266546944938824, -3.455966820850918],
+        nombre: "Pump track de Cubillas",
+        foto: "fotos/pumptrack.jpg"
     },
 ];
 
