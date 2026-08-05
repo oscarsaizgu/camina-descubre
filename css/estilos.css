@@ -154,6 +154,14 @@ header p {
     pointer-events: none;
 }
 
+/* PARA LOS POPUPS */
+.cubillas-popup .leaflet-popup-content-wrapper {
+    background-color: #8B4513 !important;
+}
+.cubillas-popup .leaflet-popup-tip {
+    background-color: #8B4513 !important;
+}
+
 
 /* ============================================================
    8. MAPA DE DETALLE DE RUTA

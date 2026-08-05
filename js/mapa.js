@@ -45,3 +45,43 @@ new L.GPX('data/cuevas.gpx', {
         });
     });
 }).addTo(mapa);
+
+// Carga y dibuja el track de la Ruta de Cubillas
+new L.GPX('data/cubillas.gpx', {
+    async: true,
+    polyline_options: {
+        color: '#8B4513',
+        weight: 4,
+        opacity: 0.9,
+        className: 'mi-track'
+    },
+    marker_options: {
+        startIconUrl: null,
+        endIconUrl: null,
+        shadowUrl: null
+    }
+}).on('loaded', function(e) {
+
+    var contenidoPopup = 
+        '<b style="cursor:pointer; text-decoration:underline; color:#f5ead8;" ' +
+        'onclick="window.location.href=\'cubillas.html\'">Paseo de Cubillas</b><br>' +
+        '📏 4 km&nbsp;&nbsp;🕐 45mins <br><b>Dificultad:</b> Fácil';
+
+    // Click — escritorio y móvil
+    e.target.on('click', function(ev) {
+        this.bindPopup(contenidoPopup, 
+            {closeButton: true, 
+                minWidth: 100,
+                className: 'cubillas-popup'
+            })
+            .openPopup(ev.latlng);
+    });
+
+    // Touch — algunos móviles necesitan esto
+    e.target.eachLayer(function(layer) {
+        layer.on('click', function(ev) {
+            layer.bindPopup(contenidoPopup, {closeButton: true, minWidth: 100, className: 'cubillas-popup'})
+                .openPopup(ev.latlng);
+        });
+    });
+}).addTo(mapa);
