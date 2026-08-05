@@ -52,6 +52,9 @@ body {
     color: var(--verde);
     font-family: 'CanvaSans', serif;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 h1 {
@@ -414,9 +417,36 @@ header p {
     display: none !important;
 }
 
-
 /* ============================================================
-   11. RESPONSIVE (móvil)
+   11. FOOTER
+   ============================================================ */
+footer {
+    background-color: var(--verde);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1.5rem 2rem;
+    margin-top: 1rem;
+    position: relative;
+}
+
+footer img {
+    height: 50px;
+    width: auto;
+}
+
+footer p {
+    position: absolute;
+    right: 1rem;
+    bottom: 0.4rem;
+    color: var(--crema);
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.6rem;
+    opacity: 0.5;
+}
+/* ============================================================
+   12. RESPONSIVE (móvil)
    ============================================================ */
 @media (max-width: 768px) {
 
