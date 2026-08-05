@@ -1,5 +1,7 @@
 // Inicializa el mapa centrado en Ramales de la Victoria
-var mapa = L.map('mapa').setView([43.2513, -3.4607], 14);
+var mapa = L.map('mapa', {zoomControl: false,
+    attributionControl: false
+}).setView([43.2513, -3.4607], 14);
 
 // Capa base del mapa — OpenStreetMap
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
