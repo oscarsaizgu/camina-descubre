@@ -1,32 +1,35 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camina y Descubre - Ramales de la Victoria</title>
-    <link rel="stylesheet" href="css/estilos.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+<!DOCTYPE html> <!-- Declara que el documento es HTML5 -->
+<html lang="es"> <!-- Inicia el documento HTML, idioma español -->
+<head> <!-- Sección de metadatos, no visible en la página -->
+    <meta charset="UTF-8"> <!-- Define la codificación de caracteres como UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ajusta la vista para dispositivos móviles -->
+    <title>Camina y Descubre - Ramales de la Victoria</title> <!-- Título que aparece en la pestaña del navegador -->
+
+    <link rel="stylesheet" href="css/estilos.css"> <!-- Carga los estilos propios de la página -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"> <!-- Carga los estilos de la librería de mapas Leaflet -->
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> <!-- Carga la librería Leaflet para mostrar mapas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script> <!-- Carga el plugin para mostrar rutas GPX en el mapa -->
 </head>
-<body>
-    <header>
-        <h1>Camina y Descubre</h1>
-        <p>Ramales de la Victoria</p>
+<body> <!-- Inicia el contenido visible de la página -->
+
+    <header> <!-- Cabecera de la página -->
+        <h1>Camina y Descubre</h1> <!-- Título principal -->
+        <p>Ramales de la Victoria</p> <!-- Subtítulo -->
     </header>
 
-    <section id="mapa-portada">
-        <div id="hint-mapa">Toca una ruta para más información</div>
-        <div id="mapa"></div>
+    <section id="mapa-portada"> <!-- Sección que contiene el mapa principal -->
+        <div id="hint-mapa">Toca una ruta para más información</div> <!-- Mensaje de ayuda sobre el mapa -->
+        <div id="mapa"></div> <!-- Contenedor donde Leaflet dibuja el mapa -->
     </section>
 
-    <footer>
-        <img src="logos/ramales.svg" alt="Ayuntamiento de Ramales de la Victoria">
-        <img src="logos/naturalblanco.png" alt="Ramales Natural">
-        <p>© Oscar Saiz Gutiérrez, 2026</p>
+    <footer> <!-- Pie de página -->
+        <img src="logos/ramales.svg" alt="Ayuntamiento de Ramales de la Victoria"> <!-- Logo del ayuntamiento -->
+        <img src="logos/naturalblanco.png" alt="Ramales Natural"> <!-- Logo de Ramales Natural -->
+        <p>© Oscar Saiz Gutiérrez, 2026</p> <!-- Nota de derechos de autor -->
     </footer>
 
-    <!-- JavaScript del mapa -->
-    <script src="js/mapa.js"></script>
-</body>
-</html>
+    <script src="js/mapa.js"></script> <!-- Carga el script que configura y controla el mapa -->
+
+</body> <!-- Cierra el contenido visible -->
+</html> <!-- Cierra el documento HTML -->
