@@ -1,45 +1,45 @@
 /* ============================================================
-   1. VARIABLES GLOBALES
+   1. VARIABLES GLOBALES — colores reutilizados en todo el CSS
    ============================================================ */
 :root {
-    --verde: #2d4a35;
-    --crema: #f5ead8;
+    --verde: #2d4a35;   /* Verde oscuro: color principal (fondos, texto) */
+    --crema: #f5ead8;   /* Crema claro: color secundario (fondos, texto) */
 }
 
 
 /* ============================================================
-   2. RESET BÁSICO
+   2. RESET BÁSICO — quita los estilos por defecto del navegador
    ============================================================ */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    margin: 0;              /* Quita el margen que trae cada elemento por defecto */
+    padding: 0;              /* Quita el padding que trae cada elemento por defecto */
+    box-sizing: border-box;  /* El padding y el borde no aumentan el tamaño total del elemento */
 }
 
 /* ============================================================
-   3. FUENTES (@font-face)
+   3. FUENTES (@font-face) — carga las tipografías propias
    ============================================================ */
 @font-face {
-    font-family: 'Lovelo';
-    src: url('../fonts/Lovelo Black.otf') format('opentype');
+    font-family: 'Lovelo';                              /* Nombre con el que se usará esta fuente */
+    src: url('../fonts/Lovelo Black.otf') format('opentype'); /* Archivo de la fuente */
 }
 
 @font-face {
+    font-family: 'CanvaSans';                                    /* Nombre con el que se usará esta fuente */
+    src: url('../fonts/CanvaSans-Regular.otf') format('opentype'); /* Archivo de la variante normal */
+    font-weight: 400;                                            /* Grosor normal */
+    font-style: normal;                                          /* Estilo normal (no cursiva) */
+}
+@font-face {
     font-family: 'CanvaSans';
-    src: url('../fonts/CanvaSans-Regular.otf') format('opentype');
-    font-weight: 400;
+    src: url('../fonts/CanvaSans-Medium.otf') format('opentype'); /* Archivo de la variante media */
+    font-weight: 500;                                             /* Grosor medio */
     font-style: normal;
 }
 @font-face {
     font-family: 'CanvaSans';
-    src: url('../fonts/CanvaSans-Medium.otf') format('opentype');
-    font-weight: 500;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'CanvaSans';
-    src: url('../fonts/CanvaSans-Bold.otf') format('opentype');
-    font-weight: 700;
+    src: url('../fonts/CanvaSans-Bold.otf') format('opentype'); /* Archivo de la variante negrita */
+    font-weight: 700;                                           /* Grosor negrita */
     font-style: normal;
 }
 
@@ -48,27 +48,27 @@
    4. ESTILOS BASE DE LA PÁGINA
    ============================================================ */
 body {
-    background-color: var(--crema);
-    color: var(--verde);
-    font-family: 'CanvaSans', serif;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    background-color: var(--crema);   /* Fondo general de toda la página */
+    color: var(--verde);              /* Color de texto por defecto */
+    font-family: 'CanvaSans', serif;  /* Tipografía por defecto */
+    overflow-x: hidden;               /* Evita scroll horizontal accidental */
+    display: flex;                    /* Organiza header/main/footer en columna */
+    flex-direction: column;           /* Uno debajo de otro */
+    min-height: 100vh;                /* La página ocupa como mínimo toda la pantalla */
 }
 
 h1 {
-    font-family: 'Lovelo', sans-serif;
-    font-size: 3rem;
-    color: var(--crema);
-    text-align: center;
-    margin-top: 2rem;
+    font-family: 'Lovelo', sans-serif; /* Tipografía llamativa para el título */
+    font-size: 3rem;                   /* Tamaño grande */
+    color: var(--crema);               /* Color claro (para contrastar con el header verde) */
+    text-align: center;                /* Centrado */
+    margin-top: 2rem;                  /* Separación por arriba */
 }
 
 main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
+    max-width: 1200px;   /* El contenido no se estira más de esto en pantallas grandes */
+    margin: 0 auto;       /* Centra el bloque horizontalmente */
+    padding: 0 2rem;      /* Margen interno a los lados */
 }
 
 
@@ -76,19 +76,19 @@ main {
    5. CABECERA (header)
    ============================================================ */
 header {
-    background-color: var(--verde);
-    color: var(--crema);
-    text-align: center;
-    padding: 1rem 1rem;
-    position: relative;
+    background-color: var(--verde); /* Fondo verde de la cabecera */
+    color: var(--crema);            /* Texto claro dentro de la cabecera */
+    text-align: center;             /* Centra el contenido */
+    padding: 1rem 1rem;             /* Espacio interno */
+    position: relative;             /* Permite posicionar elementos hijos respecto a esta caja */
 }
 
 header p {
-    font-size: 1.2rem;
-    margin-top: 0.1rem;
-    font-family: 'Lovelo', sans-serif;
-    font-weight: 500;
-    letter-spacing: 1px;
+    font-size: 1.2rem;              /* Tamaño del subtítulo */
+    margin-top: 0.1rem;             /* Poca separación respecto al h1 */
+    font-family: 'Lovelo', sans-serif; /* Misma tipografía llamativa que el título */
+    font-weight: 500;               /* Grosor medio */
+    letter-spacing: 1px;            /* Un poco de espacio entre letras */
 }
 
 
@@ -96,367 +96,323 @@ header p {
    6. BOTÓN FLOTANTE "VOLVER"
    ============================================================ */
 #btn-volver {
-    position: fixed;
-    bottom: 1.5rem;
-    left: 1.5rem;
-    background-color: var(--verde) !important;
-    color: var(--crema) !important;
-    font-family: 'CanvaSans', sans-serif;
-    font-size: 0.9rem;
-    text-decoration: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 20px;
-    z-index: 1000;
+    position: fixed;                       /* Se queda fijo en pantalla al hacer scroll */
+    bottom: 1.5rem;                        /* Separado del borde inferior */
+    left: 1.5rem;                          /* Separado del borde izquierdo */
+    background-color: var(--verde) !important; /* Fondo verde (forzado sobre estilos de enlace) */
+    color: var(--crema) !important;        /* Texto claro (forzado sobre estilos de enlace) */
+    font-family: 'CanvaSans', sans-serif;  /* Tipografía del botón */
+    font-size: 0.9rem;                     /* Tamaño del texto */
+    text-decoration: none;                 /* Quita el subrayado propio de los enlaces */
+    padding: 0.6rem 1.2rem;                /* Espacio interno del botón */
+    border-radius: 20px;                   /* Esquinas redondeadas (forma de píldora) */
+    z-index: 1000;                         /* Se muestra por encima de otros elementos */
 }
 
 #btn-volver:link,
 #btn-volver:visited {
-    color: var(--crema) !important;
+    color: var(--crema) !important; /* El color no cambia aunque el enlace ya se haya visitado */
 }
 
 #btn-volver:hover {
-    opacity: 0.85;
+    opacity: 0.85; /* Se atenúa ligeramente al pasar el ratón */
 }
 
 
 /* ============================================================
-   7. MAPA DE PORTADA
+   7. MAPA DE PORTADA (el mapa grande de index.html)
    ============================================================ */
 #mapa-portada {
-    position: relative;
-    background-color: var(--crema);
-    width: 95%;
-    height: 60vh;
-    margin: auto;
-    margin-top: 1rem;
-    border: 1px solid var(--verde);
-    border-radius: 8px;
+    position: relative;              /* Permite posicionar el "hint" flotante encima */
+    background-color: var(--crema);  /* Color de fondo mientras carga el mapa */
+    width: 95%;                      /* Ancho casi completo de la pantalla */
+    height: 60vh;                    /* Alto: 60% de la altura visible de la ventana */
+    margin: auto;                    /* Centra el bloque */
+    margin-top: 1rem;                /* Separación por arriba */
+    border: 1px solid var(--verde);  /* Borde fino verde */
+    border-radius: 8px;              /* Esquinas redondeadas */
 }
 
 #mapa {
-    width: 100%;
-    height: 100%;
-    border-radius: 8px;
+    width: 100%;          /* El mapa ocupa todo el ancho de su contenedor */
+    height: 100%;          /* El mapa ocupa todo el alto de su contenedor */
+    border-radius: 8px;    /* Esquinas redondeadas, a juego con el contenedor */
 }
 
 #hint-mapa {
-    position: absolute;
-    bottom: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(45, 74, 53, 0.85);
-    color: #f5ead8;
-    font-family: 'CanvaSans', sans-serif;
-    font-size: 0.55rem;
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
-    z-index: 1000;
-    pointer-events: none;
-}
-
-/* PARA LOS POPUPS */
-.cubillas-popup .leaflet-popup-content-wrapper {
-    background-color: #8B4513 !important;
-}
-.cubillas-popup .leaflet-popup-tip {
-    background-color: #8B4513 !important;
-}
-.vega-popup .leaflet-popup-content-wrapper {
-    background-color: #1a5f7a !important;
-}
-.vega-popup .leaflet-popup-tip {
-    background-color: #1a5f7a !important;
-}
-.guardamino-popup .leaflet-popup-content-wrapper {
-    background-color: #7a1a1a !important;
-}
-.guardamino-popup .leaflet-popup-tip {
-    background-color: #7a1a1a !important;
-}
-.coto-popup .leaflet-popup-content-wrapper {
-    background-color: #6b4c9a !important;
-}
-.coto-popup .leaflet-popup-tip {
-    background-color: #6b4c9a !important;
-}
-.dama-popup .leaflet-popup-content-wrapper {
-    background-color: #b5651d !important;
-}
-.dama-popup .leaflet-popup-tip {
-    background-color: #b5651d !important;
-}
-.cucurioa-popup .leaflet-popup-content-wrapper {
-    background-color: #2d6b4a !important;
-}
-.cucurioa-popup .leaflet-popup-tip {
-    background-color: #2d6b4a !important;
-}
-.cucuriob-popup .leaflet-popup-content-wrapper {
-    background-color: #4a2d6b !important;
-}
-.cucuriob-popup .leaflet-popup-tip {
-    background-color: #4a2d6b !important;
+    position: absolute;                      /* Se posiciona flotando sobre el mapa */
+    bottom: 1rem;                            /* Separado del borde inferior del mapa */
+    left: 50%;                               /* Empieza en el centro horizontal... */
+    transform: translateX(-50%);             /* ...y se recoloca para quedar centrado de verdad */
+    background-color: rgba(45, 74, 53, 0.85); /* Fondo verde semitransparente */
+    color: #f5ead8;                          /* Texto claro */
+    font-family: 'CanvaSans', sans-serif;    /* Tipografía del aviso */
+    font-size: 0.55rem;                      /* Texto pequeño */
+    padding: 0.4rem 1rem;                    /* Espacio interno */
+    border-radius: 20px;                     /* Forma de píldora */
+    z-index: 1000;                           /* Por encima del mapa */
+    pointer-events: none;                    /* No bloquea los clics sobre el mapa que hay debajo */
 }
 
 /* ============================================================
-   8. MAPA DE DETALLE DE RUTA
+   8. MAPA DE DETALLE DE RUTA (el mapa pequeño de cada ruta)
    ============================================================ */
 #mapa-ruta {
-    padding: 0.5rem;
+    padding: 0.5rem; /* Espacio alrededor del mapa de detalle */
 }
 
 #mapa-detalle {
-    height: 250px;
-    width: 100%;
-    border: 1px solid var(--verde);
-    margin: 0 auto;
+    height: 250px;                    /* Alto fijo del mapa de detalle */
+    width: 100%;                      /* Ocupa todo el ancho disponible */
+    border: 1px solid var(--verde);   /* Borde fino verde */
+    margin: 0 auto;                   /* Centrado horizontal */
 }
 
 .leaflet-pane.leaflet-edgescale-pane {
-    display: none !important;
+    display: none !important; /* Oculta la escala/regla que añade el plugin de elevación */
 }
 
 .marker-pin {
-    width: 10px;
-    height: 10px;
-    background-color: #2d4a35;
-    border: 1px solid #f5ead8;
-    border-radius: 50%;
-    transition: transform 0.2s;
+    width: 10px;                     /* Ancho del puntito del marcador */
+    height: 10px;                     /* Alto del puntito del marcador */
+    background-color: #2d4a35;       /* Color de relleno del marcador */
+    border: 1px solid #f5ead8;       /* Borde claro alrededor */
+    border-radius: 50%;              /* Forma circular */
+    transition: transform 0.2s;      /* Anima el cambio de tamaño al hacer hover */
 }
 
 .marker-personalizado:hover .marker-pin {
-    transform: scale(1.5);
+    transform: scale(1.5); /* El marcador crece al pasar el ratón por encima */
 }
 
-/* Lightbox */
+/* Lightbox: ventana emergente con la foto grande */
 #lightbox {
-    display: none;
-    position: fixed;
+    display: none;                     /* Oculto por defecto, se muestra por JS al hacer clic */
+    position: fixed;                   /* Cubre toda la pantalla, fijo aunque haya scroll */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.8);
-    z-index: 9999;
-    justify-content: center;
-    align-items: center;
+    background-color: rgba(0,0,0,0.8); /* Fondo oscuro semitransparente detrás de la foto */
+    z-index: 9999;                     /* Por encima de todo lo demás */
+    justify-content: center;           /* Centra la foto horizontalmente */
+    align-items: center;               /* Centra la foto verticalmente */
 }
 
 #lightbox-contenido {
-    position: relative;
-    background-color: #2d4a35;
-    padding: 1.5rem;
-    border-radius: 8px;
-    text-align: center;
-    max-width: 600px;
+    position: relative;         /* Permite posicionar la "X" de cerrar dentro de esta caja */
+    background-color: #2d4a35;  /* Fondo verde del recuadro */
+    padding: 1.5rem;            /* Espacio interno */
+    border-radius: 8px;         /* Esquinas redondeadas */
+    text-align: center;         /* Centra el título debajo de la foto */
+    max-width: 600px;           /* Ancho máximo del recuadro */
 }
 
 #lightbox-contenido img {
-    width: 100%;
-    border-radius: 4px;
+    width: 100%;         /* La foto ocupa todo el ancho del recuadro */
+    border-radius: 4px;   /* Esquinas ligeramente redondeadas */
 }
 
 #lightbox-contenido p {
-    color: #f5ead8;
-    font-family: 'Lovelo', sans-serif;
-    margin-top: 1rem;
-    font-size: 1.2rem;
+    color: #f5ead8;                     /* Texto claro sobre fondo verde */
+    font-family: 'Lovelo', sans-serif;  /* Tipografía llamativa para el título de la foto */
+    margin-top: 1rem;                   /* Separación respecto a la foto */
+    font-size: 1.2rem;                  /* Tamaño del título */
 }
 
 #lightbox-cerrar {
-    position: absolute;
+    position: absolute;   /* Se coloca en una esquina del recuadro */
     top: 0.5rem;
     right: 0.8rem;
-    color: #f5ead8;
-    font-size: 1.5rem;
-    cursor: pointer;
+    color: #f5ead8;        /* Color de la "X" */
+    font-size: 1.5rem;     /* Tamaño de la "X" */
+    cursor: pointer;       /* El ratón cambia a "mano" al pasar por encima */
 }
 
-/* Descripción */
+/* Descripción de la ruta */
 #descripcion {
-    padding: 2rem;
-    width: 50%;
-    float: left;
-    text-align: justify;
+    padding: 2rem;       /* Espacio interno alrededor del texto */
+    width: 50%;          /* Ocupa la mitad del ancho (a la izquierda) */
+    float: left;         /* Se coloca a la izquierda, dejando hueco a la derecha */
+    text-align: justify; /* Texto justificado a ambos márgenes */
 }
 
-/* Datos de la ruta */
+/* Datos resumen de la ruta (distancia, duración, desnivel, tipo) */
 #datos-ruta {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    padding: 0.4rem 2rem;
-    background-color: var(--verde);
-    color: var(--crema);
+    display: flex;                  /* Coloca los 4 datos en fila */
+    justify-content: center;        /* Centra el grupo horizontalmente */
+    gap: 1rem;                      /* Espacio entre cada dato */
+    padding: 0.4rem 2rem;           /* Espacio interno de la franja */
+    background-color: var(--verde); /* Fondo verde de la franja de datos */
+    color: var(--crema);            /* Texto claro dentro de la franja */
 }
 
 .dato {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.3rem;
+    display: flex;             /* Icono, valor y etiqueta apilados */
+    flex-direction: column;    /* Uno debajo de otro */
+    align-items: center;       /* Centrados horizontalmente entre sí */
+    gap: 0.3rem;                /* Pequeño espacio entre icono, valor y etiqueta */
 }
 
 .dato-valor {
-    font-family: 'Lovelo', sans-serif;
-    font-size: 1.2rem;
+    font-family: 'Lovelo', sans-serif; /* Tipografía llamativa para el número/valor */
+    font-size: 1.2rem;                 /* Tamaño del valor (ej. "4 km") */
 }
 
 .dato-label {
-    font-family: 'CanvaSans', sans-serif;
-    font-size: 0.75rem;
-    letter-spacing: 0.1rem;
+    font-family: 'CanvaSans', sans-serif; /* Tipografía normal para la etiqueta */
+    font-size: 0.75rem;                   /* Tamaño pequeño (ej. "Distancia") */
+    letter-spacing: 0.1rem;               /* Espacio entre letras, estilo "etiqueta" */
 }
 
 .dato img {
-    width: 2.5rem;
+    width: 2.5rem;   /* Tamaño de los iconos de reloj, altitud, tipo... */
     height: 2.5rem;
 }
 #datos-ruta .dato:first-child img {
-    width: 3.5rem;
+    width: 3.5rem;   /* El icono de distancia es más ancho que alto, así que se ajusta aparte */
     height: 1.6rem;
 }
 
 #datos-ruta .dato {
-    justify-content: flex-end;
+    justify-content: flex-end; /* Alinea el contenido de cada dato hacia abajo */
 }
 
-/* Iconos de servicios */
+/* Iconos de servicios (picnic, parque infantil, etc.) */
 #servicios-ruta {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    justify-items: center;
-    gap: 0.8rem;
-    padding: 2rem;
-    float: right;
-    width: 50%;
+    display: grid;                        /* Coloca los servicios en una rejilla */
+    grid-template-columns: 1fr 1fr 1fr;   /* 3 columnas de igual ancho */
+    justify-items: center;                /* Centra cada icono dentro de su celda */
+    gap: 0.8rem;                          /* Espacio entre iconos */
+    padding: 2rem;                        /* Espacio interno de la sección */
+    float: right;                         /* Se coloca a la derecha (junto a #descripcion) */
+    width: 50%;                           /* Ocupa la otra mitad del ancho */
 }
 
 .servicio {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    font-family: 'CanvaSans', sans-serif;
-    font-size: 0.85rem;
-    color: var(--verde);
+    display: flex;                        /* Icono y texto apilados */
+    flex-direction: column;               /* Uno debajo de otro */
+    align-items: center;                  /* Centrados entre sí */
+    text-align: center;                   /* Texto centrado */
+    font-family: 'CanvaSans', sans-serif; /* Tipografía del texto del servicio */
+    font-size: 0.85rem;                   /* Tamaño del texto */
+    color: var(--verde);                  /* Color del texto */
 }
 
 .servicio img {
-    width: 60px;
+    width: 60px;             /* Tamaño del icono del servicio */
     height: 60px;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.4rem;   /* Separación respecto al texto de debajo */
 }
 
-/* Pinturas rupestres */
+/* Pinturas rupestres (ilustración decorativa) */
 #pinturas-seccion {
-    position: relative;
-    margin-top: 1.5rem;
-    left: 5rem;
-    height: 300px;
-    float: right;
-    clear: right;
-    width: 50%;
+    position: relative;   /* Permite posicionar las imágenes internas libremente */
+    margin-top: 1.5rem;   /* Separación por arriba */
+    left: 5rem;            /* Desplazamiento hacia la derecha */
+    height: 300px;         /* Alto fijo de la sección */
+    float: right;          /* Se coloca a la derecha */
+    clear: right;          /* Empieza debajo de #servicios-ruta, no se solapan */
+    width: 50%;            /* Ocupa la mitad del ancho */
 }
 
 #pinturas-seccion img:first-child {
-    position: absolute;
+    position: absolute;  /* Se posiciona libremente dentro de la sección */
     top: 0;
     left: 5rem;
-    width: 15rem;
-    opacity: 0.6;
+    width: 15rem;         /* Tamaño de la primera imagen */
+    opacity: 0.6;          /* Semitransparente, efecto decorativo */
 }
 
 #pinturas-seccion img:last-child {
-    position: absolute;
+    position: absolute;   /* Se posiciona libremente, superpuesta a la primera */
     top: -5rem;
     left: -4rem;
-    width: 13rem;
-    opacity: 0.6;
+    width: 13rem;          /* Tamaño de la segunda imagen */
+    opacity: 0.6;           /* Semitransparente, igual que la primera */
 }
 
 
 /* ============================================================
-   9. POPUP DEL MAPA (Leaflet)
+   9. POPUP DEL MAPA (Leaflet) — estilo general de todos los popups
    ============================================================ */
 .leaflet-popup-content-wrapper {
-    background-color: var(--verde) !important;
-    color: var(--crema) !important;
-    font-family: 'CanvaSans', serif;
-    font-size: 0.8rem;
-    border-radius: 8px;
+    background-color: var(--verde) !important; /* Fondo por defecto del popup (luego JS lo cambia por ruta) */
+    color: var(--crema) !important;             /* Texto claro dentro del popup */
+    font-family: 'CanvaSans', serif;            /* Tipografía del popup */
+    font-size: 0.8rem;                          /* Tamaño del texto */
+    border-radius: 8px;                         /* Esquinas redondeadas */
 }
 
 .leaflet-popup-content {
-    margin: 0;
-    line-height: 1.4;
+    margin: 0;         /* Quita el margen interno por defecto de Leaflet */
+    line-height: 1.4;   /* Separación entre líneas de texto */
 }
 
 .leaflet-popup-tip {
-    background-color: var(--crema) !important;
+    background-color: var(--crema) !important; /* Color de la puntita triangular del popup */
 }
 
 
 /* ============================================================
-   10. PERFIL DE ELEVACIÓN
+   10. PERFIL DE ELEVACIÓN (gráfico debajo del mapa de detalle)
    ============================================================ */
 #elevacion {
-    overflow: hidden;
-    width: 100%;
-    height: 91px;
+    overflow: hidden;  /* Recorta cualquier parte del gráfico que se salga del hueco */
+    width: 100%;        /* Ocupa todo el ancho disponible */
+    height: 91px;        /* Alto fijo de la franja del gráfico */
 }
 
 #grafico-elevacion {
-    height: auto;
-    width: 100%;
+    height: auto;   /* El plugin ajusta su propio alto dentro del contenedor */
+    width: 100%;     /* Ocupa todo el ancho */
 }
 
 .leaflet-elevation-pane {
-    background-color: var(--crema);
+    background-color: var(--crema); /* Fondo del área donde se dibuja el gráfico */
 }
 
 .leaflet-control-elevation {
-    background-color: #fce8c6 !important;
-    border: none !important;
+    background-color: #fce8c6 !important; /* Fondo del panel de control de elevación */
+    border: none !important;              /* Sin borde */
 }
 
 .elevation-control .background {
-    background-color: var(--crema) !important;
+    background-color: var(--crema) !important; /* Fondo del propio gráfico */
 }
 
 .y.axis text,
 .x.axis text {
-    fill: var(--verde) !important;
-    font-family: 'CanvaSans', sans-serif;
+    fill: var(--verde) !important;         /* Color del texto de los ejes del gráfico */
+    font-family: 'CanvaSans', sans-serif;  /* Tipografía de los ejes */
 }
 
 .grid line {
-    stroke: var(--verde) !important;
-    stroke-opacity: 0.2 !important;
+    stroke: var(--verde) !important;    /* Color de las líneas de la rejilla del gráfico */
+    stroke-opacity: 0.2 !important;     /* Rejilla muy tenue, casi invisible */
 }
 
 .area {
-    fill: var(--verde) !important;
-    fill-opacity: 1 !important;
+    fill: var(--verde) !important;      /* Color de relleno bajo la curva de elevación */
+    fill-opacity: 1 !important;         /* Relleno totalmente opaco */
 }
 
 .elevation-polyline {
-    stroke: var(--crema) !important;
+    stroke: var(--crema) !important; /* Color de la línea de la curva (aunque está oculta, ver abajo) */
 }
 
-.elevation-summary { display: none !important; }
-.elevation-toggle { display: none !important; }
-.elevation-label { display: none !important; }
+.elevation-summary { display: none !important; } /* Oculta el resumen de datos que trae el plugin */
+.elevation-toggle { display: none !important; }  /* Oculta el botón de expandir/contraer del plugin */
+.elevation-label { display: none !important; }   /* Oculta las etiquetas propias del plugin */
 
 .leaflet-overlay-pane path.elevation-polyline {
-    display: none !important;
+    display: none !important;  /* Oculta la línea que el plugin dibuja sobre el mapa (no interesa verla ahí) */
     opacity: 0 !important;
 }
 
 .leaflet-overlay-pane path:not(.mi-track) {
-    stroke: transparent !important;
-    fill: transparent !important;
+    stroke: transparent !important;  /* Oculta cualquier otra línea que no sea el track de la ruta... */
+    fill: transparent !important;    /* ...para que solo se vea "mi-track" (el trazado real) */
     display: none !important;
 }
 
@@ -464,168 +420,169 @@ header p {
    11. FOOTER
    ============================================================ */
 footer {
-    background-color: var(--verde);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    padding: 1.5rem 2rem;
-    margin-top: 1rem;
-    position: relative;
+    background-color: var(--verde); /* Fondo verde del pie de página */
+    display: flex;                  /* Coloca los logos en fila */
+    align-items: center;            /* Centrados verticalmente */
+    justify-content: center;        /* Centrados horizontalmente */
+    gap: 2rem;                      /* Espacio entre logos */
+    padding: 1.5rem 2rem;           /* Espacio interno */
+    margin-top: 1rem;               /* Separación respecto al contenido de arriba */
+    position: relative;             /* Permite posicionar el texto de copyright dentro */
 }
 
 footer img {
-    height: 50px;
-    width: auto;
+    height: 50px;   /* Alto fijo de los logos */
+    width: auto;     /* El ancho se ajusta proporcionalmente */
 }
 
 footer p {
-    position: absolute;
+    position: absolute;                   /* Se coloca en una esquina del footer */
     right: 1rem;
     bottom: 0.4rem;
-    color: var(--crema);
-    font-family: 'CanvaSans', sans-serif;
-    font-size: 0.6rem;
-    opacity: 0.5;
+    color: var(--crema);                  /* Texto claro */
+    font-family: 'CanvaSans', sans-serif; /* Tipografía del copyright */
+    font-size: 0.6rem;                    /* Texto muy pequeño */
+    opacity: 0.5;                         /* Semitransparente, discreto */
 }
 
-/* Leyenda del mapa */
+/* Leyenda del mapa (lista de rutas con checkboxes) */
 .leyenda-control {
-    background-color: var(--verde);
-    color: var(--crema);
-    font-family: 'CanvaSans', sans-serif;
-    border-radius: 8px;
-    overflow: hidden;
-    min-width: 180px;
+    background-color: var(--verde);       /* Fondo verde de la leyenda */
+    color: var(--crema);                  /* Texto claro */
+    font-family: 'CanvaSans', sans-serif; /* Tipografía de la leyenda */
+    border-radius: 8px;                   /* Esquinas redondeadas */
+    overflow: hidden;                     /* Recorta el contenido a las esquinas redondeadas */
+    min-width: 180px;                     /* Ancho mínimo de la caja */
 }
 
 .leyenda-header {
-    padding: 0.5rem 0.8rem;
-    font-family: 'Lovelo', sans-serif;
-    font-size: 0.85rem;
-    cursor: pointer;
-    border-bottom: 1px solid rgba(245, 234, 216, 0.3);
+    padding: 0.5rem 0.8rem;                                  /* Espacio interno del título "Rutas ▾" */
+    font-family: 'Lovelo', sans-serif;                       /* Tipografía llamativa del título */
+    font-size: 0.85rem;                                      /* Tamaño del título */
+    cursor: pointer;                                         /* Indica que se puede hacer clic para plegar */
+    border-bottom: 1px solid rgba(245, 234, 216, 0.3);       /* Línea fina que separa el título de la lista */
 }
 
 .leyenda-header:hover {
-    opacity: 0.85;
+    opacity: 0.85; /* Se atenúa ligeramente al pasar el ratón */
 }
 
 .leyenda-lista {
-    padding: 0.5rem 0.8rem;
+    padding: 0.5rem 0.8rem; /* Espacio interno de la lista de rutas */
 }
 
 .leyenda-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.25rem 0;
-    cursor: pointer;
-    font-size: 0.75rem;
+    display: flex;          /* Checkbox, línea de color y nombre en fila */
+    align-items: center;    /* Centrados verticalmente entre sí */
+    gap: 0.5rem;             /* Espacio entre checkbox, línea y nombre */
+    padding: 0.25rem 0;      /* Espacio vertical entre cada ruta de la lista */
+    cursor: pointer;         /* Indica que la fila entera es clicable */
+    font-size: 0.75rem;      /* Tamaño del texto de cada ruta */
 }
 
 .leyenda-linea {
-    display: inline-block;
-    width: 24px;
-    height: 4px;
-    border-radius: 2px;
-    flex-shrink: 0;
+    display: inline-block;  /* Se comporta como una cajita de color */
+    width: 24px;             /* Ancho de la muestra de color de la ruta */
+    height: 4px;              /* Alto, simula el grosor de la línea del track */
+    border-radius: 2px;       /* Esquinas ligeramente redondeadas */
+    flex-shrink: 0;            /* No se encoge aunque el nombre de la ruta sea largo */
 }
 
 .leyenda-nombre {
-    color: var(--crema);
+    color: var(--crema); /* Color del nombre de la ruta en la lista */
 }
 
 .leyenda-item input[type="checkbox"] {
-    accent-color: var(--crema);
-    cursor: pointer;
+    accent-color: var(--crema); /* Color del check al marcar la casilla */
+    cursor: pointer;             /* Cursor de mano sobre el checkbox */
 }
 
 
 
 /* ============================================================
-   12. RESPONSIVE (móvil)
+   12. RESPONSIVE (móvil) — ajustes para pantallas pequeñas
    ============================================================ */
 @media (max-width: 768px) {
 
     main {
-        display: flex;
+        display: flex;            /* En móvil, las secciones se apilan en columna */
         flex-direction: column;
     }
 
-    #mapa-ruta     { order: 1; }
-    #elevacion     { order: 2; }
-    #datos-ruta    { order: 3; }
+    #mapa-ruta      { order: 1; } /* Orden en el que aparece cada sección en móvil */
+    #elevacion      { order: 2; }
+    #datos-ruta     { order: 3; }
     #servicios-ruta { order: 4; }
-    #descripcion   { order: 5; }
+    #descripcion    { order: 5; }
     #pinturas-seccion { order: 6; }
 
     #datos-ruta {
-    gap: 0.5rem;
-    padding: 0.3rem 1rem;
-}
+        gap: 0.5rem;          /* Menos espacio entre datos en pantallas pequeñas */
+        padding: 0.3rem 1rem; /* Menos espacio interno */
+    }
 
-.dato-valor {
-    font-size: 0.9rem;
-}
+    .dato-valor {
+        font-size: 0.9rem; /* Valor un poco más pequeño en móvil */
+    }
 
-.dato-label {
-    font-size: 0.65rem;
-}
+    .dato-label {
+        font-size: 0.65rem; /* Etiqueta un poco más pequeña en móvil */
+    }
 
-.dato img {
-    width: 1.8rem;
-    height: 1.8rem;
-}
+    .dato img {
+        width: 1.8rem;  /* Iconos más pequeños en móvil */
+        height: 1.8rem;
+    }
 
     #descripcion {
-        width: 100%;
-        float: none;
-        padding: 0rem 0rem;
-        font-size: 0.85rem;
+        width: 100%;       /* Ocupa todo el ancho (ya no hay dos columnas) */
+        float: none;        /* Se quita el flotado lateral */
+        padding: 0rem 0rem; /* Sin espacio interno extra en móvil */
+        font-size: 0.85rem; /* Texto ligeramente más pequeño */
     }
 
     #servicios-ruta {
-        width: 100%;
-        float: none;
-        grid-template-columns: 1fr 1fr 1fr;
-        justify-items: center;
-        padding: 1rem 0rem;
-        gap: 0.5rem;
+        width: 100%;                       /* Ocupa todo el ancho en móvil */
+        float: none;                        /* Se quita el flotado lateral */
+        grid-template-columns: 1fr 1fr 1fr; /* Sigue en 3 columnas */
+        justify-items: center;              /* Iconos centrados */
+        padding: 1rem 0rem;                 /* Espacio interno reducido */
+        gap: 0.5rem;                        /* Menos espacio entre iconos */
     }
 
     .servicio img {
-        width: 40px;
+        width: 40px;   /* Iconos de servicio más pequeños en móvil */
         height: 40px;
     }
 
     .servicio {
-        font-size: 0.75rem;
+        font-size: 0.75rem; /* Texto de servicio más pequeño en móvil */
     }
 
     #pinturas-seccion {
-        height: 180px;
-        float: none;
-        width: 100%;
+        height: 180px;  /* Sección más baja en móvil */
+        float: none;     /* Se quita el flotado lateral */
+        width: 100%;     /* Ocupa todo el ancho */
     }
 
     #pinturas-seccion img:first-child {
-        width: 8rem !important;
+        width: 8rem !important;  /* Imagen más pequeña en móvil */
         left: 3rem !important;
         top: 0 !important;
     }
 
     #pinturas-seccion img:last-child {
-        width: 7rem !important;
+        width: 7rem !important;  /* Segunda imagen más pequeña en móvil */
         left: -1rem !important;
         top: -3rem !important;
     }
-#datos-ruta .dato:first-child img {
-    width: 3rem;
-    height: 1.2rem;
-}
 
-#datos-ruta .dato {
-    justify-content: flex-end;
-}
+    #datos-ruta .dato:first-child img {
+        width: 3rem;    /* Icono de distancia ajustado a móvil */
+        height: 1.2rem;
+    }
+
+    #datos-ruta .dato {
+        justify-content: flex-end; /* Se mantiene la misma alineación que en escritorio */
+    }
 }
