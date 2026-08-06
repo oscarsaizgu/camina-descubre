@@ -488,6 +488,61 @@ footer p {
     font-size: 0.6rem;
     opacity: 0.5;
 }
+
+/* Leyenda del mapa */
+.leyenda-control {
+    background-color: var(--verde);
+    color: var(--crema);
+    font-family: 'CanvaSans', sans-serif;
+    border-radius: 8px;
+    overflow: hidden;
+    min-width: 180px;
+}
+
+.leyenda-header {
+    padding: 0.5rem 0.8rem;
+    font-family: 'Lovelo', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(245, 234, 216, 0.3);
+}
+
+.leyenda-header:hover {
+    opacity: 0.85;
+}
+
+.leyenda-lista {
+    padding: 0.5rem 0.8rem;
+}
+
+.leyenda-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0;
+    cursor: pointer;
+    font-size: 0.75rem;
+}
+
+.leyenda-linea {
+    display: inline-block;
+    width: 24px;
+    height: 4px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.leyenda-nombre {
+    color: var(--crema);
+}
+
+.leyenda-item input[type="checkbox"] {
+    accent-color: var(--crema);
+    cursor: pointer;
+}
+
+
+
 /* ============================================================
    12. RESPONSIVE (móvil)
    ============================================================ */
