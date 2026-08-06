@@ -26,9 +26,11 @@ var rutas = [
 
 // Construye el texto del popup a partir de los datos sueltos de la ruta
 function crearPopup(ruta) {
-    return '<b style="cursor:pointer;text-decoration:underline;color:#f5ead8;" onclick="window.location.href=\'' + ruta.id + '.html\'">' + ruta.nombre + '</b><br>' +
+    return '<b style="color:#f5ead8;">' + ruta.nombre + '</b><br>' +
         '📏 ' + ruta.distancia + '&nbsp;&nbsp;🕐 ' + ruta.duracion + '<br>' +
-        '<b>Dificultad:</b> ' + ruta.dificultad;
+        '<b>Dificultad:</b> ' + ruta.dificultad + '<br>' +
+        '<button onclick="window.location.href=\'' + ruta.id + '.html\'" ' +
+        'style="background:#f5ead8;color:' + ruta.color + ';border:none;padding:0.2rem 0.6rem;border-radius:12px;font-family:CanvaSans,sans-serif;font-size:0.7rem;cursor:pointer;width:100%;">Ver ruta →</button>';
 }
 
 // Pinta el fondo del popup recién abierto con el color de su ruta
