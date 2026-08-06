@@ -1,103 +1,107 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coto Cuende - Camina y Descubre</title>
-    <link rel="stylesheet" href="css/estilos.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css">
-    <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
-</head>
-<body>
+<!DOCTYPE html> <!-- Declara que el documento es HTML5 -->
+<html lang="es"> <!-- Inicia el documento HTML, idioma español -->
+<head> <!-- Sección de metadatos, no visible en la página -->
+    <meta charset="UTF-8"> <!-- Define la codificación de caracteres como UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ajusta la vista para dispositivos móviles -->
+    <title>Coto Cuende - Camina y Descubre</title> <!-- Título que aparece en la pestaña del navegador -->
 
-    <header>
-        <h1>Coto Cuende</h1>
-        <p>Ramales de la Victoria</p>
+    <link rel="stylesheet" href="css/estilos.css"> <!-- Carga los estilos propios de la página -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"> <!-- Carga los estilos de la librería de mapas Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css"> <!-- Carga los estilos del plugin de perfil de elevación -->
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> <!-- Carga la librería Leaflet para mostrar mapas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script> <!-- Carga el plugin para mostrar rutas GPX en el mapa -->
+    <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script> <!-- Carga el plugin que dibuja el gráfico de elevación -->
+</head>
+<body> <!-- Inicia el contenido visible de la página -->
+
+    <header> <!-- Cabecera de la página -->
+        <h1>Coto Cuende</h1> <!-- Título principal -->
+        <p>Ramales de la Victoria</p> <!-- Subtítulo -->
     </header>
 
-    <a href="index.html" id="btn-volver">←</a>
+    <a href="index.html" id="btn-volver">←</a> <!-- Enlace para volver a la página principal -->
 
-    <main>
+    <main> <!-- Contenido principal de la página -->
 
-        <section id="mapa-ruta">
-            <div id="mapa-detalle"></div>
+        <section id="mapa-ruta"> <!-- Sección que contiene el mapa de la ruta -->
+            <div id="mapa-detalle"></div> <!-- Contenedor donde Leaflet dibuja el mapa detallado -->
         </section>
 
-        <section id="elevacion">
-            <div id="grafico-elevacion"></div>
+        <section id="elevacion"> <!-- Sección del perfil de elevación -->
+            <div id="grafico-elevacion"></div> <!-- Contenedor donde se dibuja el gráfico de elevación -->
         </section>
 
-        <section id="datos-ruta">
-            <div class="dato">
-                <img src="iconos/distancia.png" alt="Distancia">
-                <span class="dato-valor">1,26 km</span>
-                <span class="dato-label">Distancia</span>
+        <section id="datos-ruta"> <!-- Sección con los datos resumidos de la ruta -->
+            <div class="dato"> <!-- Bloque del dato "distancia" -->
+                <img src="iconos/distancia.png" alt="Distancia"> <!-- Icono de distancia -->
+                <span class="dato-valor">1,26 km</span> <!-- Valor de la distancia -->
+                <span class="dato-label">Distancia</span> <!-- Etiqueta del dato -->
             </div>
-            <div class="dato">
-                <img src="iconos/reloj.png" alt="Duración">
-                <span class="dato-valor">15 min</span>
-                <span class="dato-label">Duración</span>
+            <div class="dato"> <!-- Bloque del dato "duración" -->
+                <img src="iconos/reloj.png" alt="Duración"> <!-- Icono de reloj -->
+                <span class="dato-valor">15 min</span> <!-- Valor de la duración -->
+                <span class="dato-label">Duración</span> <!-- Etiqueta del dato -->
             </div>
-            <div class="dato">
-                <img src="iconos/altitud.png" alt="Desnivel">
-                <span class="dato-valor">42m</span>
-                <span class="dato-label">Desnivel</span>
+            <div class="dato"> <!-- Bloque del dato "desnivel" -->
+                <img src="iconos/altitud.png" alt="Desnivel"> <!-- Icono de altitud -->
+                <span class="dato-valor">42m</span> <!-- Valor del desnivel -->
+                <span class="dato-label">Desnivel</span> <!-- Etiqueta del dato -->
             </div>
-            <div class="dato">
-                <img src="iconos/circular.png" alt="Tipo de ruta">
-                <span class="dato-valor">Ida y vuelta</span>
-                <span class="dato-label">Tipo</span>
-            </div>
-        </section>
-
-        <section id="descripcion">
-            <h2>Sobre la ruta</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque convallis mollis lacus a molestie. Morbi venenatis ipsum auctor elit commodo placerat. In hac habitasse platea dictumst. Suspendisse potenti. Etiam tincidunt cursus ligula, tincidunt tristique ligula tincidunt ac. Vivamus et condimentum tellus. Curabitur mollis sapien eget lectus faucibus interdum. Cras et ultrices diam. Curabitur tincidunt eleifend sem, ut lobortis eros ultricies sit amet. Praesent fringilla auctor sagittis. Phasellus blandit interdum magna. Maecenas vestibulum porta metus eu euismod. Vestibulum consequat leo id eros auctor blandit. Praesent a dui magna. Quisque convallis justo ut est faucibus euismod.</p>
-        </section>
-
-        <section id="servicios-ruta">
-            <div class="servicio">
-                <img src="iconos/Zona de picnic.png" alt="Zona Picnic">
-                <span>Zona Picnic</span>
-            </div>
-            <div class="servicio">
-                <img src="iconos/Parque infantil.png" alt="Parque infantil">
-                <span>Parque infantil</span>
-            </div>
-            <div class="servicio">
-                <img src="iconos/Apta para niños.png" alt="Apta para niños">
-                <span>Apta para niños</span>
-            </div>
-            <div class="servicio">
-                <img src="iconos/Calzada compartida.png" alt="Calzada compartida">
-                <span>Calzada compartida</span>
-            </div>
-            <div class="servicio">
-                <img src="iconos/Apta para bicicletas.png" alt="Apta para bicicletas">
-                <span>Apta para bicicletas</span>
-            </div>
-            <div class="servicio">
-                <img src="iconos/Recurso hidrico.png" alt="Recurso hidrico">
-                <span>Recurso hidrico</span>
+            <div class="dato"> <!-- Bloque del dato "tipo de ruta" -->
+                <img src="iconos/circular.png" alt="Tipo de ruta"> <!-- Icono del tipo de ruta -->
+                <span class="dato-valor">Ida y vuelta</span> <!-- Valor del tipo de ruta -->
+                <span class="dato-label">Tipo</span> <!-- Etiqueta del dato -->
             </div>
         </section>
 
-        <section id="pinturas-seccion">
-            <div id="pinturas">
-                <img src="iconos/cubillas.png" alt="Cubillas">
+        <section id="descripcion"> <!-- Sección con la descripción de la ruta -->
+            <h2>Sobre la ruta</h2> <!-- Título de la descripción -->
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque convallis mollis lacus a molestie. Morbi venenatis ipsum auctor elit commodo placerat. In hac habitasse platea dictumst. Suspendisse potenti. Etiam tincidunt cursus ligula, tincidunt tristique ligula tincidunt ac. Vivamus et condimentum tellus. Curabitur mollis sapien eget lectus faucibus interdum. Cras et ultrices diam. Curabitur tincidunt eleifend sem, ut lobortis eros ultricies sit amet. Praesent fringilla auctor sagittis. Phasellus blandit interdum magna. Maecenas vestibulum porta metus eu euismod. Vestibulum consequat leo id eros auctor blandit. Praesent a dui magna. Quisque convallis justo ut est faucibus euismod.</p> <!-- Texto descriptivo de la ruta -->
+        </section>
+
+        <section id="servicios-ruta"> <!-- Sección con los servicios/características de la ruta -->
+            <div class="servicio"> <!-- Servicio: zona de picnic -->
+                <img src="iconos/Zona de picnic.png" alt="Zona Picnic"> <!-- Icono de zona de picnic -->
+                <span>Zona Picnic</span> <!-- Texto del servicio -->
+            </div>
+            <div class="servicio"> <!-- Servicio: parque infantil -->
+                <img src="iconos/Parque infantil.png" alt="Parque infantil"> <!-- Icono de parque infantil -->
+                <span>Parque infantil</span> <!-- Texto del servicio -->
+            </div>
+            <div class="servicio"> <!-- Servicio: apta para niños -->
+                <img src="iconos/Apta para niños.png" alt="Apta para niños"> <!-- Icono de apta para niños -->
+                <span>Apta para niños</span> <!-- Texto del servicio -->
+            </div>
+            <div class="servicio"> <!-- Servicio: calzada compartida -->
+                <img src="iconos/Calzada compartida.png" alt="Calzada compartida"> <!-- Icono de calzada compartida -->
+                <span>Calzada compartida</span> <!-- Texto del servicio -->
+            </div>
+            <div class="servicio"> <!-- Servicio: apta para bicicletas -->
+                <img src="iconos/Apta para bicicletas.png" alt="Apta para bicicletas"> <!-- Icono de apta para bicicletas -->
+                <span>Apta para bicicletas</span> <!-- Texto del servicio -->
+            </div>
+            <div class="servicio"> <!-- Servicio: recurso hídrico -->
+                <img src="iconos/Recurso hidrico.png" alt="Recurso hidrico"> <!-- Icono de recurso hídrico -->
+                <span>Recurso hidrico</span> <!-- Texto del servicio -->
             </div>
         </section>
 
-    </main>
-    <footer>
-        <img src="logos/ramales.svg" alt="Ayuntamiento de Ramales de la Victoria">
-        <img src="logos/naturalblanco.png" alt="Ramales Natural">
-        <p>© Oscar Saiz Gutiérrez, 2026</p>
+        <section id="pinturas-seccion"> <!-- Sección con la imagen de pinturas/ilustración -->
+            <div id="pinturas"> <!-- Contenedor de la imagen -->
+                <img src="iconos/cubillas.png" alt="Cubillas"> <!-- Imagen ilustrativa de Cubillas -->
+            </div>
+        </section>
+
+    </main> <!-- Cierra el contenido principal -->
+
+    <footer> <!-- Pie de página -->
+        <img src="logos/ramales.svg" alt="Ayuntamiento de Ramales de la Victoria"> <!-- Logo del ayuntamiento -->
+        <img src="logos/naturalblanco.png" alt="Ramales Natural"> <!-- Logo de Ramales Natural -->
+        <p>© Oscar Saiz Gutiérrez, 2026</p> <!-- Nota de derechos de autor -->
     </footer>
-    <script src="js/coto.js"></script>
 
-</body>
-</html>
+    <script src="js/coto.js"></script> <!-- Carga el script que configura y controla el mapa, elevación y datos de esta ruta -->
+
+</body> <!-- Cierra el contenido visible -->
+</html> <!-- Cierra el documento HTML -->
