@@ -167,7 +167,36 @@ header p {
 .vega-popup .leaflet-popup-tip {
     background-color: #1a5f7a !important;
 }
-
+.guardamino-popup .leaflet-popup-content-wrapper {
+    background-color: #7a1a1a !important;
+}
+.guardamino-popup .leaflet-popup-tip {
+    background-color: #7a1a1a !important;
+}
+.coto-popup .leaflet-popup-content-wrapper {
+    background-color: #6b4c9a !important;
+}
+.coto-popup .leaflet-popup-tip {
+    background-color: #6b4c9a !important;
+}
+.dama-popup .leaflet-popup-content-wrapper {
+    background-color: #b5651d !important;
+}
+.dama-popup .leaflet-popup-tip {
+    background-color: #b5651d !important;
+}
+.cucurioa-popup .leaflet-popup-content-wrapper {
+    background-color: #2d6b4a !important;
+}
+.cucurioa-popup .leaflet-popup-tip {
+    background-color: #2d6b4a !important;
+}
+.cucuriob-popup .leaflet-popup-content-wrapper {
+    background-color: #4a2d6b !important;
+}
+.cucuriob-popup .leaflet-popup-tip {
+    background-color: #4a2d6b !important;
+}
 
 /* ============================================================
    8. MAPA DE DETALLE DE RUTA
