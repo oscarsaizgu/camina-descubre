@@ -5,8 +5,8 @@ var mapa = L.map('mapa', {
 }).setView([43.2513, -3.4607], 14);
 
 // Carga la capa base de OpenStreetMap
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap'
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© CartoDB'
 }).addTo(mapa);
 
 mapa.invalidateSize(); // Fuerza a Leaflet a recalcular el tamaño del mapa
@@ -82,33 +82,32 @@ var Leyenda = L.Control.extend({
         var div = L.DomUtil.create('div', 'leyenda-control');
         var html = '<div class="leyenda-header" onclick="toggleLeyenda()">Rutas ▾</div><div class="leyenda-lista" id="leyenda-lista">';
         rutas.forEach(function(ruta) {
-            // Si la ruta es discontinua (dashArray), dibuja la línea de la leyenda a rayas
             var lineaEstilo = ruta.dashArray
                 ? 'background: repeating-linear-gradient(90deg,' + ruta.color + ' 0,' + ruta.color + ' 8px,transparent 8px,transparent 16px);'
                 : 'background:' + ruta.color + ';';
-            html += '<label class="leyenda-item">' +
+            html += '<div class="leyenda-item">' +
+                '<label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">' +
                 '<input type="checkbox" checked onchange="toggleRuta(\'' + ruta.id + '\', this.checked)">' +
                 '<span class="leyenda-linea" style="' + lineaEstilo + '"></span>' +
-                '<span class="leyenda-nombre">' + ruta.nombre + '</span>' +
-                '</label>';
+                '</label>' +
+                '<span class="leyenda-nombre" onclick="window.location.href=\'' + ruta.id + '.html\'" style="cursor:pointer;text-decoration:underline;">' + ruta.nombre + '</span>' +
+                '</div>';
         });
         html += '</div>';
         div.innerHTML = html;
-        L.DomEvent.disableClickPropagation(div); // Evita que un clic en la leyenda mueva el mapa
-        L.DomEvent.disableScrollPropagation(div); // Evita que el scroll en la leyenda haga zoom en el mapa
+        L.DomEvent.disableClickPropagation(div);
+        L.DomEvent.disableScrollPropagation(div);
         return div;
     }
 });
 
-new Leyenda().addTo(mapa); // Añade la leyenda al mapa
+new Leyenda().addTo(mapa);
 
-// Muestra u oculta el track de una ruta al marcar/desmarcar su checkbox
 function toggleRuta(id, visible) {
     if (visible) { mapa.addLayer(capas[id]); }
     else { mapa.removeLayer(capas[id]); }
 }
 
-// Pliega o despliega la lista de rutas de la leyenda
 function toggleLeyenda() {
     var lista = document.getElementById('leyenda-lista');
     var header = document.querySelector('.leyenda-header');
