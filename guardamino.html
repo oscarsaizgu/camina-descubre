@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardamino - Camina y Descubre</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css">
+    <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
+</head>
+<body>
+
+    <header>
+        <h1>Guardamino</h1>
+        <p>Ramales de la Victoria</p>
+    </header>
+
+    <a href="index.html" id="btn-volver">←</a>
+
+    <main>
+
+        <section id="mapa-ruta">
+            <div id="mapa-detalle"></div>
+        </section>
+
+        <section id="elevacion">
+            <div id="grafico-elevacion"></div>
+        </section>
+
+        <section id="datos-ruta">
+            <div class="dato">
+                <img src="iconos/distancia.png" alt="Distancia">
+                <span class="dato-valor">4,71 km</span>
+                <span class="dato-label">Distancia</span>
+            </div>
+            <div class="dato">
+                <img src="iconos/reloj.png" alt="Duración">
+                <span class="dato-valor">60 min</span>
+                <span class="dato-label">Duración</span>
+            </div>
+            <div class="dato">
+                <img src="iconos/altitud.png" alt="Desnivel">
+                <span class="dato-valor">146m</span>
+                <span class="dato-label">Desnivel</span>
+            </div>
+            <div class="dato">
+                <img src="iconos/circular.png" alt="Tipo de ruta">
+                <span class="dato-valor">Circular</span>
+                <span class="dato-label">Tipo</span>
+            </div>
+        </section>
+
+        <section id="descripcion">
+            <h2>Sobre la ruta</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque convallis mollis lacus a molestie. Morbi venenatis ipsum auctor elit commodo placerat. In hac habitasse platea dictumst. Suspendisse potenti. Etiam tincidunt cursus ligula, tincidunt tristique ligula tincidunt ac. Vivamus et condimentum tellus. Curabitur mollis sapien eget lectus faucibus interdum. Cras et ultrices diam. Curabitur tincidunt eleifend sem, ut lobortis eros ultricies sit amet. Praesent fringilla auctor sagittis. Phasellus blandit interdum magna. Maecenas vestibulum porta metus eu euismod. Vestibulum consequat leo id eros auctor blandit. Praesent a dui magna. Quisque convallis justo ut est faucibus euismod.</p>
+        </section>
+
+        <section id="servicios-ruta">
+            <div class="servicio">
+                <img src="iconos/Zona de picnic.png" alt="Zona Picnic">
+                <span>Zona Picnic</span>
+            </div>
+            <div class="servicio">
+                <img src="iconos/Parque infantil.png" alt="Parque infantil">
+                <span>Parque infantil</span>
+            </div>
+            <div class="servicio">
+                <img src="iconos/Apta para niños.png" alt="Apta para niños">
+                <span>Apta para niños</span>
+            </div>
+            <div class="servicio">
+                <img src="iconos/Calzada compartida.png" alt="Calzada compartida">
+                <span>Calzada compartida</span>
+            </div>
+            <div class="servicio">
+                <img src="iconos/Apta para bicicletas.png" alt="Apta para bicicletas">
+                <span>Apta para bicicletas</span>
+            </div>
+            <div class="servicio">
+                <img src="iconos/Recurso hidrico.png" alt="Recurso hidrico">
+                <span>Recurso hidrico</span>
+            </div>
+        </section>
+
+        <section id="pinturas-seccion">
+            <div id="pinturas">
+                <img src="iconos/cubillas.png" alt="Cubillas">
+            </div>
+        </section>
+
+    </main>
+    <footer>
+        <img src="logos/ramales.svg" alt="Ayuntamiento de Ramales de la Victoria">
+        <img src="logos/naturalblanco.png" alt="Ramales Natural">
+        <p>© Oscar Saiz Gutiérrez, 2026</p>
+    </footer>
+    <script src="js/guardamino.js"></script>
+
+</body>
+</html>
