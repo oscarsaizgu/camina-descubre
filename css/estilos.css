@@ -141,9 +141,9 @@ header p {
 
 #hint-mapa {
     position: absolute;                      /* Se posiciona flotando sobre el mapa */
-    bottom: 1rem;                            /* Separado del borde inferior del mapa */
+    top: 1rem;                            /* Separado del borde inferior del mapa */
     left: 50%;                               /* Empieza en el centro horizontal... */
-    transform: translateX(-50%);             /* ...y se recoloca para quedar centrado de verdad */
+    transform:translateX(-50%);             /* ...y se recoloca para quedar centrado de verdad */
     background-color: rgba(45, 74, 53, 0.85); /* Fondo verde semitransparente */
     color: #f5ead8;                          /* Texto claro */
     font-family: 'CanvaSans', sans-serif;    /* Tipografía del aviso */
@@ -585,4 +585,33 @@ footer p {
     #datos-ruta .dato {
         justify-content: flex-end; /* Se mantiene la misma alineación que en escritorio */
     }
+    .leyenda-control {
+    min-width: 130px;
+}
+
+.leyenda-header {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.6rem;
+}
+
+.leyenda-item {
+    font-size: 0.65rem;
+    padding: 0.15rem 0;
+}
+
+.leyenda-nombre {
+    font-size: 0.65rem;
+}
+
+.leyenda-lista {
+    padding: 0.3rem 0.6rem;
+}
+.leyenda-control {
+    background-color: rgba(45, 74, 53, 0.85);
+    color: var(--crema);
+    font-family: 'CanvaSans', sans-serif;
+    border-radius: 8px;
+    overflow: hidden;
+    min-width: 180px;
+}
 }

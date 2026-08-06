@@ -75,7 +75,7 @@ rutas.forEach(function(ruta) {
 
 // Control personalizado: leyenda con la lista de rutas y sus checkboxes
 var Leyenda = L.Control.extend({
-    options: { position: 'topright' },
+    options: { position: 'bottomright' },
     onAdd: function() {
         var div = L.DomUtil.create('div', 'leyenda-control');
         var html = '<div class="leyenda-header" onclick="toggleLeyenda()">Rutas ▾</div><div class="leyenda-lista" id="leyenda-lista">';
