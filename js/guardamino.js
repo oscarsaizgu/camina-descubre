@@ -41,7 +41,8 @@ var descripciones = {
     b: 'Comenzamos la ruta en la bolera de pasabolo "Domingo Muguira" y tomamos la calle del barrio La Casa en dirección al Bº Guardamino. Antes del taller Madreselva, subimos por el monte hasta llegar a la Piedra Carlista. Siguiendo el camino llegamos al monumento a la batalla de Ramales, de la Primera Guerra Carlista. Desde aquí, continuamos por la carretera de la izquierda para volver, en 1 km, al punto de inicio.'
 };
 
-// Cambia la información de la página según la variante seleccionada
+var trackA, trackB, polylineA, polylineB;
+
 function activarVariante(v) {
     // Elevación
     document.getElementById('grafico-elevacion').style.display   = v === 'a' ? 'block' : 'none';
@@ -56,13 +57,17 @@ function activarVariante(v) {
     // Descripción
     document.getElementById('texto-descripcion').textContent = descripciones[v];
 
-    // Botones de variante
+    // Botones
     document.getElementById('btn-variante-a').classList.toggle('variante-activa', v === 'a');
     document.getElementById('btn-variante-b').classList.toggle('variante-activa', v === 'b');
+
+    // Tracks: el seleccionado sólido y grueso, el otro fino y discontinuo
+if (trackA) trackA.setStyle({ dashArray: v === 'a' ? null : '8, 8', weight: v === 'a' ? 4 : 2 });
+if (trackB) trackB.setStyle({ dashArray: v === 'b' ? null : '8, 8', weight: v === 'b' ? 4 : 2 });
 }
 
-// Track principal — sólido
-var trackA = new L.GPX('data/guardamino.gpx', {
+// Track principal
+trackA = new L.GPX('data/guardamino.gpx', {
     async: true,
     polyline_options: { color: '#fce8c6', weight: 4, opacity: 0.9, className: 'mi-track' },
     marker_options: { startIconUrl: null, endIconUrl: null, shadowUrl: null }
@@ -71,16 +76,18 @@ var trackA = new L.GPX('data/guardamino.gpx', {
     mapa.fitBounds(bounds);
     mapa.setMaxBounds(bounds.pad(0.1));
     mapa.options.minZoom = mapa.getZoom();
+    polylineA = e.target.getLayers()[0];
     e.target.on('click', function() { activarVariante('a'); });
     e.target.eachLayer(function(layer) { layer.on('click', function() { activarVariante('a'); }); });
 }).addTo(mapa);
 
-// Track variante B — discontinuo
-var trackB = new L.GPX('data/guardaminob.gpx', {
+// Track variante B
+trackB = new L.GPX('data/guardaminob.gpx', {
     async: true,
     polyline_options: { color: '#fce8c6', weight: 2, opacity: 0.9, dashArray: '8, 8', className: 'mi-track' },
     marker_options: { startIconUrl: null, endIconUrl: null, shadowUrl: null }
 }).on('loaded', function(e) {
+    polylineB = e.target.getLayers()[0];
     e.target.on('click', function() { activarVariante('b'); });
     e.target.eachLayer(function(layer) { layer.on('click', function() { activarVariante('b'); }); });
 }).addTo(mapa);
