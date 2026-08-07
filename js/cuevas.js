@@ -1,14 +1,11 @@
-// Inicializa el mapa de la ruta centrado en Ramales
 var mapa = L.map('mapa-detalle', {zoomControl: false, 
     attributionControl: false,
-edgeScale: false}).setView([43.2513, -3.4607], 14);
+    edgeScale: false}).setView([43.2513, -3.4607], 14);
 
-// Capa base satélite
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     attribution: '© Esri'
 }).addTo(mapa);
 
-// Inicializa el perfil de elevación
 var elevacion = L.control.elevation({
     theme: "custom-theme",
     collapsed: false,
@@ -30,11 +27,10 @@ var elevacion = L.control.elevation({
     polyline: false,
 });
 elevacion.addTo(mapa);
-
-// Carga el perfil de elevación
 elevacion.load('data/cuevas.gpx');
 
-// Track beige
+var maxBoundsRuta;
+
 new L.GPX('data/cuevas.gpx', {
     async: true,
     polyline_options: {
@@ -51,45 +47,20 @@ new L.GPX('data/cuevas.gpx', {
 }).on('loaded', function(e) {
     var bounds = e.target.getBounds();
     mapa.fitBounds(bounds);
-    mapa.setMaxBounds(bounds.pad(0.1));
+    maxBoundsRuta = bounds.pad(0,5);
+    mapa.setMaxBounds(maxBoundsRuta);
     mapa.options.minZoom = mapa.getZoom();
 }).addTo(mapa);
 
-// Puntos de interés con fotos
 var puntosInteres = [
-    {
-        coords: [43.244719, -3.454010],
-        nombre: "Mirador de Covalanas",
-        foto: "fotos/mirador.jpg"
-    },
-    {
-        coords: [43.245467, -3.452144],
-        nombre: "Cueva de Covalanas",
-        foto: "fotos/covalanas.jpg"
-    },
-    {
-        coords: [43.245171, -3.452452],
-        nombre: "Cueva del Mirón",
-        foto: "fotos/miron.jpg"
-    },
-    {
-        coords: [43.244278, -3.450562],
-        nombre: "Cueva de la Luz",
-        foto: "fotos/luz.jpg"
-    },
-    {
-        coords: [43.248049, -3.456690],
-        nombre: "Cueva el Haza",
-        foto: "fotos/haza.jpg"
-    },
-    {
-        coords: [43.255676, -3.458022],
-        nombre: "Cueva de Cullalvera",
-        foto: "fotos/cullalvera.jpg"
-    }
+    { coords: [43.244719, -3.454010], nombre: "Mirador de Covalanas", foto: "fotos/mirador.jpg" },
+    { coords: [43.245467, -3.452144], nombre: "Cueva de Covalanas", foto: "fotos/covalanas.jpg" },
+    { coords: [43.245171, -3.452452], nombre: "Cueva del Mirón", foto: "fotos/miron.jpg" },
+    { coords: [43.244278, -3.450562], nombre: "Cueva de la Luz", foto: "fotos/luz.jpg" },
+    { coords: [43.248049, -3.456690], nombre: "Cueva el Haza", foto: "fotos/haza.jpg" },
+    { coords: [43.255676, -3.458022], nombre: "Cueva de Cullalvera", foto: "fotos/cullalvera.jpg" }
 ];
 
-// Icono personalizado para los marcadores
 var iconoMarker = L.divIcon({
     className: 'marker-personalizado',
     html: '<div class="marker-pin"></div>',
@@ -97,12 +68,13 @@ var iconoMarker = L.divIcon({
     iconAnchor: [10, 10]
 });
 
-// Crear marcador para cada punto
 puntosInteres.forEach(function(punto) {
     var marker = L.marker(punto.coords, { icon: iconoMarker }).addTo(mapa);
 
-    // Al pasar el ratón, mostrar miniatura
     marker.on('mouseover', function() {
+        if (punto.nombre === 'Cueva de Cullalvera') {
+            mapa.setMaxBounds(null);
+        }
         this.bindPopup(
             '<b>' + punto.nombre + '</b><br>' +
             '<img src="' + punto.foto + '" style="width:150px; margin-top:5px; border-radius:4px;">',
@@ -112,17 +84,18 @@ puntosInteres.forEach(function(punto) {
 
     marker.on('mouseout', function() {
         this.closePopup();
+        if (punto.nombre === 'Cueva de Cullalvera') {
+            mapa.setMaxBounds(maxBoundsRuta);
+        }
     });
 
-    // Al hacer clic, popup más grande
-marker.on('click', function() {
-    document.getElementById('lightbox-img').src = punto.foto;
-    document.getElementById('lightbox-titulo').textContent = punto.nombre;
-    document.getElementById('lightbox').style.display = 'flex';
-});
+    marker.on('click', function() {
+        document.getElementById('lightbox-img').src = punto.foto;
+        document.getElementById('lightbox-titulo').textContent = punto.nombre;
+        document.getElementById('lightbox').style.display = 'flex';
+    });
 });
 
-// Crear el lightbox (ventana de imagen grande)
 var lightbox = document.createElement('div');
 lightbox.id = 'lightbox';
 lightbox.innerHTML = '<div id="lightbox-contenido"><span id="lightbox-cerrar">✕</span><img id="lightbox-img"><p id="lightbox-titulo"></p></div>';
