@@ -1,118 +1,95 @@
-// Inicializa el mapa de la ruta centrado en Ramales
-var mapa = L.map('mapa-detalle', {zoomControl: false, 
+var mapa = L.map('mapa-detalle', {
+    zoomControl: false,
     attributionControl: false,
-edgeScale: false}).setView([43.2513, -3.4607], 14);
+    edgeScale: false
+}).setView([43.2513, -3.4607], 14);
 
-// Capa base satélite
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     attribution: '© Esri'
 }).addTo(mapa);
 
-// Inicializa el perfil de elevación
-var elevacion = L.control.elevation({
-    theme: "custom-theme",
-    collapsed: false,
-    detached: true,
-    elevationDiv: "#grafico-elevacion",
-    autohide: false,
-    followMarker: true,
-    height: 120,
-    time: false,
-    distance: false,
-    elevation: false,
-    speed: false,
-    slope: false,
-    legend: false,
-    ruler: false,
-    closeBtn: false,
-    waypoints: false,
-    wptIcons: false,
-    polyline: false,
+// Elevación principal
+var elevacionA = L.control.elevation({
+    theme: "custom-theme", collapsed: false, detached: true,
+    elevationDiv: "#grafico-elevacion", autohide: false, followMarker: true,
+    height: 120, time: false, distance: false, elevation: false, speed: false,
+    slope: false, legend: false, ruler: false, closeBtn: false,
+    waypoints: false, wptIcons: false, polyline: false
 });
-elevacion.addTo(mapa);
+elevacionA.addTo(mapa);
+elevacionA.load('data/guardamino.gpx');
 
-// Carga el perfil de elevación
-elevacion.load('data/guardamino.gpx');
+// Elevación variante B
+var elevacionB = L.control.elevation({
+    theme: "custom-theme", collapsed: false, detached: true,
+    elevationDiv: "#grafico-elevacion-b", autohide: false, followMarker: true,
+    height: 120, time: false, distance: false, elevation: false, speed: false,
+    slope: false, legend: false, ruler: false, closeBtn: false,
+    waypoints: false, wptIcons: false, polyline: false
+});
+elevacionB.addTo(mapa);
+elevacionB.load('data/guardaminob.gpx');
 
-// Track beige
-new L.GPX('data/guardamino.gpx', {
+// Datos de cada variante
+var datos = {
+    a: { distancia: '4,71 km', duracion: '60 min', desnivel: '146m', tipo: 'Circular' },
+    b: { distancia: '3,71 km', duracion: '50 min', desnivel: '—',    tipo: 'Circular' }
+};
+
+var descripciones = {
+    a: 'Comenzamos la ruta en la bolera de pasabolo "Domingo Muguira" y tomamos la calle del barrio La Casa en dirección al Bº Guardamino. Sin desviarnos de la carretera, a 2,5 km del inicio llegamos a un cruce que tomamos a la izquierda, en dirección a la ermita de Nuestra Señora de Guardamino. A 300 m de la ermita encontramos otro cruce, también a la izquierda, que nos lleva a la zona más alta de la ruta, desde donde se divisa el pueblo de Ramales y todo el macizo del Pico San Vicente y la Sierra del Hornijo. Siguiendo el camino llegamos al monumento a la batalla de Ramales, de la Primera Guerra Carlista. Desde aquí, continuamos por la carretera de la izquierda para volver, en 1 km, al punto de inicio.',
+    b: 'Comenzamos la ruta en la bolera de pasabolo "Domingo Muguira" y tomamos la calle del barrio La Casa en dirección al Bº Guardamino. Antes del taller Madreselva, subimos por el monte hasta llegar a la Piedra Carlista. Siguiendo el camino llegamos al monumento a la batalla de Ramales, de la Primera Guerra Carlista. Desde aquí, continuamos por la carretera de la izquierda para volver, en 1 km, al punto de inicio.'
+};
+
+// Cambia la información de la página según la variante seleccionada
+function activarVariante(v) {
+    // Elevación
+    document.getElementById('grafico-elevacion').style.display   = v === 'a' ? 'block' : 'none';
+    document.getElementById('grafico-elevacion-b').style.display = v === 'b' ? 'block' : 'none';
+
+    // Datos
+    document.getElementById('dato-distancia').textContent = datos[v].distancia;
+    document.getElementById('dato-duracion').textContent  = datos[v].duracion;
+    document.getElementById('dato-desnivel').textContent  = datos[v].desnivel;
+    document.getElementById('dato-tipo').textContent      = datos[v].tipo;
+
+    // Descripción
+    document.getElementById('texto-descripcion').textContent = descripciones[v];
+
+    // Botones de variante
+    document.getElementById('btn-variante-a').classList.toggle('variante-activa', v === 'a');
+    document.getElementById('btn-variante-b').classList.toggle('variante-activa', v === 'b');
+}
+
+// Track principal — sólido
+var trackA = new L.GPX('data/guardamino.gpx', {
     async: true,
-    polyline_options: {
-        color: '#fce8c6',
-        weight: 4,
-        opacity: 0.9,
-        className: 'mi-track'
-    },
-    marker_options: {
-        startIconUrl: null,
-        endIconUrl: null,
-        shadowUrl: null
-    }
+    polyline_options: { color: '#fce8c6', weight: 4, opacity: 0.9, className: 'mi-track' },
+    marker_options: { startIconUrl: null, endIconUrl: null, shadowUrl: null }
 }).on('loaded', function(e) {
     var bounds = e.target.getBounds();
     mapa.fitBounds(bounds);
     mapa.setMaxBounds(bounds.pad(0.1));
     mapa.options.minZoom = mapa.getZoom();
+    e.target.on('click', function() { activarVariante('a'); });
+    e.target.eachLayer(function(layer) { layer.on('click', function() { activarVariante('a'); }); });
 }).addTo(mapa);
 
-// Puntos de interés con fotos
-var puntosInteres = [
-    {
-        coords: [43.26362180926293, -3.4614135044247236],
-        nombre: "Puente de madera",
-        foto: "fotos/puente.jpg"
-    },
-    {
-        coords: [43.264984830307064, -3.458112289614538],
-        nombre: "Parque de Cubillas",
-        foto: "fotos/parquecubillas.jpg"
-    },
-     {
-        coords: [43.266546944938824, -3.455966820850918],
-        nombre: "Pump track de Cubillas",
-        foto: "fotos/pumptrack.jpg"
-    },
-];
+// Track variante B — discontinuo
+var trackB = new L.GPX('data/guardaminob.gpx', {
+    async: true,
+    polyline_options: { color: '#fce8c6', weight: 2, opacity: 0.9, dashArray: '8, 8', className: 'mi-track' },
+    marker_options: { startIconUrl: null, endIconUrl: null, shadowUrl: null }
+}).on('loaded', function(e) {
+    e.target.on('click', function() { activarVariante('b'); });
+    e.target.eachLayer(function(layer) { layer.on('click', function() { activarVariante('b'); }); });
+}).addTo(mapa);
 
-// Icono personalizado para los marcadores
-var iconoMarker = L.divIcon({
-    className: 'marker-personalizado',
-    html: '<div class="marker-pin"></div>',
-    iconSize: [20, 20],
-    iconAnchor: [10, 10]
-});
-
-// Crear marcador para cada punto
-puntosInteres.forEach(function(punto) {
-    var marker = L.marker(punto.coords, { icon: iconoMarker }).addTo(mapa);
-
-    // Al pasar el ratón, mostrar miniatura
-    marker.on('mouseover', function() {
-        this.bindPopup(
-            '<b>' + punto.nombre + '</b><br>' +
-            '<img src="' + punto.foto + '" style="width:150px; margin-top:5px; border-radius:4px;">',
-            { closeButton: false, maxWidth: 200 }
-        ).openPopup();
-    });
-
-    marker.on('mouseout', function() {
-        this.closePopup();
-    });
-
-    // Al hacer clic, popup más grande
-marker.on('click', function() {
-    document.getElementById('lightbox-img').src = punto.foto;
-    document.getElementById('lightbox-titulo').textContent = punto.nombre;
-    document.getElementById('lightbox').style.display = 'flex';
-});
-});
-
-// Crear el lightbox (ventana de imagen grande)
+// Lightbox
 var lightbox = document.createElement('div');
 lightbox.id = 'lightbox';
 lightbox.innerHTML = '<div id="lightbox-contenido"><span id="lightbox-cerrar">✕</span><img id="lightbox-img"><p id="lightbox-titulo"></p></div>';
 document.body.appendChild(lightbox);
-
 document.getElementById('lightbox-cerrar').addEventListener('click', function() {
     lightbox.style.display = 'none';
 });
