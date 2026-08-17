@@ -1,7 +1,7 @@
 // Inicializa el mapa de la ruta centrado en Ramales
 var mapa = L.map('mapa-detalle', {zoomControl: false, 
     attributionControl: false,
-edgeScale: false}).setView([43.2513, -3.4607], 14);
+edgeScale: false}).setView([43.2513, -3.4607], 13);
 
 // Capa base satélite
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -51,7 +51,7 @@ new L.GPX('data/dama.gpx', {
 }).on('loaded', function(e) {
     var bounds = e.target.getBounds();
     mapa.fitBounds(bounds);
-    mapa.setMaxBounds(bounds.pad(0.1));
+    mapa.setMaxBounds(bounds.pad(1));
     mapa.options.minZoom = mapa.getZoom();
 }).addTo(mapa);
 
@@ -60,17 +60,17 @@ var puntosInteres = [
     {
         coords: [43.243171970074215, -3.451663238449687],
         nombre: "Cueva de la luz",
-        foto: "fotos/cuevalaluz.jpg"
+        foto: "fotos/luz.jpg"
     },
     {
         coords: [43.25072794215788, -3.449933057244813],
         nombre: "Cueva Baranda",
-        foto: "fotos/parquecubillas.jpg"
+        foto: "fotos/cuevabaranda.jpg"
     },
      {
         coords: [43.244242072407275, -3.448435321552472],
         nombre: "Peña el Pando",
-        foto: "fotos/pumptrack.jpg"
+        foto: "fotos/penapando.jpg"
     },
 ];
 

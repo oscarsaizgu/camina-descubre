@@ -14,7 +14,7 @@ mapa.invalidateSize(); // Fuerza a Leaflet a recalcular el tamaño del mapa
 // Definición de todas las rutas: solo datos, nada de HTML ni CSS repetido.
 // Para añadir una ruta nueva, solo se añade una línea aquí.
 var rutas = [
-    { id: 'cuevas',     gpx: 'data/cuevas.gpx',         color: '#2d4a35', dashArray: null,   nombre: 'Ruta de las Cuevas',   distancia: '5.2 km',   duracion: '1h 30min', dificultad: 'Fácil' },
+    { id: 'cuevas',     gpx: 'data/cuevas.gpx',         color: '#2d4a35', dashArray: null,   nombre: 'Ruta de las Cuevas',   distancia: '5.2 km',   duracion: '1h 30min', dificultad: 'Moderada' },
     { id: 'cubillas',   gpx: 'data/cubillas.gpx',       color: '#8B4513', dashArray: null,   nombre: 'Paseo de Cubillas',    distancia: '4 km',     duracion: '45min',    dificultad: 'Fácil' },
     { id: 'vega',       gpx: 'data/vega.gpx',           color: '#1a5f7a', dashArray: null,   nombre: 'Paseo de Vegacorredor',distancia: '7 km',     duracion: '1h 30min', dificultad: 'Fácil' },
     { id: 'guardamino', gpx: 'data/guardamino.gpx',     color: '#7a1a1a', dashArray: null,   nombre: 'Paseo de Guardamino', distancia: '4,7 km',   duracion: '50min',    dificultad: 'Fácil' },
@@ -80,8 +80,7 @@ var Leyenda = L.Control.extend({
     options: { position: 'bottomright' },
     onAdd: function() {
         var div = L.DomUtil.create('div', 'leyenda-control');
-        var html = '<div class="leyenda-header" onclick="toggleLeyenda()">Rutas ▾</div><div class="leyenda-lista" id="leyenda-lista">';
-        rutas.forEach(function(ruta) {
+var html = '<div class="leyenda-header" onclick="toggleLeyenda()">Rutas ▸</div><div class="leyenda-lista" id="leyenda-lista" style="display:none;">';        rutas.forEach(function(ruta) {
             var lineaEstilo = ruta.dashArray
                 ? 'background: repeating-linear-gradient(90deg,' + ruta.color + ' 0,' + ruta.color + ' 8px,transparent 8px,transparent 16px);'
                 : 'background:' + ruta.color + ';';
