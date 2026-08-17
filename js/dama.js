@@ -58,18 +58,18 @@ new L.GPX('data/dama.gpx', {
 // Puntos de interés con fotos
 var puntosInteres = [
     {
-        coords: [43.26362180926293, -3.4614135044247236],
-        nombre: "Puente de madera",
-        foto: "fotos/puente.jpg"
+        coords: [43.243171970074215, -3.451663238449687],
+        nombre: "Cueva de la luz",
+        foto: "fotos/cuevalaluz.jpg"
     },
     {
-        coords: [43.264984830307064, -3.458112289614538],
-        nombre: "Parque de Cubillas",
+        coords: [43.25072794215788, -3.449933057244813],
+        nombre: "Cueva Baranda",
         foto: "fotos/parquecubillas.jpg"
     },
      {
-        coords: [43.266546944938824, -3.455966820850918],
-        nombre: "Pump track de Cubillas",
+        coords: [43.244242072407275, -3.448435321552472],
+        nombre: "Peña el Pando",
         foto: "fotos/pumptrack.jpg"
     },
 ];

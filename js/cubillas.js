@@ -72,6 +72,21 @@ var puntosInteres = [
         nombre: "Pump track de Cubillas",
         foto: "fotos/pumptrack.jpg"
     },
+         {
+        coords: [43.26397285319276, -3.461593341761211],
+        nombre: "Parque de mayores",
+        foto: "fotos/pumptrack.jpg"
+    },
+{
+        coords: [43.26458650397139, -3.4596487965668645],
+        nombre: "Campo de fútbol",
+        foto: "fotos/pumptrack.jpg"
+    },
+{
+        coords: [43.26529409062337, -3.458398512298079],
+        nombre: "Piscina Municipal",
+        foto: "fotos/pumptrack.jpg"
+    },    
 ];
 
 // Icono personalizado para los marcadores
