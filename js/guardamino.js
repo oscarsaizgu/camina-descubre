@@ -33,7 +33,7 @@ elevacionB.load('data/guardaminob.gpx');
 // Datos de cada variante
 var datos = {
     a: { distancia: '4,71 km', duracion: '60 min', desnivel: '146m', tipo: 'Circular' },
-    b: { distancia: '3,71 km', duracion: '50 min', desnivel: '—',    tipo: 'Circular' }
+    b: { distancia: '3,71 km', duracion: '50 min', desnivel: '127m',    tipo: 'Circular' }
 };
 
 var descripciones = {
@@ -99,4 +99,54 @@ lightbox.innerHTML = '<div id="lightbox-contenido"><span id="lightbox-cerrar">�
 document.body.appendChild(lightbox);
 document.getElementById('lightbox-cerrar').addEventListener('click', function() {
     lightbox.style.display = 'none';
+});
+
+// Puntos de interés con fotos
+var puntosInteres = [
+    {
+        coords: [43.26138646986801, -3.455310394447993],
+        nombre: "Monumento a La Batalla de Ramales",
+        foto: "fotos/puente.jpg"
+    },
+    {
+        coords: [43.2620532187991, -3.4450485940378512],
+        nombre: "Iglesia de Nuestra Señora, Parroquia de San Pedro",
+        foto: "fotos/parquecubillas.jpg"
+    },
+     {
+        coords: [43.256952100060936, -3.4629698197607337],
+        nombre: "Bolera Domingo Muguira",
+        foto: "fotos/pumptrack.jpg"
+    },
+       {
+        coords: [43.25867491569154, -3.450799765317839],
+        nombre: "Camino secundario",
+        foto: "fotos/pumptrack.jpg"
+    },
+];
+var iconoMarker = L.divIcon({
+    className: 'marker-personalizado',
+    html: '<div class="marker-pin"></div>',
+    iconSize: [20, 20],
+    iconAnchor: [10, 10]
+});
+
+puntosInteres.forEach(function(punto) {
+    var marker = L.marker(punto.coords, { icon: iconoMarker }).addTo(mapa);
+
+    marker.on('mouseover', function() {
+        var contenido = '<b>' + punto.nombre + '</b>';
+        if (punto.foto) {
+            contenido += '<br><img src="' + punto.foto + '" style="width:150px; margin-top:5px; border-radius:4px;">';
+        }
+        this.bindPopup(contenido, { closeButton: false, maxWidth: 200, autoPan: false }).openPopup();
+    });
+
+    marker.on('mouseout', function() { this.closePopup(); });
+
+    marker.on('click', function() {
+        document.getElementById('lightbox-img').src = punto.foto;
+        document.getElementById('lightbox-titulo').textContent = punto.nombre;
+        document.getElementById('lightbox').style.display = 'flex';
+    });
 });
