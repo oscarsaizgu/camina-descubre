@@ -51,7 +51,7 @@ new L.GPX('data/cubillas.gpx', {
 }).on('loaded', function(e) {
     var bounds = e.target.getBounds();
     mapa.fitBounds(bounds);
-    mapa.setMaxBounds(bounds.pad(0.1));
+    mapa.setMaxBounds(bounds.pad(1));
     mapa.options.minZoom = mapa.getZoom();
 }).addTo(mapa);
 
@@ -70,22 +70,17 @@ var puntosInteres = [
      {
         coords: [43.266546944938824, -3.455966820850918],
         nombre: "Pump track de Cubillas",
-        foto: "fotos/pumptrack.jpg"
-    },
-         {
-        coords: [43.26397285319276, -3.461593341761211],
-        nombre: "Parque de mayores",
-        foto: "fotos/pumptrack.jpg"
+        foto: "fotos/pumptrack.jpeg"
     },
 {
         coords: [43.26458650397139, -3.4596487965668645],
         nombre: "Campo de fútbol",
-        foto: "fotos/pumptrack.jpg"
+        foto: "fotos/campofutbol.jpg"
     },
 {
         coords: [43.26529409062337, -3.458398512298079],
         nombre: "Piscina Municipal",
-        foto: "fotos/pumptrack.jpg"
+        foto: "fotos/piscina.jpg"
     },    
 ];
 

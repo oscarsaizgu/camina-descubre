@@ -74,7 +74,7 @@ trackA = new L.GPX('data/guardamino.gpx', {
 }).on('loaded', function(e) {
     var bounds = e.target.getBounds();
     mapa.fitBounds(bounds);
-    mapa.setMaxBounds(bounds.pad(0.1));
+    mapa.setMaxBounds(bounds.pad(1));
     mapa.options.minZoom = mapa.getZoom();
     polylineA = e.target.getLayers()[0];
     e.target.on('click', function() { activarVariante('a'); });
@@ -106,22 +106,22 @@ var puntosInteres = [
     {
         coords: [43.26138646986801, -3.455310394447993],
         nombre: "Monumento a La Batalla de Ramales",
-        foto: "fotos/puente.jpg"
+        foto: "fotos/piedra.jpg"
     },
     {
         coords: [43.2620532187991, -3.4450485940378512],
         nombre: "Iglesia de Nuestra Señora, Parroquia de San Pedro",
-        foto: "fotos/parquecubillas.jpg"
+        foto: "fotos/iglesia.jpg"
     },
      {
         coords: [43.256952100060936, -3.4629698197607337],
         nombre: "Bolera Domingo Muguira",
-        foto: "fotos/pumptrack.jpg"
+        foto: "fotos/bolera.jpg"
     },
        {
         coords: [43.25867491569154, -3.450799765317839],
         nombre: "Camino secundario",
-        foto: "fotos/pumptrack.jpg"
+        foto: "fotos/secundario.jpg"
     },
 ];
 var iconoMarker = L.divIcon({
