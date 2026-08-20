@@ -30,7 +30,7 @@ new L.GPX('data/' + rutaId + '.gpx', {
 // Marcador de posición del usuario
 var iconoUsuario = L.divIcon({
     className: '',
-    html: '<div id="marcador-usuario"></div>',
+    html: '<div style="width:16px;height:16px;background:#4fc3f7;border:3px solid white;border-radius:50%;box-shadow:0 0 8px rgba(79,195,247,0.8);position:relative;"><div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:8px solid #4fc3f7;"></div></div>',
     iconSize: [16, 16],
     iconAnchor: [8, 8]
 });
