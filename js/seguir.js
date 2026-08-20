@@ -19,7 +19,8 @@ new L.GPX('data/' + rutaId + '.gpx', {
     polyline_options: {
         color: '#fce8c6',
         weight: 4,
-        opacity: 0.9
+        opacity: 0.9,
+        className: 'mi-track'
     },
     marker_options: { startIconUrl: null, endIconUrl: null, shadowUrl: null }
 }).on('loaded', function(e) {
