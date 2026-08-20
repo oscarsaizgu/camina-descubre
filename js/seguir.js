@@ -126,3 +126,15 @@ function parar() {
         window.location.href = rutaId + '.html';
     }
 }
+
+// Orientación del dispositivo (brújula)
+var orientacion = 0;
+
+window.addEventListener('deviceorientationabsolute', function(e) {
+    if (e.alpha !== null) {
+        orientacion = e.alpha;
+        if (marcador) {
+            marcador.getElement().style.transform += ' rotate(' + orientacion + 'deg)';
+        }
+    }
+}, true);
