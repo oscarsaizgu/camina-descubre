@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Seguir ruta - Camina y Descubre</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+    <style>
+        body { margin: 0; padding: 0; background: #2d4a35; }
+
+        #mapa-seguir {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100vh;
+        }
+
+        #panel {
+            position: fixed;
+            top: 1rem; left: 50%;
+            transform: translateX(-50%);
+            background: rgba(45, 74, 53, 0.9);
+            color: #f5ead8;
+            font-family: 'CanvaSans', sans-serif;
+            border-radius: 16px;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .panel-dato {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .panel-valor {
+            font-family: 'Lovelo', sans-serif;
+            font-size: 1.4rem;
+        }
+
+        .panel-label {
+            font-size: 0.6rem;
+            opacity: 0.8;
+            letter-spacing: 0.1rem;
+        }
+
+        #botones {
+            position: fixed;
+            bottom: 2rem; left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        #botones button {
+            font-family: 'CanvaSans', sans-serif;
+            font-size: 0.9rem;
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        #btn-pausar {
+            background: #f5ead8;
+            color: #2d4a35;
+        }
+
+        #btn-parar {
+            background: #7a1a1a;
+            color: #f5ead8;
+        }
+
+        #marcador-usuario {
+            width: 16px;
+            height: 16px;
+            background: #4fc3f7;
+            border: 3px solid white;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(79,195,247,0.8);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="mapa-seguir"></div>
+
+    <div id="panel">
+        <div class="panel-dato">
+            <span class="panel-valor" id="tiempo">00:00</span>
+            <span class="panel-label">Tiempo</span>
+        </div>
+        <div class="panel-dato">
+            <span class="panel-valor" id="distancia">0.00</span>
+            <span class="panel-label">km recorridos</span>
+        </div>
+        <div class="panel-dato">
+            <span class="panel-valor" id="velocidad">0.0</span>
+            <span class="panel-label">km/h</span>
+        </div>
+    </div>
+
+    <div id="botones">
+        <button id="btn-pausar" onclick="pausar()">⏸ Pausar</button>
+        <button id="btn-parar" onclick="parar()">⏹ Terminar</button>
+    </div>
+
+    <script src="js/seguir.js"></script>
+</body>
+</html>
