@@ -32,22 +32,9 @@
             z-index: 1000;
         }
 
-        .panel-dato {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .panel-valor {
-            font-family: 'Lovelo', sans-serif;
-            font-size: 1.4rem;
-        }
-
-        .panel-label {
-            font-size: 0.6rem;
-            opacity: 0.8;
-            letter-spacing: 0.1rem;
-        }
+        .panel-dato { display: flex; flex-direction: column; align-items: center; }
+        .panel-valor { font-family: 'Lovelo', sans-serif; font-size: 1.4rem; }
+        .panel-label { font-size: 0.6rem; opacity: 0.8; letter-spacing: 0.1rem; }
 
         #botones {
             position: fixed;
@@ -67,29 +54,28 @@
             cursor: pointer;
         }
 
-        #btn-pausar {
-            background: #f5ead8;
-            color: #2d4a35;
-        }
+        #btn-pausar { background: #f5ead8; color: #2d4a35; }
+        #btn-parar { background: #7a1a1a; color: #f5ead8; }
 
-        #btn-parar {
-            background: #7a1a1a;
+        /* Botón brújula — solo visible en iOS hasta dar permiso */
+        #btn-brujula {
+            position: fixed;
+            bottom: 6rem; right: 1rem;
+            background: rgba(45, 74, 53, 0.9);
             color: #f5ead8;
+            border: none;
+            border-radius: 50%;
+            width: 48px; height: 48px;
+            font-size: 1.4rem;
+            z-index: 1000;
+            cursor: pointer;
         }
 
-        #marcador-usuario {
-            width: 16px;
-            height: 16px;
-            background: #4fc3f7;
-            border: 3px solid white;
-            border-radius: 50%;
-            box-shadow: 0 0 8px rgba(79,195,247,0.8);
-        }
         .leaflet-overlay-pane path {
-    display: block !important;
-    stroke: #fce8c6 !important;
-    fill: none !important;
-}
+            display: block !important;
+            stroke: #fce8c6 !important;
+            fill: none !important;
+        }
     </style>
 </head>
 <body>
@@ -110,6 +96,9 @@
             <span class="panel-label">km/h</span>
         </div>
     </div>
+
+    <!-- En iOS aparece este botón para pedir permiso del giroscopio -->
+    <button id="btn-brujula" onclick="activarBrujula()" title="Activar brújula">🧭</button>
 
     <div id="botones">
         <button id="btn-pausar" onclick="pausar()">⏸ Pausar</button>
