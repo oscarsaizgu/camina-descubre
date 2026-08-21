@@ -77,7 +77,7 @@ function actualizarPosicion(pos) {
     if (!iniciado) {
         mapa.setView([lat, lon], 16);
         iniciarCronometro();
-        iniciado = true;
+        iniciado = true; 
     }
 
     if (!marcador) {
