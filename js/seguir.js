@@ -27,16 +27,18 @@ new L.GPX('data/' + rutaId + '.gpx', {
     mapa.fitBounds(e.target.getBounds());
 }).addTo(mapa);
 
-// Marcador de posición del usuario
+// Marcador — div interno con id para rotar solo él
 var iconoUsuario = L.divIcon({
     className: '',
-    html: '<div style="width:16px;height:16px;background:#4fc3f7;border:3px solid white;border-radius:50%;box-shadow:0 0 8px rgba(79,195,247,0.8);position:relative;"><div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:8px solid #4fc3f7;"></div></div>',
-    iconSize: [16, 16],
-    iconAnchor: [8, 8]
+    html: '<div id="icono-usuario" style="width:24px;height:24px;position:relative;transform-origin:12px 12px;">' +
+              '<div style="position:absolute;top:4px;left:4px;width:16px;height:16px;background:#4fc3f7;border:3px solid white;border-radius:50%;box-shadow:0 0 8px rgba(79,195,247,0.8);"></div>' +
+              '<div style="position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:10px solid #4fc3f7;"></div>' +
+          '</div>',
+    iconSize: [24, 24],
+    iconAnchor: [12, 12]
 });
 var marcador = null;
 
-// Variables de seguimiento
 var pausado = false;
 var iniciado = false;
 var segundos = 0;
@@ -44,7 +46,6 @@ var distanciaTotal = 0;
 var posicionAnterior = null;
 var intervaloTiempo = null;
 
-// Arranca el cronómetro
 function iniciarCronometro() {
     intervaloTiempo = setInterval(function() {
         if (!pausado) {
@@ -57,7 +58,6 @@ function iniciarCronometro() {
     }, 1000);
 }
 
-// Calcula la distancia entre dos coordenadas en km (fórmula Haversine)
 function calcularDistancia(lat1, lon1, lat2, lon2) {
     var R = 6371;
     var dLat = (lat2 - lat1) * Math.PI / 180;
@@ -68,29 +68,24 @@ function calcularDistancia(lat1, lon1, lat2, lon2) {
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
 
-// Actualiza la posición del usuario en el mapa
 function actualizarPosicion(pos) {
     if (pausado) return;
-
     var lat = pos.coords.latitude;
     var lon = pos.coords.longitude;
     var velocidad = pos.coords.speed ? (pos.coords.speed * 3.6).toFixed(1) : '0.0';
 
-    // Primera posición — centra el mapa y arranca el cronómetro
     if (!iniciado) {
         mapa.setView([lat, lon], 16);
         iniciarCronometro();
         iniciado = true;
     }
 
-    // Actualiza o crea el marcador
     if (!marcador) {
         marcador = L.marker([lat, lon], { icon: iconoUsuario }).addTo(mapa);
     } else {
         marcador.setLatLng([lat, lon]);
     }
 
-    // Calcula distancia recorrida
     if (posicionAnterior) {
         distanciaTotal += calcularDistancia(
             posicionAnterior.lat, posicionAnterior.lon, lat, lon
@@ -98,28 +93,22 @@ function actualizarPosicion(pos) {
     }
     posicionAnterior = { lat: lat, lon: lon };
 
-    // Actualiza los contadores en pantalla
     document.getElementById('distancia').textContent = distanciaTotal.toFixed(2);
     document.getElementById('velocidad').textContent = velocidad;
-
-    // Sigue al usuario con el mapa
     mapa.panTo([lat, lon]);
 }
 
-// Inicia el seguimiento GPS
 navigator.geolocation.watchPosition(
     actualizarPosicion,
     function(err) { console.warn('Error GPS:', err); },
     { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
 );
 
-// Pausa o reanuda el seguimiento
 function pausar() {
     pausado = !pausado;
     document.getElementById('btn-pausar').textContent = pausado ? '▶ Reanudar' : '⏸ Pausar';
 }
 
-// Para el seguimiento y vuelve a la página de la ruta
 function parar() {
     if (confirm('¿Terminar la ruta?')) {
         clearInterval(intervaloTiempo);
@@ -127,14 +116,48 @@ function parar() {
     }
 }
 
-// Orientación del dispositivo (brújula)
-var orientacion = 0;
+// === BRÚJULA ===
+function aplicarRotacion(angulo) {
+    var icono = document.getElementById('icono-usuario');
+    if (icono) icono.style.transform = 'rotate(' + angulo + 'deg)';
+}
 
-window.addEventListener('deviceorientationabsolute', function(e) {
-    if (e.alpha !== null) {
-        orientacion = e.alpha;
-        if (marcador) {
-            marcador.getElement().style.transform += ' rotate(' + orientacion + 'deg)';
-        }
+function manejarOrientacion(e) {
+    var angulo;
+    if (e.webkitCompassHeading !== undefined && e.webkitCompassHeading !== null) {
+        angulo = e.webkitCompassHeading; // iOS
+    } else if (e.alpha !== null && e.alpha !== undefined) {
+        angulo = 360 - e.alpha; // Android
     }
-}, true);
+    if (angulo !== undefined) aplicarRotacion(angulo);
+}
+
+function activarBrujula() {
+    if (typeof DeviceOrientationEvent !== 'undefined' &&
+        typeof DeviceOrientationEvent.requestPermission === 'function') {
+        // iOS 13+ — necesita permiso
+        DeviceOrientationEvent.requestPermission()
+            .then(function(respuesta) {
+                if (respuesta === 'granted') {
+                    window.addEventListener('deviceorientation', manejarOrientacion, true);
+                    document.getElementById('btn-brujula').style.display = 'none';
+                }
+            });
+    } else {
+        // Android — activar directamente
+        window.addEventListener('deviceorientationabsolute', manejarOrientacion, true);
+        window.addEventListener('deviceorientation', manejarOrientacion, true);
+        document.getElementById('btn-brujula').style.display = 'none';
+    }
+}
+
+// Android: activar automáticamente sin esperar botón
+if (typeof DeviceOrientationEvent === 'undefined' ||
+    typeof DeviceOrientationEvent.requestPermission !== 'function') {
+    window.addEventListener('deviceorientationabsolute', manejarOrientacion, true);
+    window.addEventListener('deviceorientation', manejarOrientacion, true);
+    window.addEventListener('load', function() {
+        var btn = document.getElementById('btn-brujula');
+        if (btn) btn.style.display = 'none';
+    });
+}
