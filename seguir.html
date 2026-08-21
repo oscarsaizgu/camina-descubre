@@ -57,20 +57,6 @@
         #btn-pausar { background: #f5ead8; color: #2d4a35; }
         #btn-parar { background: #7a1a1a; color: #f5ead8; }
 
-        /* Botón brújula — solo visible en iOS hasta dar permiso */
-        #btn-brujula {
-            position: fixed;
-            bottom: 6rem; right: 1rem;
-            background: rgba(45, 74, 53, 0.9);
-            color: #f5ead8;
-            border: none;
-            border-radius: 50%;
-            width: 48px; height: 48px;
-            font-size: 1.4rem;
-            z-index: 1000;
-            cursor: pointer;
-        }
-
         .leaflet-overlay-pane path {
             display: block !important;
             stroke: #fce8c6 !important;
@@ -81,6 +67,46 @@
 <body>
 
     <div id="mapa-seguir"></div>
+
+    <!-- Modal permiso brújula (solo iOS) -->
+    <div id="modal-brujula" style="
+        display: none;
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.7);
+        z-index: 2000;
+        align-items: center; justify-content: center;
+    ">
+        <div style="
+            background: #f5ead8;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 300px;
+            margin: 1rem;
+            text-align: center;
+            font-family: 'CanvaSans', sans-serif;
+            color: #2d4a35;
+        ">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🧭</div>
+            <h3 style="margin: 0 0 0.8rem; font-family: 'Lovelo', sans-serif;">Activar brújula</h3>
+            <p style="margin: 0 0 1.5rem; font-size: 0.9rem; line-height: 1.5;">
+                Para mostrar hacia dónde estás mirando en el mapa, la app necesita acceder al giroscopio de tu móvil.<br><br>
+                <strong>No se comparte ningún dato.</strong> Solo se usa para orientar la flecha en pantalla.
+            </p>
+            <button onclick="pedirPermisoBrujula()" style="
+                background: #2d4a35; color: #f5ead8;
+                border: none; border-radius: 20px;
+                padding: 0.8rem 2rem;
+                font-size: 1rem; font-family: 'CanvaSans', sans-serif;
+                cursor: pointer; width: 100%; margin-bottom: 0.5rem;
+            ">✅ Activar brújula</button>
+            <button onclick="document.getElementById('modal-brujula').style.display='none'" style="
+                background: transparent; color: #2d4a35;
+                border: none; font-size: 0.85rem;
+                cursor: pointer; padding: 0.5rem;
+                font-family: 'CanvaSans', sans-serif;
+            ">Ahora no</button>
+        </div>
+    </div>
 
     <div id="panel">
         <div class="panel-dato">
@@ -96,9 +122,6 @@
             <span class="panel-label">km/h</span>
         </div>
     </div>
-
-    <!-- En iOS aparece este botón para pedir permiso del giroscopio -->
-    <button id="btn-brujula" onclick="activarBrujula()" title="Activar brújula">🧭</button>
 
     <div id="botones">
         <button id="btn-pausar" onclick="pausar()">⏸ Pausar</button>
