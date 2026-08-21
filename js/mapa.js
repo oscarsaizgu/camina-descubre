@@ -20,8 +20,8 @@ var rutas = [
     { id: 'guardamino', gpx: 'data/guardamino.gpx',     color: '#7a1a1a', dashArray: null,   nombre: 'Paseo de Guardamino', distancia: '4,7 km',   duracion: '50min',    dificultad: 'Fácil' },
     { id: 'coto',       gpx: 'data/coto.gpx',           color: '#6b4c9a', dashArray: null,   nombre: 'Paseo de Coto Cuende',distancia: '1,26 km',  duracion: '15min',    dificultad: 'Fácil' },
     { id: 'dama',       gpx: 'data/dama.gpx',           color: '#b5651d', dashArray: null,   nombre: 'Ruta de Dama Roja',   distancia: '9,14 km',  duracion: '2h',       dificultad: 'Moderada' },
-    { id: 'cucurioa',   gpx: 'data/cucurioancillo.gpx', color: '#2d6b4a', dashArray: null,   nombre: 'Cucurio por Ancillo', distancia: '13,16 km', duracion: '3h',       dificultad: 'Moderada' },
-    { id: 'cucuriob',   gpx: 'data/cucuriobolaiz.gpx',  color: '#4a2d6b', dashArray: '8, 8', nombre: 'Cucurio por Bolaiz',  distancia: '7,21 km',  duracion: '1h 30min', dificultad: 'Moderada' }
+   // { id: 'cucurioa',   gpx: 'data/cucurioancillo.gpx', color: '#2d6b4a', dashArray: null,   nombre: 'Cucurio por Ancillo', distancia: '13,16 km', duracion: '3h',       dificultad: 'Moderada' },
+   //{ id: 'cucuriob',   gpx: 'data/cucuriobolaiz.gpx',  color: '#4a2d6b', dashArray: '8, 8', nombre: 'Cucurio por Bolaiz',  distancia: '7,21 km',  duracion: '1h 30min', dificultad: 'Moderada' }
 ];
 
 // Construye el texto del popup a partir de los datos sueltos de la ruta
