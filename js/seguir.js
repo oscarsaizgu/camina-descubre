@@ -27,7 +27,7 @@ new L.GPX('data/' + rutaId + '.gpx', {
     mapa.fitBounds(e.target.getBounds());
 }).addTo(mapa);
 
-// Marcador — div interno con id para rotar solo él
+// Marcador de posición del usuario
 var iconoUsuario = L.divIcon({
     className: '',
     html: '<div id="icono-usuario" style="width:24px;height:24px;position:relative;transform-origin:12px 12px;">' +
@@ -132,32 +132,29 @@ function manejarOrientacion(e) {
     if (angulo !== undefined) aplicarRotacion(angulo);
 }
 
+function pedirPermisoBrujula() {
+    document.getElementById('modal-brujula').style.display = 'none';
+    DeviceOrientationEvent.requestPermission()
+        .then(function(respuesta) {
+            if (respuesta === 'granted') {
+                window.addEventListener('deviceorientation', manejarOrientacion, true);
+            }
+        });
+}
+
 function activarBrujula() {
     if (typeof DeviceOrientationEvent !== 'undefined' &&
         typeof DeviceOrientationEvent.requestPermission === 'function') {
-        // iOS 13+ — necesita permiso
-        DeviceOrientationEvent.requestPermission()
-            .then(function(respuesta) {
-                if (respuesta === 'granted') {
-                    window.addEventListener('deviceorientation', manejarOrientacion, true);
-                    document.getElementById('btn-brujula').style.display = 'none';
-                }
-            });
+        // iOS 13+ — mostrar modal explicativo
+        document.getElementById('modal-brujula').style.display = 'flex';
     } else {
-        // Android — activar directamente
+        // Android — activar directamente sin modal
         window.addEventListener('deviceorientationabsolute', manejarOrientacion, true);
         window.addEventListener('deviceorientation', manejarOrientacion, true);
-        document.getElementById('btn-brujula').style.display = 'none';
     }
 }
 
-// Android: activar automáticamente sin esperar botón
-if (typeof DeviceOrientationEvent === 'undefined' ||
-    typeof DeviceOrientationEvent.requestPermission !== 'function') {
-    window.addEventListener('deviceorientationabsolute', manejarOrientacion, true);
-    window.addEventListener('deviceorientation', manejarOrientacion, true);
-    window.addEventListener('load', function() {
-        var btn = document.getElementById('btn-brujula');
-        if (btn) btn.style.display = 'none';
-    });
-}
+// Llamar automáticamente al cargar
+window.addEventListener('load', function() {
+    activarBrujula();
+});
