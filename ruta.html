@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- ── Configuración básica del documento ─────────────────────────── -->
+    <meta charset="UTF-8"><!-- El texto puede usar tildes, ñ, etc. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><!-- Adapta el zoom al móvil -->
+    <title>Ruta - Camina y Descubre</title><!-- El JS lo reemplazará con el nombre real de la ruta -->
+
+    <!-- ── Hojas de estilo ────────────────────────────────────────────── -->
+    <link rel="stylesheet" href="css/estilos.css"><!-- Estilos propios de la app -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><!-- Estilos del mapa Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css"><!-- Estilos del gráfico de elevación -->
+
+    <!-- ── Scripts de bibliotecas ─────────────────────────────────────── -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><!-- Motor del mapa interactivo -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script><!-- Carga archivos GPX en el mapa -->
+    <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script><!-- Gráfico de elevación a partir del GPX -->
+</head>
+<body>
+    <!-- El JS añadirá data-ruta="xxx" a este body para permitir personalización por ruta en el CSS -->
+
+    <!-- ── CABECERA ────────────────────────────────────────────────────── -->
+    <!-- El JS rellena el h1 con el nombre real de la ruta -->
+    <header>
+        <h1 id="ruta-nombre">Cargando…</h1>
+        <p>Ramales de la Victoria</p>
+    </header>
+
+    <!-- ── BOTÓN VOLVER (flotante, esquina inferior izquierda) ────────── -->
+    <a href="index.html" id="btn-volver">←</a>
+
+    <!-- ── CONTENIDO PRINCIPAL ────────────────────────────────────────── -->
+    <main>
+
+        <!-- ── Sección del mapa ──────────────────────────────────────── -->
+        <section id="mapa-ruta">
+
+            <!-- Selector de variante: oculto por defecto.
+                 El JS lo hace visible solo para rutas con variantes (Guardamino).
+                 Los botones se generan dinámicamente desde js/ruta.js. -->
+            <div id="selector-variante" style="display:none;"></div>
+
+            <!-- Contenedor del mapa Leaflet. El div debe tener un tamaño definido
+                 (lo establece el CSS) para que Leaflet lo dibuje correctamente. -->
+            <div id="mapa-detalle"></div>
+        </section>
+
+        <!-- ── Sección del gráfico de elevación ─────────────────────── -->
+        <!-- El JS crea uno o dos gráficos dependiendo de si hay variantes -->
+        <section id="elevacion">
+            <!-- Gráfico principal (variante A o única) -->
+            <div id="grafico-elevacion"></div>
+            <!-- Gráfico de la variante B, oculto hasta que el usuario la seleccione -->
+            <div id="grafico-elevacion-b" style="display:none;"></div>
+        </section>
+
+        <!-- ── Datos de la ruta (distancia, duración, desnivel, tipo) ── -->
+        <!-- El JS rellena los span con id "dato-xxx" con los valores reales -->
+        <section id="datos-ruta">
+            <div class="dato">
+                <img src="iconos/distancia.png" alt="Distancia">
+                <span class="dato-valor" id="dato-distancia">—</span>
+                <span class="dato-label">Distancia</span>
+            </div>
+            <div class="dato">
+                <img src="iconos/reloj.png" alt="Duración">
+                <span class="dato-valor" id="dato-duracion">—</span>
+                <span class="dato-label">Duración</span>
+            </div>
+            <div class="dato">
+                <img src="iconos/altitud.png" alt="Desnivel">
+                <span class="dato-valor" id="dato-desnivel">—</span>
+                <span class="dato-label">Desnivel</span>
+            </div>
+            <div class="dato">
+                <img src="iconos/circular.png" alt="Tipo de ruta">
+                <span class="dato-valor" id="dato-tipo">—</span>
+                <span class="dato-label">Tipo</span>
+            </div>
+        </section>
+
+        <!-- ── Descripción de la ruta ────────────────────────────────── -->
+        <!-- El JS inyectará aquí los párrafos de texto definidos en datos-rutas.js -->
+        <section id="descripcion">
+            <h2>Sobre la ruta</h2>
+            <!-- Los párrafos se crean dinámicamente; este div queda vacío en el HTML -->
+            <div id="texto-descripcion"></div>
+        </section>
+
+        <!-- ── Servicios e instalaciones ─────────────────────────────── -->
+        <!-- El JS crea aquí un div.servicio por cada entrada en ruta.servicios -->
+        <section id="servicios-ruta">
+            <!-- Vacío: el contenido lo genera js/ruta.js -->
+        </section>
+
+        <!-- ── Imágenes decorativas (pinturas/ilustraciones) ─────────── -->
+        <!-- El JS inserta las imágenes dentro del div#pinturas -->
+        <section id="pinturas-seccion">
+            <div id="pinturas">
+                <!-- Vacío: las imágenes se insertan desde js/ruta.js -->
+            </div>
+        </section>
+
+        <!-- ── Botón "Seguir ruta" ────────────────────────────────────── -->
+        <!-- El JS actualiza el href con el id correcto: seguir.html?ruta=xxx -->
+        <div style="text-align:center; padding: 1rem;">
+            <a id="btn-seguir-ruta" href="#" class="btn-seguir">🥾 Seguir ruta</a>
+        </div>
+
+    </main>
+
+    <!-- ── PIE DE PÁGINA ──────────────────────────────────────────────── -->
+    <footer>
+        <img src="logos/ramales.svg" alt="Ayuntamiento de Ramales de la Victoria">
+        <img src="logos/naturalblanco.png" alt="Ramales Natural">
+        <p>© Oscar Saiz Gutiérrez, 2026</p>
+    </footer>
+
+    <!-- ── SCRIPTS ────────────────────────────────────────────────────── -->
+    <!-- IMPORTANTE: datos-rutas.js debe cargarse ANTES que ruta.js,
+         porque ruta.js usa el objeto RUTAS que define datos-rutas.js. -->
+    <script src="js/datos-rutas.js"></script><!-- Define RUTAS y RUTAS_ORDEN -->
+    <script src="js/ruta.js"></script><!-- Lee la URL, busca la ruta y rellena la página -->
+
+</body>
+</html>
