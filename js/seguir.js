@@ -110,9 +110,11 @@ function pausar() {
 }
 
 function parar() {
+    // Pregunta confirmación antes de terminar (evita pulsar por accidente)
     if (confirm('¿Terminar la ruta?')) {
-        clearInterval(intervaloTiempo);
-        window.location.href = rutaId + '.html';
+        clearInterval(intervaloTiempo); // Detiene el cronómetro
+        // Vuelve a la página de la ruta usando la nueva URL unificada (ruta.html?id=xxx)
+        window.location.href = 'ruta.html?id=' + rutaId;
     }
 }
 
