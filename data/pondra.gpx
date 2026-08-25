@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx creator="Wikiloc - https://www.wikiloc.com" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>Wikiloc - Paseo saludable Pondra - Riancho</name>
+    <link href="https://www.wikiloc.com/hiking-trails/paseo-saludable-pondra-riancho-85620649">
+      <text>Paseo saludable Pondra - Riancho - Wikiloc on Wikiloc</text>
+    </link>
+    <time>2021-08-18T14:53:35Z</time>
+  </metadata>
+  <trk>
+    <name>Paseo saludable Pondra - Riancho - Wikiloc</name>
+    <cmt>Si empezamos el paseo desde el puente de entrada al barrio de Pondra, podemos dejar el coche al lado de la parada de autobús que hay en la carretera que va a Carranza. Cruzamos el puente y atravesamos el barrio hasta llegar a la ermita de San Salvador y cogemos la carretera que pasa por debajo de la misma para recorrer la mies de Nogales, que va desde Pondra hasta el puente de Riancho. Cruzando dicho puente atravesamos la mies de Riancho, ocupada en parte por el Parque Empresarial Alto Asón, hasta llegar a la ermita de San Juan, desde donde saldremos a la carretera general y, cogiendo a la derecha, volveremos hasta el punto de inicio de la ruta. Durante todo el camino iremos por la orilla y cruzaremos el río Carranza, uno de los afluentes más importantes del río Asón.</cmt>
+    <desc>Si empezamos el paseo desde el puente de entrada al barrio de Pondra, podemos dejar el coche al lado de la parada de autobús que hay en la carretera que va a Carranza. Cruzamos el puente y atravesamos el barrio hasta llegar a la ermita de San Salvador y cogemos la carretera que pasa por debajo de la misma para recorrer la mies de Nogales, que va desde Pondra hasta el puente de Riancho. Cruzando dicho puente atravesamos la mies de Riancho, ocupada en parte por el Parque Empresarial Alto Asón, hasta llegar a la ermita de San Juan, desde donde saldremos a la carretera general y, cogiendo a la derecha, volveremos hasta el punto de inicio de la ruta. Durante todo el camino iremos por la orilla y cruzaremos el río Carranza, uno de los afluentes más importantes del río Asón.</desc>
+    <trkseg>
+      <trkpt lat="43.265428" lon="-3.424283">
+        <ele>70.865</ele>
+        <time>2021-08-18T14:01:33Z</time>
+      </trkpt>
+      <trkpt lat="43.265549" lon="-3.424487">
+        <ele>123.568</ele>
+        <time>2021-08-18T14:01:53Z</time>
+      </trkpt>
+      <trkpt lat="43.266033" lon="-3.423950">
+        <ele>128.914</ele>
+        <time>2021-08-18T14:02:45Z</time>
+      </trkpt>
+      <trkpt lat="43.266107" lon="-3.423702">
+        <ele>130.808</ele>
+        <time>2021-08-18T14:03:04Z</time>
+      </trkpt>
+      <trkpt lat="43.266194" lon="-3.423682">
+        <ele>130.984</ele>
+        <time>2021-08-18T14:03:11Z</time>
+      </trkpt>
+      <trkpt lat="43.266811" lon="-3.424360">
+        <ele>136.551</ele>
+        <time>2021-08-18T14:04:18Z</time>
+      </trkpt>
+      <trkpt lat="43.267356" lon="-3.424802">
+        <ele>136.712</ele>
+        <time>2021-08-18T14:05:04Z</time>
+      </trkpt>
+      <trkpt lat="43.267576" lon="-3.424919">
+        <ele>134.328</ele>
+        <time>2021-08-18T14:05:22Z</time>
+      </trkpt>
+      <trkpt lat="43.268490" lon="-3.425774">
+        <ele>130.496</ele>
+        <time>2021-08-18T14:06:47Z</time>
+      </trkpt>
+      <trkpt lat="43.268634" lon="-3.425841">
+        <ele>128.922</ele>
+        <time>2021-08-18T14:07:00Z</time>
+      </trkpt>
+      <trkpt lat="43.268710" lon="-3.426023">
+        <ele>128.720</ele>
+        <time>2021-08-18T14:07:09Z</time>
+      </trkpt>
+      <trkpt lat="43.268827" lon="-3.426128">
+        <ele>128.945</ele>
+        <time>2021-08-18T14:07:19Z</time>
+      </trkpt>
+      <trkpt lat="43.269004" lon="-3.426231">
+        <ele>129.088</ele>
+        <time>2021-08-18T14:07:33Z</time>
+      </trkpt>
+      <trkpt lat="43.269162" lon="-3.426409">
+        <ele>129.924</ele>
+        <time>2021-08-18T14:07:48Z</time>
+      </trkpt>
+      <trkpt lat="43.269356" lon="-3.426469">
+        <ele>130.126</ele>
+        <time>2021-08-18T14:08:03Z</time>
+      </trkpt>
+      <trkpt lat="43.269523" lon="-3.426634">
+        <ele>127.608</ele>
+        <time>2021-08-18T14:08:18Z</time>
+      </trkpt>
+      <trkpt lat="43.269549" lon="-3.426738">
+        <ele>127.136</ele>
+        <time>2021-08-18T14:08:24Z</time>
+      </trkpt>
+      <trkpt lat="43.270037" lon="-3.427067">
+        <ele>125.683</ele>
+        <time>2021-08-18T14:09:05Z</time>
+      </trkpt>
+      <trkpt lat="43.270185" lon="-3.427333">
+        <ele>125.244</ele>
+        <time>2021-08-18T14:09:24Z</time>
+      </trkpt>
+      <trkpt lat="43.270727" lon="-3.428016">
+        <ele>123.540</ele>
+        <time>2021-08-18T14:10:18Z</time>
+      </trkpt>
+      <trkpt lat="43.270908" lon="-3.428114">
+        <ele>123.578</ele>
+        <time>2021-08-18T14:10:30Z</time>
+      </trkpt>
+      <trkpt lat="43.271166" lon="-3.428570">
+        <ele>127.714</ele>
+        <time>2021-08-18T14:11:01Z</time>
+      </trkpt>
+      <trkpt lat="43.271350" lon="-3.428674">
+        <ele>124.962</ele>
+        <time>2021-08-18T14:11:15Z</time>
+      </trkpt>
+      <trkpt lat="43.271463" lon="-3.428860">
+        <ele>124.727</ele>
+        <time>2021-08-18T14:11:28Z</time>
+      </trkpt>
+      <trkpt lat="43.271848" lon="-3.429162">
+        <ele>125.466</ele>
+        <time>2021-08-18T14:12:05Z</time>
+      </trkpt>
+      <trkpt lat="43.272051" lon="-3.429441">
+        <ele>128.229</ele>
+        <time>2021-08-18T14:12:26Z</time>
+      </trkpt>
+      <trkpt lat="43.272861" lon="-3.430011">
+        <ele>125.421</ele>
+        <time>2021-08-18T14:13:37Z</time>
+      </trkpt>
+      <trkpt lat="43.273215" lon="-3.430483">
+        <ele>123.808</ele>
+        <time>2021-08-18T14:14:13Z</time>
+      </trkpt>
+      <trkpt lat="43.273487" lon="-3.431053">
+        <ele>123.154</ele>
+        <time>2021-08-18T14:14:50Z</time>
+      </trkpt>
+      <trkpt lat="43.273578" lon="-3.431498">
+        <ele>121.931</ele>
+        <time>2021-08-18T14:15:16Z</time>
+      </trkpt>
+      <trkpt lat="43.273616" lon="-3.432968">
+        <ele>119.622</ele>
+        <time>2021-08-18T14:16:38Z</time>
+      </trkpt>
+      <trkpt lat="43.273532" lon="-3.433373">
+        <ele>120.198</ele>
+        <time>2021-08-18T14:17:00Z</time>
+      </trkpt>
+      <trkpt lat="43.273469" lon="-3.433446">
+        <ele>119.676</ele>
+        <time>2021-08-18T14:31:15Z</time>
+      </trkpt>
+      <trkpt lat="43.273425" lon="-3.434641">
+        <ele>124.042</ele>
+        <time>2021-08-18T14:33:39Z</time>
+      </trkpt>
+      <trkpt lat="43.273457" lon="-3.435173">
+        <ele>122.350</ele>
+        <time>2021-08-18T14:34:07Z</time>
+      </trkpt>
+      <trkpt lat="43.273223" lon="-3.435967">
+        <ele>127.895</ele>
+        <time>2021-08-18T14:34:53Z</time>
+      </trkpt>
+      <trkpt lat="43.273082" lon="-3.435924">
+        <ele>128.784</ele>
+        <time>2021-08-18T14:35:03Z</time>
+      </trkpt>
+      <trkpt lat="43.272781" lon="-3.435973">
+        <ele>125.907</ele>
+        <time>2021-08-18T14:35:21Z</time>
+      </trkpt>
+      <trkpt lat="43.272555" lon="-3.436192">
+        <ele>122.217</ele>
+        <time>2021-08-18T14:35:41Z</time>
+      </trkpt>
+      <trkpt lat="43.272413" lon="-3.436244">
+        <ele>123.608</ele>
+        <time>2021-08-18T14:35:51Z</time>
+      </trkpt>
+      <trkpt lat="43.272094" lon="-3.435816">
+        <ele>121.676</ele>
+        <time>2021-08-18T14:36:21Z</time>
+      </trkpt>
+      <trkpt lat="43.271847" lon="-3.435795">
+        <ele>121.433</ele>
+        <time>2021-08-18T14:36:41Z</time>
+      </trkpt>
+      <trkpt lat="43.271716" lon="-3.435881">
+        <ele>121.534</ele>
+        <time>2021-08-18T14:36:52Z</time>
+      </trkpt>
+      <trkpt lat="43.271253" lon="-3.435759">
+        <ele>122.570</ele>
+        <time>2021-08-18T14:37:26Z</time>
+      </trkpt>
+      <trkpt lat="43.270937" lon="-3.435322">
+        <ele>124.398</ele>
+        <time>2021-08-18T14:38:00Z</time>
+      </trkpt>
+      <trkpt lat="43.270692" lon="-3.435255">
+        <ele>123.214</ele>
+        <time>2021-08-18T14:38:19Z</time>
+      </trkpt>
+      <trkpt lat="43.270585" lon="-3.435114">
+        <ele>122.282</ele>
+        <time>2021-08-18T14:38:30Z</time>
+      </trkpt>
+      <trkpt lat="43.270561" lon="-3.434990">
+        <ele>121.887</ele>
+        <time>2021-08-18T14:38:36Z</time>
+      </trkpt>
+      <trkpt lat="43.270615" lon="-3.434729">
+        <ele>119.688</ele>
+        <time>2021-08-18T14:38:49Z</time>
+      </trkpt>
+      <trkpt lat="43.270714" lon="-3.434508">
+        <ele>118.024</ele>
+        <time>2021-08-18T14:39:03Z</time>
+      </trkpt>
+      <trkpt lat="43.270770" lon="-3.434061">
+        <ele>115.826</ele>
+        <time>2021-08-18T14:39:28Z</time>
+      </trkpt>
+      <trkpt lat="43.270859" lon="-3.433807">
+        <ele>116.208</ele>
+        <time>2021-08-18T14:39:43Z</time>
+      </trkpt>
+      <trkpt lat="43.270888" lon="-3.433349">
+        <ele>118.236</ele>
+        <time>2021-08-18T14:40:07Z</time>
+      </trkpt>
+      <trkpt lat="43.270695" lon="-3.432797">
+        <ele>121.433</ele>
+        <time>2021-08-18T14:40:41Z</time>
+      </trkpt>
+      <trkpt lat="43.270646" lon="-3.432468">
+        <ele>121.894</ele>
+        <time>2021-08-18T14:41:01Z</time>
+      </trkpt>
+      <trkpt lat="43.270529" lon="-3.432247">
+        <ele>123.550</ele>
+        <time>2021-08-18T14:41:15Z</time>
+      </trkpt>
+      <trkpt lat="43.270485" lon="-3.431908">
+        <ele>125.728</ele>
+        <time>2021-08-18T14:41:32Z</time>
+      </trkpt>
+      <trkpt lat="43.270410" lon="-3.431800">
+        <ele>126.014</ele>
+        <time>2021-08-18T14:41:41Z</time>
+      </trkpt>
+      <trkpt lat="43.270119" lon="-3.430717">
+        <ele>124.782</ele>
+        <time>2021-08-18T14:42:44Z</time>
+      </trkpt>
+      <trkpt lat="43.269750" lon="-3.429622">
+        <ele>127.547</ele>
+        <time>2021-08-18T14:43:48Z</time>
+      </trkpt>
+      <trkpt lat="43.269583" lon="-3.428919">
+        <ele>127.076</ele>
+        <time>2021-08-18T14:44:28Z</time>
+      </trkpt>
+      <trkpt lat="43.269308" lon="-3.428841">
+        <ele>126.890</ele>
+        <time>2021-08-18T14:44:51Z</time>
+      </trkpt>
+      <trkpt lat="43.269227" lon="-3.428689">
+        <ele>126.819</ele>
+        <time>2021-08-18T14:45:06Z</time>
+      </trkpt>
+      <trkpt lat="43.269132" lon="-3.428750">
+        <ele>131.208</ele>
+        <time>2021-08-18T14:45:13Z</time>
+      </trkpt>
+      <trkpt lat="43.269037" lon="-3.428720">
+        <ele>131.475</ele>
+        <time>2021-08-18T14:45:19Z</time>
+      </trkpt>
+      <trkpt lat="43.268513" lon="-3.428144">
+        <ele>132.752</ele>
+        <time>2021-08-18T14:46:02Z</time>
+      </trkpt>
+      <trkpt lat="43.268345" lon="-3.428008">
+        <ele>137.853</ele>
+        <time>2021-08-18T14:46:17Z</time>
+      </trkpt>
+      <trkpt lat="43.268204" lon="-3.427979">
+        <ele>130.929</ele>
+        <time>2021-08-18T14:46:27Z</time>
+      </trkpt>
+      <trkpt lat="43.268047" lon="-3.428138">
+        <ele>128.027</ele>
+        <time>2021-08-18T14:46:40Z</time>
+      </trkpt>
+      <trkpt lat="43.267601" lon="-3.429327">
+        <ele>131.973</ele>
+        <time>2021-08-18T14:47:48Z</time>
+      </trkpt>
+      <trkpt lat="43.267533" lon="-3.429424">
+        <ele>131.791</ele>
+        <time>2021-08-18T14:47:55Z</time>
+      </trkpt>
+      <trkpt lat="43.267398" lon="-3.429369">
+        <ele>131.796</ele>
+        <time>2021-08-18T14:48:06Z</time>
+      </trkpt>
+      <trkpt lat="43.267192" lon="-3.428591">
+        <ele>132.181</ele>
+        <time>2021-08-18T14:48:47Z</time>
+      </trkpt>
+      <trkpt lat="43.266976" lon="-3.428363">
+        <ele>127.561</ele>
+        <time>2021-08-18T14:49:07Z</time>
+      </trkpt>
+      <trkpt lat="43.266941" lon="-3.427910">
+        <ele>134.117</ele>
+        <time>2021-08-18T14:49:31Z</time>
+      </trkpt>
+      <trkpt lat="43.266748" lon="-3.427463">
+        <ele>138.608</ele>
+        <time>2021-08-18T14:49:59Z</time>
+      </trkpt>
+      <trkpt lat="43.266657" lon="-3.427086">
+        <ele>140.066</ele>
+        <time>2021-08-18T14:50:21Z</time>
+      </trkpt>
+      <trkpt lat="43.266521" lon="-3.426801">
+        <ele>141.383</ele>
+        <time>2021-08-18T14:50:41Z</time>
+      </trkpt>
+      <trkpt lat="43.266121" lon="-3.426327">
+        <ele>137.414</ele>
+        <time>2021-08-18T14:51:18Z</time>
+      </trkpt>
+      <trkpt lat="43.265874" lon="-3.425918">
+        <ele>134.870</ele>
+        <time>2021-08-18T14:51:46Z</time>
+      </trkpt>
+      <trkpt lat="43.265561" lon="-3.424981">
+        <ele>133.388</ele>
+        <time>2021-08-18T14:52:42Z</time>
+      </trkpt>
+      <trkpt lat="43.265403" lon="-3.424737">
+        <ele>127.654</ele>
+        <time>2021-08-18T14:53:00Z</time>
+      </trkpt>
+      <trkpt lat="43.265371" lon="-3.424330">
+        <ele>126.722</ele>
+        <time>2021-08-18T14:53:22Z</time>
+      </trkpt>
+      <trkpt lat="43.265415" lon="-3.424291">
+        <ele>126.857</ele>
+        <time>2021-08-18T14:53:27Z</time>
+      </trkpt>
+      <trkpt lat="43.265446" lon="-3.424340">
+        <ele>128.167</ele>
+        <time>2021-08-18T14:53:35Z</time>
+      </trkpt>
+    </trkseg>
+  </trk></gpx>
