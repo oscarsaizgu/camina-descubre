@@ -16,9 +16,9 @@ mapa.invalidateSize(); // Fuerza a Leaflet a recalcular el tamaño del mapa
 var rutas = [
     { id: 'cuevas',     gpx: 'data/cuevas.gpx',         color: '#2d4a35', dashArray: null,   nombre: 'Ruta de las Cuevas',   distancia: '5.2 km',   duracion: '1h 30min', dificultad: 'Moderada' },
     { id: 'cubillas',   gpx: 'data/cubillas.gpx',       color: '#8B4513', dashArray: null,   nombre: 'Paseo de Cubillas',    distancia: '4 km',     duracion: '45min',    dificultad: 'Fácil' },
-    { id: 'vega',       gpx: 'data/vega.gpx',           color: '#1a5f7a', dashArray: null,   nombre: 'Paseo de Vegacorredor',distancia: '7 km',     duracion: '1h 30min', dificultad: 'Fácil' },
+    { id: 'vega',       gpx: 'data/vega.gpx',           color: '#1a5f7a', dashArray: null,   nombre: 'Paseo de Vegacorredor',distancia: '7 km',     duracion: '1h 30min', dificultad: 'Moderada' },
     { id: 'guardamino', gpx: 'data/guardamino.gpx',     color: '#7a1a1a', dashArray: null,   nombre: 'Paseo de Guardamino', distancia: '4,7 km',   duracion: '50min',    dificultad: 'Fácil' },
-    { id: 'coto',       gpx: 'data/coto.gpx',           color: '#6b4c9a', dashArray: null,   nombre: 'Paseo de Coto Cuende',distancia: '1,26 km',  duracion: '15min',    dificultad: 'Fácil' },
+    { id: 'coto',       gpx: 'data/coto.gpx',           color: '#6b4c9a', dashArray: null,   nombre: 'Paseo de Coto Cuende',distancia: '1,26 km',  duracion: '15min',    dificultad: 'Moderada' },
     { id: 'pondra',     gpx: 'data/pondra.gpx',         color: '#b5651d', dashArray: null,   nombre: 'Paseo de Pondra-Riancho',   distancia: '3,5 km',  duracion: '1h',       dificultad: 'Facil' },
 //{ id: 'dama',       gpx: 'data/dama.gpx',           color: '#b5651d', dashArray: null,   nombre: 'Ruta de Dama Roja',   distancia: '9,14 km',  duracion: '2h',       dificultad: 'Moderada' },
 // { id: 'cucurioa',   gpx: 'data/cucurioancillo.gpx', color: '#2d6b4a', dashArray: null,   nombre: 'Cucurio por Ancillo', distancia: '13,16 km', duracion: '3h',       dificultad: 'Moderada' },
