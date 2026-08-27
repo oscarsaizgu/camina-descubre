@@ -6,9 +6,9 @@
     <title>Paseo de Vegacorredor - Camina y Descubre</title>
     <link rel="stylesheet" href="css/estilos.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css">
     <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
 </head>
 <body>
@@ -59,49 +59,53 @@
         </section>
 
         <section id="servicios-ruta">
-            <div class="servicio"> <!-- Servicio: zona de picnic -->
-                <img src="iconos/Zona de picnic.png" alt="Zona Picnic"> <!-- Icono de zona de picnic -->
-                <span>Zona Picnic</span> <!-- Texto del servicio -->
+            <div class="servicio">
+                <img src="iconos/Zona de picnic.png" alt="Zona Picnic">
+                <span>Zona Picnic</span>
             </div>
-            <div class="servicio"> <!-- Servicio: parque infantil -->
-                <img src="iconos/Parque infantil.png" alt="Parque infantil"> <!-- Icono de parque infantil -->
-                <span>Parque infantil</span> <!-- Texto del servicio -->
+            <div class="servicio">
+                <img src="iconos/Parque infantil.png" alt="Parque infantil">
+                <span>Parque infantil</span>
             </div>
-            <div class="servicio"> <!-- Servicio: apta para niños -->
-                <img src="iconos/Apta para niños.png" alt="Apta para niños"> <!-- Icono de apta para niños -->
-                <span>Apta para niños</span> <!-- Texto del servicio -->
+            <div class="servicio">
+                <img src="iconos/Apta para niños.png" alt="Apta para niños">
+                <span>Apta para niños</span>
             </div>
-            <div class="servicio"> <!-- Servicio: calzada compartida -->
-                <img src="iconos/Calzada compartida.png" alt="Calzada compartida"> <!-- Icono de calzada compartida -->
-                <span>Calzada compartida</span> <!-- Texto del servicio -->
+            <div class="servicio">
+                <img src="iconos/Calzada compartida.png" alt="Calzada compartida">
+                <span>Calzada compartida</span>
             </div>
-            <div class="servicio"> <!-- Servicio: apta para bicicletas -->
-                <img src="iconos/Apta para bicicletas.png" alt="Apta para bicicletas"> <!-- Icono de apta para bicicletas -->
-                <span>Apta para bicicletas</span> <!-- Texto del servicio -->
+            <div class="servicio">
+                <img src="iconos/Apta para bicicletas.png" alt="Apta para bicicletas">
+                <span>Apta para bicicletas</span>
             </div>
-            <div class="servicio"> <!-- Servicio: recurso hídrico -->
-                <img src="iconos/Recurso hidrico.png" alt="Recurso hidrico"> <!-- Icono de recurso hídrico -->
-                <span>Recurso hidrico</span> <!-- Texto del servicio -->
+            <div class="servicio">
+                <img src="iconos/Recurso hidrico.png" alt="Recurso hidrico">
+                <span>Recurso hidrico</span>
             </div>
-                        <div class="servicio"> <!-- Servicio: recurso hídrico -->
-                <img src="iconos/Restaurante.png" alt="Restaurante"> <!-- Icono de recurso hídrico -->
-                <span>Restaurante</span> <!-- Texto del servicio -->
+            <div class="servicio">
+                <img src="iconos/Restaurante.png" alt="Restaurante">
+                <span>Restaurante</span>
             </div>
-                        <div class="servicio"> <!-- Servicio: recurso hídrico -->
-                <img src="iconos/Apta para carritos.png" alt="Apta para carritos"> <!-- Icono de apta para carritos -->
-                <span>Apta para carritos</span> <!-- Texto del servicio -->
+            <div class="servicio">
+                <img src="iconos/Apta para carritos.png" alt="Apta para carritos">
+                <span>Apta para carritos</span>
             </div>
         </section>
-<div style="text-align:center; padding: 1rem;">
-    <a href="seguir.html?ruta=vega" style="background:#2d4a35;color:#f5ead8;font-family:CanvaSans,sans-serif;font-size:0.9rem;text-decoration:none;padding:0.7rem 1.5rem;border-radius:20px;display:inline-block;">🥾 Seguir ruta</a>
-</div>
+        <div style="text-align:center; padding: 1rem;">
+            <a href="seguir.html?ruta=vega" style="background:#2d4a35;color:#f5ead8;font-family:CanvaSans,sans-serif;font-size:0.9rem;text-decoration:none;padding:0.7rem 1.5rem;border-radius:20px;display:inline-block;">🥾 Seguir ruta</a>
+        </div>
+
     </main>
+
     <footer>
         <img src="logos/ramales.svg" alt="Ayuntamiento de Ramales de la Victoria">
         <img src="logos/naturalblanco.png" alt="Ramales Natural">
         <p>© Oscar Saiz Gutiérrez, 2026</p>
     </footer>
-    <script src="js/vega.js"></script>
+
+    <script src="js/ruta-comun.js"></script> <!-- Funciones compartidas por todas las rutas -->
+    <script src="js/vega.js"></script> <!-- Datos específicos de esta ruta -->
 
 </body>
 </html>

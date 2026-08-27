@@ -1,39 +1,11 @@
-var mapa = L.map('mapa-detalle', {
-    zoomControl: false,
-    attributionControl: false,
-    edgeScale: false
-}).setView([43.2513, -3.4607], 14);
+// ====================================================
+// DATOS DE ESTA RUTA — lo único que hay que editar aquí
+// Guardamino tiene dos variantes (A y B), por eso es algo diferente
+// ====================================================
 
-L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: '© Esri'
-}).addTo(mapa);
-
-// Elevación principal
-var elevacionA = L.control.elevation({
-    theme: "custom-theme", collapsed: false, detached: true,
-    elevationDiv: "#grafico-elevacion", autohide: false, followMarker: true,
-    height: 120, time: false, distance: false, elevation: false, speed: false,
-    slope: false, legend: false, ruler: false, closeBtn: false,
-    waypoints: false, wptIcons: false, polyline: false
-});
-elevacionA.addTo(mapa);
-elevacionA.load('data/guardamino.gpx');
-
-// Elevación variante B
-var elevacionB = L.control.elevation({
-    theme: "custom-theme", collapsed: false, detached: true,
-    elevationDiv: "#grafico-elevacion-b", autohide: false, followMarker: true,
-    height: 120, time: false, distance: false, elevation: false, speed: false,
-    slope: false, legend: false, ruler: false, closeBtn: false,
-    waypoints: false, wptIcons: false, polyline: false
-});
-elevacionB.addTo(mapa);
-elevacionB.load('data/guardaminob.gpx');
-
-// Datos de cada variante
 var datos = {
     a: { distancia: '4,71 km', duracion: '60 min', desnivel: '146m', tipo: 'Circular' },
-    b: { distancia: '3,71 km', duracion: '50 min', desnivel: '127m',    tipo: 'Circular' }
+    b: { distancia: '3,71 km', duracion: '50 min', desnivel: '127m', tipo: 'Circular' }
 };
 
 var descripciones = {
@@ -41,7 +13,30 @@ var descripciones = {
     b: 'Comenzamos la ruta en el Ayuntamiento, nos dirigimos hacia la bolera de pasabolo "Domingo Muguira" y tomamos la calle del barrio La Casa en dirección al Bº Guardamino. Antes del taller Madreselva, subimos por el monte hasta llegar a la Piedra Carlista. Siguiendo el camino llegamos al monumento a la batalla de Ramales, de la Primera Guerra Carlista. Desde aquí, continuamos por la carretera de la izquierda para volver, en 1 km, al punto de inicio.'
 };
 
-var trackA, trackB, polylineA, polylineB;
+var puntosInteres = [
+    { coords: [43.26138646986801, -3.455310394447993],   nombre: "Monumento a La Batalla de Ramales",           foto: "fotos/piedra.jpg" },
+    { coords: [43.2620532187991,  -3.4450485940378512],  nombre: "Iglesia de Nuestra Señora, Parroquia de San Pedro", foto: "fotos/iglesia.jpg" },
+    { coords: [43.256952100060936, -3.4629698197607337], nombre: "Bolera Domingo Muguira",                      foto: "fotos/bolera.jpg" },
+    { coords: [43.25867491569154, -3.450799765317839],   nombre: "Camino secundario",                           foto: "fotos/secundario.jpg" },
+];
+
+// ====================================================
+// A partir de aquí no hay que tocar nada
+// ====================================================
+
+var mapa = inicializarMapaRuta();
+
+// Elevación variante A
+var elevacionA = crearElevacion('#grafico-elevacion');
+elevacionA.addTo(mapa);
+elevacionA.load('data/guardamino.gpx');
+
+// Elevación variante B
+var elevacionB = crearElevacion('#grafico-elevacion-b');
+elevacionB.addTo(mapa);
+elevacionB.load('data/guardaminob.gpx');
+
+var trackA, trackB;
 
 function activarVariante(v) {
     // Elevación
@@ -62,11 +57,11 @@ function activarVariante(v) {
     document.getElementById('btn-variante-b').classList.toggle('variante-activa', v === 'b');
 
     // Tracks: el seleccionado sólido y grueso, el otro fino y discontinuo
-if (trackA) trackA.setStyle({ dashArray: v === 'a' ? null : '8, 8', weight: v === 'a' ? 4 : 2 });
-if (trackB) trackB.setStyle({ dashArray: v === 'b' ? null : '8, 8', weight: v === 'b' ? 4 : 2 });
+    if (trackA) trackA.setStyle({ dashArray: v === 'a' ? null : '8, 8', weight: v === 'a' ? 4 : 2 });
+    if (trackB) trackB.setStyle({ dashArray: v === 'b' ? null : '8, 8', weight: v === 'b' ? 4 : 2 });
 }
 
-// Track principal
+// Track principal (variante A)
 trackA = new L.GPX('data/guardamino.gpx', {
     async: true,
     polyline_options: { color: '#fce8c6', weight: 4, opacity: 0.9, className: 'mi-track' },
@@ -76,7 +71,6 @@ trackA = new L.GPX('data/guardamino.gpx', {
     mapa.fitBounds(bounds);
     mapa.setMaxBounds(bounds.pad(1));
     mapa.options.minZoom = mapa.getZoom();
-    polylineA = e.target.getLayers()[0];
     e.target.on('click', function() { activarVariante('a'); });
     e.target.eachLayer(function(layer) { layer.on('click', function() { activarVariante('a'); }); });
 }).addTo(mapa);
@@ -87,66 +81,9 @@ trackB = new L.GPX('data/guardaminob.gpx', {
     polyline_options: { color: '#fce8c6', weight: 2, opacity: 0.9, dashArray: '8, 8', className: 'mi-track' },
     marker_options: { startIconUrl: null, endIconUrl: null, shadowUrl: null }
 }).on('loaded', function(e) {
-    polylineB = e.target.getLayers()[0];
     e.target.on('click', function() { activarVariante('b'); });
     e.target.eachLayer(function(layer) { layer.on('click', function() { activarVariante('b'); }); });
 }).addTo(mapa);
 
-// Lightbox
-var lightbox = document.createElement('div');
-lightbox.id = 'lightbox';
-lightbox.innerHTML = '<div id="lightbox-contenido"><span id="lightbox-cerrar">✕</span><img id="lightbox-img"><p id="lightbox-titulo"></p></div>';
-document.body.appendChild(lightbox);
-document.getElementById('lightbox-cerrar').addEventListener('click', function() {
-    lightbox.style.display = 'none';
-});
-
-// Puntos de interés con fotos
-var puntosInteres = [
-    {
-        coords: [43.26138646986801, -3.455310394447993],
-        nombre: "Monumento a La Batalla de Ramales",
-        foto: "fotos/piedra.jpg"
-    },
-    {
-        coords: [43.2620532187991, -3.4450485940378512],
-        nombre: "Iglesia de Nuestra Señora, Parroquia de San Pedro",
-        foto: "fotos/iglesia.jpg"
-    },
-     {
-        coords: [43.256952100060936, -3.4629698197607337],
-        nombre: "Bolera Domingo Muguira",
-        foto: "fotos/bolera.jpg"
-    },
-       {
-        coords: [43.25867491569154, -3.450799765317839],
-        nombre: "Camino secundario",
-        foto: "fotos/secundario.jpg"
-    },
-];
-var iconoMarker = L.divIcon({
-    className: 'marker-personalizado',
-    html: '<div class="marker-pin"></div>',
-    iconSize: [20, 20],
-    iconAnchor: [10, 10]
-});
-
-puntosInteres.forEach(function(punto) {
-    var marker = L.marker(punto.coords, { icon: iconoMarker }).addTo(mapa);
-
-    marker.on('mouseover', function() {
-        var contenido = '<b>' + punto.nombre + '</b>';
-        if (punto.foto) {
-            contenido += '<br><img src="' + punto.foto + '" style="width:150px; margin-top:5px; border-radius:4px;">';
-        }
-        this.bindPopup(contenido, { closeButton: false, maxWidth: 200, autoPan: false }).openPopup();
-    });
-
-    marker.on('mouseout', function() { this.closePopup(); });
-
-    marker.on('click', function() {
-        document.getElementById('lightbox-img').src = punto.foto;
-        document.getElementById('lightbox-titulo').textContent = punto.nombre;
-        document.getElementById('lightbox').style.display = 'flex';
-    });
-});
+crearLightbox();
+crearMarcadores(mapa, puntosInteres);

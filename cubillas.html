@@ -3,7 +3,7 @@
 <head> <!-- Sección de metadatos, no visible en la página -->
     <meta charset="UTF-8"> <!-- Define la codificación de caracteres como UTF-8 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ajusta la vista para dispositivos móviles -->
-    <title>Ruta de las Cuevas - Camina y Descubre</title> <!-- Título que aparece en la pestaña del navegador -->
+    <title>Paseo de Cubillas - Camina y Descubre</title> <!-- Título que aparece en la pestaña del navegador -->
 
     <link rel="stylesheet" href="css/estilos.css"> <!-- Carga los estilos propios de la página -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"> <!-- Carga los estilos de la librería de mapas Leaflet -->
@@ -85,18 +85,19 @@
                 <img src="iconos/Recurso hidrico.png" alt="Recurso hidrico"> <!-- Icono de recurso hídrico -->
                 <span>Recurso hidrico</span> <!-- Texto del servicio -->
             </div>
-                        <div class="servicio"> <!-- Servicio: recurso hídrico -->
-                <img src="iconos/Restaurante.png" alt="Restaurante"> <!-- Icono de recurso hídrico -->
+            <div class="servicio"> <!-- Servicio: restaurante -->
+                <img src="iconos/Restaurante.png" alt="Restaurante"> <!-- Icono de restaurante -->
                 <span>Restaurante</span> <!-- Texto del servicio -->
             </div>
-                        <div class="servicio"> <!-- Servicio: recurso hídrico -->
+            <div class="servicio"> <!-- Servicio: apta para carritos -->
                 <img src="iconos/Apta para carritos.png" alt="Apta para carritos"> <!-- Icono de apta para carritos -->
                 <span>Apta para carritos</span> <!-- Texto del servicio -->
             </div>
         </section>
-<div style="text-align:center; padding: 1rem;">
-    <a href="seguir.html?ruta=cubillas" style="background:#2d4a35;color:#f5ead8;font-family:CanvaSans,sans-serif;font-size:0.9rem;text-decoration:none;padding:0.7rem 1.5rem;border-radius:20px;display:inline-block;">🥾 Seguir ruta</a>
-</div>
+        <div style="text-align:center; padding: 1rem;">
+            <a href="seguir.html?ruta=cubillas" style="background:#2d4a35;color:#f5ead8;font-family:CanvaSans,sans-serif;font-size:0.9rem;text-decoration:none;padding:0.7rem 1.5rem;border-radius:20px;display:inline-block;">🥾 Seguir ruta</a>
+        </div>
+
     </main> <!-- Cierra el contenido principal -->
 
     <footer> <!-- Pie de página -->
@@ -105,7 +106,8 @@
         <p>© Oscar Saiz Gutiérrez, 2026</p> <!-- Nota de derechos de autor -->
     </footer>
 
-    <script src="js/cubillas.js"></script> <!-- Carga el script que configura y controla el mapa, elevación y datos de esta ruta -->
+    <script src="js/ruta-comun.js"></script> <!-- Funciones compartidas por todas las rutas -->
+    <script src="js/cubillas.js"></script> <!-- Datos específicos de esta ruta -->
 
 </body> <!-- Cierra el contenido visible -->
 </html> <!-- Cierra el documento HTML -->
