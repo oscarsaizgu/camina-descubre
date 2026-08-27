@@ -1,103 +1,26 @@
-// Inicializa el mapa de la ruta centrado en Ramales
-var mapa = L.map('mapa-detalle', {zoomControl: false, 
-    attributionControl: false,
-edgeScale: false}).setView([43.2513, -3.4607], 14);
+// ====================================================
+// DATOS DE ESTA RUTA — lo único que hay que editar aquí
+// ====================================================
 
-// Capa base satélite
-L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: '© Esri'
-}).addTo(mapa);
+var GPX = 'data/coto.gpx';
 
-// Inicializa el perfil de elevación
-var elevacion = L.control.elevation({
-    theme: "custom-theme",
-    collapsed: false,
-    detached: true,
-    elevationDiv: "#grafico-elevacion",
-    autohide: false,
-    followMarker: true,
-    height: 120,
-    time: false,
-    distance: false,
-    elevation: false,
-    speed: false,
-    slope: false,
-    legend: false,
-    ruler: false,
-    closeBtn: false,
-    waypoints: false,
-    wptIcons: false,
-    polyline: false,
-});
-elevacion.addTo(mapa);
-
-// Carga el perfil de elevación
-elevacion.load('data/coto.gpx');
-
-// Track beige
-new L.GPX('data/coto.gpx', {
-    async: true,
-    polyline_options: {
-        color: '#fce8c6',
-        weight: 4,
-        opacity: 0.9,
-        className: 'mi-track'
-    },
-    marker_options: {
-        startIconUrl: null,
-        endIconUrl: null,
-        shadowUrl: null
-    }
-}).on('loaded', function(e) {
-    var bounds = e.target.getBounds();
-    mapa.fitBounds(bounds);
-    mapa.setMaxBounds(bounds.pad(0.1));
-    mapa.options.minZoom = mapa.getZoom();
-}).addTo(mapa);
-
-// Puntos de interés con fotos
 var puntosInteres = [
+    // Sin puntos de interés por ahora.
+    // Para añadir uno, copia esta línea y rellena los datos:
+    // { coords: [latitud, longitud], nombre: "Nombre del sitio", foto: "fotos/nombre.jpg" },
 ];
 
-// Icono personalizado para los marcadores
-var iconoMarker = L.divIcon({
-    className: 'marker-personalizado',
-    html: '<div class="marker-pin"></div>',
-    iconSize: [20, 20],
-    iconAnchor: [10, 10]
-});
+// ====================================================
+// A partir de aquí no hay que tocar nada
+// ====================================================
 
-// Crear marcador para cada punto
-puntosInteres.forEach(function(punto) {
-    var marker = L.marker(punto.coords, { icon: iconoMarker }).addTo(mapa);
+var mapa = inicializarMapaRuta();
 
-    // Al pasar el ratón, mostrar miniatura
-    marker.on('mouseover', function() {
-        this.bindPopup(
-            '<b>' + punto.nombre + '</b><br>' +
-            '<img src="' + punto.foto + '" style="width:150px; margin-top:5px; border-radius:4px;">',
-            { closeButton: false, maxWidth: 200 }
-        ).openPopup();
-    });
+var elevacion = crearElevacion('#grafico-elevacion');
+elevacion.addTo(mapa);
+elevacion.load(GPX);
 
-    marker.on('mouseout', function() {
-        this.closePopup();
-    });
+cargarTrack(mapa, GPX, 0.1);
 
-    // Al hacer clic, popup más grande
-marker.on('click', function() {
-    document.getElementById('lightbox-img').src = punto.foto;
-    document.getElementById('lightbox-titulo').textContent = punto.nombre;
-    document.getElementById('lightbox').style.display = 'flex';
-});
-});
-
-// Crear el lightbox (ventana de imagen grande)
-var lightbox = document.createElement('div');
-lightbox.id = 'lightbox';
-lightbox.innerHTML = '<div id="lightbox-contenido"><span id="lightbox-cerrar">✕</span><img id="lightbox-img"><p id="lightbox-titulo"></p></div>';
-document.body.appendChild(lightbox);
-
-document.getElementById('lightbox-cerrar').addEventListener('click', function() {
-    lightbox.style.display = 'none';
-});
+crearLightbox();
+crearMarcadores(mapa, puntosInteres);

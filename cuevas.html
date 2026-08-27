@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paseo de Cubillas - Camina y Descubre</title>
+    <title>Ruta de las Cuevas - Camina y Descubre</title>
     <link rel="stylesheet" href="css/estilos.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css">
     <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
 </head>
 <body>
@@ -86,16 +86,20 @@
                 <span>Restaurante</span>
             </div>
         </section>
-<div style="text-align:center; padding: 1rem;">
-    <a href="seguir.html?ruta=cuevas" style="background:#2d4a35;color:#f5ead8;font-family:CanvaSans,sans-serif;font-size:0.9rem;text-decoration:none;padding:0.7rem 1.5rem;border-radius:20px;display:inline-block;">🥾 Seguir ruta</a>
-</div>
+        <div style="text-align:center; padding: 1rem;">
+            <a href="seguir.html?ruta=cuevas" style="background:#2d4a35;color:#f5ead8;font-family:CanvaSans,sans-serif;font-size:0.9rem;text-decoration:none;padding:0.7rem 1.5rem;border-radius:20px;display:inline-block;">🥾 Seguir ruta</a>
+        </div>
+
     </main>
+
     <footer>
         <img src="logos/ramales.svg" alt="Ayuntamiento de Ramales de la Victoria">
         <img src="logos/naturalblanco.png" alt="Ramales Natural">
         <p>© Oscar Saiz Gutiérrez, 2026</p>
     </footer>
-    <script src="js/cuevas.js"></script>
+
+    <script src="js/ruta-comun.js"></script> <!-- Funciones compartidas por todas las rutas -->
+    <script src="js/cuevas.js"></script> <!-- Datos específicos de esta ruta -->
 
 </body>
 </html>
