@@ -31,3 +31,5 @@ cargarTrack(mapa, GPX, 1, false);
 
 crearLightboxConStreetView();
 crearMarcadoresConStreetView(mapa, puntosInteres);
+
+renderizarPuntosInteres(puntosInteres);

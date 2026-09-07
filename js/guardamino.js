@@ -87,3 +87,5 @@ trackB = new L.GPX('data/guardaminob.gpx', {
 
 crearLightbox();
 crearMarcadores(mapa, puntosInteres);
+
+renderizarPuntosInteres(puntosInteres);

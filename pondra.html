@@ -1,107 +1,107 @@
-<!DOCTYPE html> <!-- Declara que el documento es HTML5 -->
-<html lang="es"> <!-- Inicia el documento HTML, idioma español -->
-<head> <!-- Sección de metadatos, no visible en la página -->
-    <meta charset="UTF-8"> <!-- Define la codificación de caracteres como UTF-8 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ajusta la vista para dispositivos móviles -->
-    <title>Pondra-Riancho - Camina y Descubre</title> <!-- Título que aparece en la pestaña del navegador -->
-
-    <link rel="stylesheet" href="css/estilos.css"> <!-- Carga los estilos propios de la página -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"> <!-- Carga los estilos de la librería de mapas Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css"> <!-- Carga los estilos del plugin de perfil de elevación -->
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> <!-- Carga la librería Leaflet para mostrar mapas -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script> <!-- Carga el plugin para mostrar rutas GPX en el mapa -->
-    <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script> <!-- Carga el plugin que dibuja el gráfico de elevación -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paseo de Pondra-Riancho — Camina y Descubre</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+    <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
 </head>
-<body> <!-- Inicia el contenido visible de la página -->
+<body class="pagina-ruta">
 
-    <header> <!-- Cabecera de la página -->
-        <h1>Paseo de Pondra-Riancho</h1> <!-- Título principal -->
-        <p>Ramales de la Victoria</p> <!-- Subtítulo -->
+    <a href="index.html" class="btn-volver">
+        <span class="btn-volver-completo">← TODAS LAS RUTAS</span>
+        <span class="btn-volver-corto">←</span>
+    </a>
+
+    <header>
+        <span class="ruta-header-label">CAMINA Y DESCUBRE</span>
+        <div class="ruta-header-num" aria-hidden="true">06</div>
+        <h1>Paseo de Pondra-Riancho</h1>
+        <p>RAMALES DE LA VICTORIA</p>
     </header>
 
-    <a href="index.html" id="btn-volver">←</a> <!-- Enlace para volver a la página principal -->
-
-    <main> <!-- Contenido principal de la página -->
-
-        <section id="mapa-ruta"> <!-- Sección que contiene el mapa de la ruta -->
-            <div id="mapa-detalle"></div> <!-- Contenedor donde Leaflet dibuja el mapa detallado -->
-        </section>
-
-        <section id="elevacion"> <!-- Sección del perfil de elevación -->
-            <div id="grafico-elevacion"></div> <!-- Contenedor donde se dibuja el gráfico de elevación -->
-        </section>
-
-        <section id="datos-ruta"> <!-- Sección con los datos resumidos de la ruta -->
-            <div class="dato"> <!-- Bloque del dato "distancia" -->
-                <img src="iconos/distancia.png" alt="Distancia"> <!-- Icono de distancia -->
-                <span class="dato-valor">3,32 km</span> <!-- Valor de la distancia -->
-                <span class="dato-label">Distancia</span> <!-- Etiqueta del dato -->
-            </div>
-            <div class="dato"> <!-- Bloque del dato "duración" -->
-                <img src="iconos/reloj.png" alt="Duración"> <!-- Icono de reloj -->
-                <span class="dato-valor">50 min</span> <!-- Valor de la duración -->
-                <span class="dato-label">Duración</span> <!-- Etiqueta del dato -->
-            </div>
-            <div class="dato"> <!-- Bloque del dato "desnivel" -->
-                <img src="iconos/altitud.png" alt="Desnivel"> <!-- Icono de altitud -->
-                <span class="dato-valor">15m</span> <!-- Valor del desnivel -->
-                <span class="dato-label">Desnivel</span> <!-- Etiqueta del dato -->
-            </div>
-            <div class="dato"> <!-- Bloque del dato "tipo de ruta" -->
-                <img src="iconos/circular.png" alt="Tipo de ruta"> <!-- Icono del tipo de ruta -->
-                <span class="dato-valor">Circular</span> <!-- Valor del tipo de ruta -->
-                <span class="dato-label">Tipo</span> <!-- Etiqueta del dato -->
+    <main>
+        <section class="ruta-datos">
+            <div class="ruta-datos-inner">
+                <div class="ruta-dato">
+                    <img src="iconos/distancia.png" alt="">
+                    <span class="ruta-dato-val">3,32 km</span>
+                    <span class="ruta-dato-lab">Distancia</span>
+                </div>
+                <div class="ruta-dato">
+                    <img src="iconos/reloj.png" alt="">
+                    <span class="ruta-dato-val">50 min</span>
+                    <span class="ruta-dato-lab">Duración</span>
+                </div>
+                <div class="ruta-dato">
+                    <img src="iconos/altitud.png" alt="">
+                    <span class="ruta-dato-val">15m</span>
+                    <span class="ruta-dato-lab">Desnivel</span>
+                </div>
+                <div class="ruta-dato">
+                    <img src="iconos/circular.png" alt="">
+                    <span class="ruta-dato-val">Circular</span>
+                    <span class="ruta-dato-lab">Tipo</span>
+                </div>
             </div>
         </section>
-
-        <section id="descripcion"> <!-- Sección con la descripción de la ruta -->
-            <h2>Sobre la ruta</h2> <!-- Título de la descripción -->
-            <p>Si empezamos el paseo desde el puente de entrada al barrio de Pondra,
-podemos dejar el coche al lado de la parada de autobús que hay en la
-carretera que va a Carranza. Cruzamos el puente y atravesamos el barrio
-hasta llegar a la ermita de San Salvador y cogemos la carretera que pasa
-por debajo de la misma para recorrer la mies de Nogales, que va desde
-Pondra hasta el puente de Riancho. Cruzando dicho puente atravesamos la
-mies de Riancho, ocupada en parte por el Parque Empresarial Alto Asón,
-hasta llegar a la ermita de San Juan, desde donde saldremos a la carretera
-general y, cogiendo a la derecha, volveremos hasta el punto de inicio de la
-ruta. Durante todo el camino iremos por la orilla y cruzaremos el río
-Carranza, uno de los afluentes más importantes del río Asón.</p> <!-- Texto descriptivo de la ruta -->
-        </section>
-
-        <section id="servicios-ruta"> <!-- Sección con los servicios/características de la ruta -->
-            <div class="servicio"> <!-- Servicio: apta para niños -->
-                <img src="iconos/Apta para niños.png" alt="Apta para niños"> <!-- Icono de apta para niños -->
-                <span>Apta para niños</span> <!-- Texto del servicio -->
-            </div>
-            <div class="servicio"> <!-- Servicio: calzada compartida -->
-                <img src="iconos/Calzada compartida.png" alt="Calzada compartida"> <!-- Icono de calzada compartida -->
-                <span>Calzada compartida</span> <!-- Texto del servicio -->
-            </div>
-            <div class="servicio"> <!-- Servicio: apta para bicicletas -->
-                <img src="iconos/Apta para bicicletas.png" alt="Apta para bicicletas"> <!-- Icono de apta para bicicletas -->
-                <span>Apta para bicicletas</span> <!-- Texto del servicio -->
-            </div>
-            <div class="servicio"> <!-- Servicio: apta para carritos -->
-                <img src="iconos/Apta para carritos.png" alt="Apta para carritos"> <!-- Icono de apta para carritos -->
-                <span>Apta para carritos</span> <!-- Texto del servicio -->
+        <section class="ruta-mapa-bloque">
+            <div id="mapa-detalle"></div>
+            <div id="elevacion">
+                <div id="grafico-elevacion"></div>
             </div>
         </section>
-        <div style="text-align:center; padding: 1rem;">
-            <a href="seguir.html?ruta=pondra" style="background:#2d4a35;color:#f5ead8;font-family:CanvaSans,sans-serif;font-size:0.9rem;text-decoration:none;padding:0.7rem 1.5rem;border-radius:20px;display:inline-block;">🥾 Seguir ruta</a>
+        <section class="ruta-puntos">
+            <div class="ruta-puntos-cabecera">
+                <span class="ruta-puntos-label">A LO LARGO DEL CAMINO</span>
+                <h2 class="ruta-puntos-titulo">PUNTOS DEL RECORRIDO</h2>
+            </div>
+            <div class="ruta-puntos-grid"></div>
+        </section>
+        <section class="ruta-descripcion">
+            <div class="ruta-descripcion-inner">
+                <span class="ruta-descripcion-label">DESCRIPCIÓN</span>
+                <h2 class="ruta-descripcion-titulo">EL RECORRIDO</h2>
+                <div class="ruta-descripcion-texto">
+                    <p>Si empezamos el paseo desde el puente de entrada al barrio de Pondra, podemos dejar el coche al lado de la parada de autobús que hay en la carretera que va a Carranza. Cruzamos el puente y atravesamos el barrio hasta llegar a la ermita de San Salvador y cogemos la carretera que pasa por debajo de la misma para recorrer la mies de Nogales, que va desde Pondra hasta el puente de Riancho.</p>
+                    <p>Cruzando dicho puente atravesamos la mies de Riancho, ocupada en parte por el Parque Empresarial Alto Asón, hasta llegar a la ermita de San Juan, desde donde saldremos a la carretera general y, cogiendo a la derecha, volveremos hasta el punto de inicio de la ruta.</p>
+                    <p>Durante todo el camino iremos por la orilla y cruzaremos el río Carranza, uno de los afluentes más importantes del río Asón.</p>
+                </div>
+            </div>
+        </section>
+        <section class="ruta-info">
+            <div class="ruta-info-cabecera">
+                <span class="ruta-info-label">LO QUE ENCONTRARÁS</span>
+                <h2 class="ruta-info-titulo">INFORMACIÓN ÚTIL</h2>
+            </div>
+            <div class="ruta-info-grid">
+                <div class="ruta-servicio"><img src="iconos/Apta para niños.png" alt=""><span>Apta para niños</span></div>
+                <div class="ruta-servicio"><img src="iconos/Calzada compartida.png" alt=""><span>Calzada compartida</span></div>
+                <div class="ruta-servicio"><img src="iconos/Apta para bicicletas.png" alt=""><span>Apta para bicicletas</span></div>
+                <div class="ruta-servicio"><img src="iconos/Apta para carritos.png" alt=""><span>Apta para carritos</span></div>
+            </div>
+        </section>
+        <section class="ruta-cta">
+            <p class="ruta-cta-pregunta">¿LISTO PARA CAMINAR?</p>
+            <a href="seguir.html?ruta=pondra" class="ruta-cta-btn">SEGUIR LA RUTA →</a>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-logos">
+            <img src="logos/ramales.svg" alt="Ayuntamiento de Ramales de la Victoria">
+            <img src="logos/naturalblanco.png" alt="Ramales Natural">
         </div>
-
-    </main> <!-- Cierra el contenido principal -->
-
-    <footer> <!-- Pie de página -->
-        <img src="logos/ramales.svg" alt="Ayuntamiento de Ramales de la Victoria"> <!-- Logo del ayuntamiento -->
-        <img src="logos/naturalblanco.png" alt="Ramales Natural"> <!-- Logo de Ramales Natural -->
-        <p>© Oscar Saiz Gutiérrez, 2026</p> <!-- Nota de derechos de autor -->
+        <p class="footer-copy">© Oscar Saiz Gutiérrez, 2026</p>
     </footer>
 
-    <script src="js/ruta-comun.js"></script> <!-- Funciones compartidas por todas las rutas -->
-    <script src="js/pondra.js"></script> <!-- Datos específicos de esta ruta -->
+    <script src="js/ruta-comun.js"></script>
+    <script src="js/pondra.js"></script>
 
-</body> <!-- Cierra el contenido visible -->
-</html> <!-- Cierra el documento HTML -->
+</body>
+</html>

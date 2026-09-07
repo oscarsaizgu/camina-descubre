@@ -1,35 +1,265 @@
-<!DOCTYPE html> <!-- Declara que el documento es HTML5 -->
-<html lang="es"> <!-- Inicia el documento HTML, idioma español -->
-<head> <!-- Sección de metadatos, no visible en la página -->
-    <meta charset="UTF-8"> <!-- Define la codificación de caracteres como UTF-8 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ajusta la vista para dispositivos móviles -->
-    <title>Camina y Descubre - Ramales de la Victoria</title> <!-- Título que aparece en la pestaña del navegador -->
-
-    <link rel="stylesheet" href="css/estilos.css"> <!-- Carga los estilos propios de la página -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"> <!-- Carga los estilos de la librería de mapas Leaflet -->
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> <!-- Carga la librería Leaflet para mostrar mapas -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script> <!-- Carga el plugin para mostrar rutas GPX en el mapa -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camina y Descubre - Ramales de la Victoria</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
 </head>
-<body> <!-- Inicia el contenido visible de la página -->
+<body class="pagina-inicio">
 
-    <header> <!-- Cabecera de la página -->
-        <h1>Camina y Descubre</h1> <!-- Título principal -->
-        <p>Ramales de la Victoria</p> <!-- Subtítulo -->
-    </header>
+    <!-- ═══════════════════════════════════════
+         HERO / PORTADA
+    ═══════════════════════════════════════ -->
+    <section id="hero">
 
-    <section id="mapa-portada"> <!-- Sección que contiene el mapa principal -->
-        <div id="hint-mapa">Toca cada ruta para mas info</div> <!-- Mensaje de ayuda sobre el mapa -->
-        <div id="mapa"></div> <!-- Contenedor donde Leaflet dibuja el mapa -->
+        <!-- Decoración topográfica de fondo -->
+        <div class="hero-deco" aria-hidden="true">
+            <svg viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                <path d="M-100 280 Q 80 230 200 280 Q 320 330 450 280 Q 580 230 700 280 Q 820 330 1100 280" fill="none" stroke="rgba(245,234,216,0.07)" stroke-width="1.5"/>
+                <path d="M-100 300 Q 80 250 200 300 Q 320 350 450 300 Q 580 250 700 300 Q 820 350 1100 300" fill="none" stroke="rgba(245,234,216,0.06)" stroke-width="1.5"/>
+                <path d="M-100 320 Q 80 270 200 320 Q 320 370 450 320 Q 580 270 700 320 Q 820 370 1100 320" fill="none" stroke="rgba(245,234,216,0.05)" stroke-width="1.5"/>
+                <path d="M-100 260 Q 80 210 200 260 Q 320 310 450 260 Q 580 210 700 260 Q 820 310 1100 260" fill="none" stroke="rgba(245,234,216,0.05)" stroke-width="1"/>
+                <path d="M-100 240 Q 80 190 200 240 Q 320 290 450 240 Q 580 190 700 240 Q 820 290 1100 240" fill="none" stroke="rgba(245,234,216,0.04)" stroke-width="1"/>
+                <path d="M-100 340 Q 80 290 200 340 Q 320 390 450 340 Q 580 290 700 340 Q 820 390 1100 340" fill="none" stroke="rgba(245,234,216,0.04)" stroke-width="1"/>
+                <path d="M-100 360 Q 80 310 200 360 Q 320 410 450 360 Q 580 310 700 360 Q 820 410 1100 360" fill="none" stroke="rgba(245,234,216,0.03)" stroke-width="1"/>
+                <path d="M-100 380 Q 80 330 200 380 Q 320 430 450 380 Q 580 330 700 380 Q 820 430 1100 380" fill="none" stroke="rgba(245,234,216,0.03)" stroke-width="0.8"/>
+                <!-- Líneas diagonales sutiles tipo cota -->
+                <line x1="30" y1="0" x2="30" y2="500" stroke="rgba(245,234,216,0.025)" stroke-width="1"/>
+                <line x1="970" y1="0" x2="970" y2="500" stroke="rgba(245,234,216,0.025)" stroke-width="1"/>
+
+            </svg>
+        </div>
+
+        <!-- Contenido del hero -->
+        <div class="hero-contenido">
+            <p class="hero-label">Guía de Paseos Naturales</p>
+
+            <h1 class="hero-titulo">
+                <span class="hero-titulo-linea">CAMINA Y</span>
+                <span class="hero-titulo-linea hero-titulo-descubre">DESCUBRE</span>
+            </h1>
+
+            <div class="hero-icono-montana" aria-hidden="true">
+                <img src="iconos/montaña.png" alt="">
+            </div>
+
+            <p class="hero-lugar">RAMALES DE LA VICTORIA</p>
+
+            <div class="hero-intro">
+                <span class="hero-intro-numero">6</span>
+                <div class="hero-intro-texto">
+                    <span>paseos para conocer</span>
+                    <span>lo mejor de nuestro entorno</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Indicador de scroll -->
+        <a href="#mapa-general" class="hero-scroll" aria-label="Ir al mapa general">
+            <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+                <line x1="12" y1="3" x2="12" y2="21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <polyline points="6 15 12 21 18 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </a>
+
     </section>
 
-    <footer> <!-- Pie de página -->
-        <img src="logos/ramales.svg" alt="Ayuntamiento de Ramales de la Victoria"> <!-- Logo del ayuntamiento -->
-        <img src="logos/naturalblanco.png" alt="Ramales Natural"> <!-- Logo de Ramales Natural -->
-        <p>© Oscar Saiz Gutiérrez, 2026</p> <!-- Nota de derechos de autor -->
+
+    <!-- ═══════════════════════════════════════
+         MAPA GENERAL
+    ═══════════════════════════════════════ -->
+    <section id="mapa-general">
+
+        <div class="seccion-cabecera anim-entrada">
+            <p class="seccion-etiqueta">Orientación</p>
+            <h2 class="seccion-titulo">MAPA GENERAL</h2>
+            <p class="seccion-subtitulo">Todas las rutas de un vistazo</p>
+        </div>
+
+        <div class="mapa-portada-contenedor anim-entrada">
+            <div id="hint-mapa">Toca cada ruta para más info</div>
+            <div id="mapa"></div>
+        </div>
+
+        <!-- Separador decorativo inferior -->
+        <div class="deco-separador" aria-hidden="true">
+            <svg viewBox="0 0 300 16" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 0 8 Q 50 2 100 8 Q 150 14 200 8 Q 250 2 300 8" fill="none" stroke="rgba(45,74,53,0.2)" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+        </div>
+
+    </section>
+
+
+    <!-- ═══════════════════════════════════════
+         6 RUTAS
+    ═══════════════════════════════════════ -->
+    <section id="rutas-listado">
+
+        <div class="seccion-cabecera seccion-cabecera--verde anim-entrada">
+            <p class="seccion-etiqueta seccion-etiqueta--crema">Paseos</p>
+            <h2 class="seccion-titulo seccion-titulo--crema">6 PASEOS PARA CONOCER<br>RAMALES DE LA VICTORIA</h2>
+        </div>
+
+        <div class="rutas-grid">
+
+            <!-- 01 · CUEVAS -->
+            <article class="ruta-card anim-entrada">
+                <div class="ruta-card-foto">
+                    <img src="fotos/covalanas.jpg" alt="Cueva de Covalanas">
+                </div>
+                <div class="ruta-card-cuerpo">
+                    <span class="ruta-num">01</span>
+                    <div class="ruta-card-info">
+                        <h3 class="ruta-card-nombre">PASEO DE<br>LAS CUEVAS</h3>
+                        <p class="ruta-card-datos">6 km &nbsp;·&nbsp; 1h &nbsp;·&nbsp; 254 m</p>
+                        <span class="ruta-card-dif">Moderada</span>
+                        <a href="cuevas.html" class="ruta-card-btn">Ver ruta →</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 02 · VEGACORREDOR -->
+            <article class="ruta-card anim-entrada">
+                <div class="ruta-card-foto">
+                    <img src="fotos/parquevega.jpeg" alt="Paseo de Vegacorredor">
+                </div>
+                <div class="ruta-card-cuerpo">
+                    <span class="ruta-num">02</span>
+                    <div class="ruta-card-info">
+                        <h3 class="ruta-card-nombre">PASEO DE<br>VEGACORREDOR</h3>
+                        <p class="ruta-card-datos">7 km &nbsp;·&nbsp; 1h 30min</p>
+                        <span class="ruta-card-dif">Moderada</span>
+                        <a href="vega.html" class="ruta-card-btn">Ver ruta →</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 03 · GUARDAMINO -->
+            <article class="ruta-card anim-entrada">
+                <div class="ruta-card-foto">
+                    <img src="fotos/iglesia.jpg" alt="Paseo de Guardamino">
+                </div>
+                <div class="ruta-card-cuerpo">
+                    <span class="ruta-num">03</span>
+                    <div class="ruta-card-info">
+                        <h3 class="ruta-card-nombre">PASEO DE<br>GUARDAMINO</h3>
+                        <p class="ruta-card-datos">4,7 km &nbsp;·&nbsp; 50 min</p>
+                        <span class="ruta-card-dif">Moderada</span>
+                        <a href="guardamino.html" class="ruta-card-btn">Ver ruta →</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 04 · CUBILLAS -->
+            <article class="ruta-card anim-entrada">
+                <div class="ruta-card-foto">
+                    <img src="fotos/parquecubillas.jpg" alt="Paseo de Cubillas">
+                </div>
+                <div class="ruta-card-cuerpo">
+                    <span class="ruta-num">04</span>
+                    <div class="ruta-card-info">
+                        <h3 class="ruta-card-nombre">PASEO DE<br>CUBILLAS</h3>
+                        <p class="ruta-card-datos">4 km &nbsp;·&nbsp; 45 min</p>
+                        <span class="ruta-card-dif">Fácil</span>
+                        <a href="cubillas.html" class="ruta-card-btn">Ver ruta →</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 05 · COTO CUENDE -->
+            <article class="ruta-card ruta-card--sin-foto anim-entrada">
+                            <div class="ruta-card-foto">
+                    <img src="fotos/coto.jpg" alt="Paseo de Coto Cuende">
+                </div>    
+                <div class="ruta-card-cuerpo">
+                    <span class="ruta-num">05</span>
+                    <div class="ruta-card-info">
+                        <h3 class="ruta-card-nombre">PASEO DE<br>COTO CUENDE</h3>
+                        <p class="ruta-card-datos">1,26 km &nbsp;·&nbsp; 15 min &nbsp;·&nbsp; 42 m</p>
+                        <span class="ruta-card-dif">Fácil</span>
+                        <a href="coto.html" class="ruta-card-btn">Ver ruta →</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 06 · RIANCHO-PONDRA -->
+            <article class="ruta-card anim-entrada">
+                <div class="ruta-card-foto">
+                    <img src="fotos/riancho.jpg" alt="Paseo de Riancho-Pondra">
+                </div>
+                <div class="ruta-card-cuerpo">
+                    <span class="ruta-num">06</span>
+                    <div class="ruta-card-info">
+                        <h3 class="ruta-card-nombre">PASEO DE<br>RIANCHO-PONDRA</h3>
+                        <p class="ruta-card-datos">3,5 km &nbsp;·&nbsp; 1h</p>
+                        <span class="ruta-card-dif">Fácil</span>
+                        <a href="pondra.html" class="ruta-card-btn">Ver ruta →</a>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════
+         FOOTER
+    ═══════════════════════════════════════ -->
+    <footer>
+        <div class="footer-logos">
+            <img src="logos/ramales.svg" alt="Ayuntamiento de Ramales de la Victoria">
+            <img src="logos/naturalblanco.png" alt="Ramales Natural">
+        </div>
+        <p class="footer-copy">© Oscar Saiz Gutiérrez, 2026</p>
     </footer>
 
-    <script src="js/mapa.js"></script> <!-- Carga el script que configura y controla el mapa -->
+    <script src="js/mapa.js"></script>
 
-</body> <!-- Cierra el contenido visible -->
-</html> <!-- Cierra el documento HTML -->
+    <script>
+    (function() {
+        var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // ── IntersectionObserver: fade + slide de entrada ──
+        var els = document.querySelectorAll('.anim-entrada');
+        if (!('IntersectionObserver' in window) || reducedMotion) {
+            els.forEach(function(el) { el.classList.add('visible'); });
+        } else {
+            var obs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(e) {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('visible');
+                        obs.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0, rootMargin: '0px 0px -20px 0px' });
+            els.forEach(function(el) { obs.observe(el); });
+        }
+
+        // ── Parallax suave en el hero ──
+        if (!reducedMotion) {
+            var heroContenido = document.querySelector('#hero .hero-contenido');
+            var heroScroll    = document.querySelector('#hero .hero-scroll');
+            function onScroll() {
+                var y = window.scrollY;
+                var vh = window.innerHeight;
+                if (y > vh) return;
+                var pct = y / vh;
+                if (heroContenido) {
+                    heroContenido.style.transform = 'translateY(' + (y * 0.3) + 'px)';
+                    heroContenido.style.opacity   = 1 - pct * 1.4;
+                }
+                if (heroScroll) {
+                    heroScroll.style.opacity = 1 - pct * 3;
+                }
+            }
+            window.addEventListener('scroll', onScroll, { passive: true });
+        }
+    })();
+    </script>
+</body>
+</html>

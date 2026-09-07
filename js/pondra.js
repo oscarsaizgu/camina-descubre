@@ -24,3 +24,5 @@ cargarTrack(mapa, GPX, 0.1);
 
 crearLightbox();
 crearMarcadores(mapa, puntosInteres);
+
+renderizarPuntosInteres(puntosInteres);

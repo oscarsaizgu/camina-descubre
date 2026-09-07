@@ -177,3 +177,67 @@ function crearMarcadoresConStreetView(mapa, puntosInteres) {
         });
     });
 }
+
+
+// ── Abre el lightbox con una foto ─────────────────────────
+function abrirLightboxFoto(foto, nombre) {
+    var img    = document.getElementById('lightbox-img');
+    var iframe = document.getElementById('lightbox-iframe');
+    var titulo = document.getElementById('lightbox-titulo');
+    if (img)    { img.src = foto; img.style.display = 'block'; }
+    if (iframe) { iframe.style.display = 'none'; iframe.src = ''; }
+    if (titulo)   titulo.textContent = nombre;
+    document.getElementById('lightbox').style.display = 'flex';
+}
+
+// ── Abre el lightbox con Street View ─────────────────────
+function abrirLightboxSV(foto, nombre, svUrl) {
+    var img    = document.getElementById('lightbox-img');
+    var iframe = document.getElementById('lightbox-iframe');
+    var titulo = document.getElementById('lightbox-titulo');
+    if (svUrl) {
+        if (iframe) { iframe.src = svUrl; iframe.style.display = 'block'; }
+        if (img)    img.style.display = 'none';
+    } else if (foto) {
+        if (img)    { img.src = foto; img.style.display = 'block'; }
+        if (iframe) { iframe.style.display = 'none'; iframe.src = ''; }
+    }
+    if (titulo) titulo.textContent = nombre;
+    document.getElementById('lightbox').style.display = 'flex';
+}
+
+// ── Renderiza tarjetas de puntos de interés ───────────────
+// Llamar DESPUÉS de crearLightbox() / crearLightboxConStreetView()
+function renderizarPuntosInteres(puntos) {
+    var grid    = document.querySelector('.ruta-puntos-grid');
+    var seccion = document.querySelector('.ruta-puntos');
+    if (!grid) return;
+    if (!puntos || puntos.length === 0) {
+        if (seccion) seccion.style.display = 'none';
+        return;
+    }
+    puntos.forEach(function(p, i) {
+        var num = String(i + 1).padStart(2, '0');
+        var fotoHTML = p.foto
+            ? '<img src="' + p.foto + '" alt="' + p.nombre + '" loading="lazy">'
+            : '<span class="punto-card-foto-placeholder">' + (p.streetview ? '360°' : '·') + '</span>';
+        var card = document.createElement('div');
+        card.className = 'punto-card';
+        card.innerHTML =
+            '<div class="punto-card-foto">' + fotoHTML + '</div>' +
+            '<div class="punto-card-cuerpo">' +
+                '<span class="punto-num">' + num + '</span>' +
+                '<span class="punto-nombre">' + p.nombre + '</span>' +
+            '</div>';
+        if (p.foto || p.streetview) {
+            card.addEventListener('click', function() {
+                if (p.streetview) {
+                    abrirLightboxSV(p.foto, p.nombre, p.streetview);
+                } else {
+                    abrirLightboxFoto(p.foto, p.nombre);
+                }
+            });
+        }
+        grid.appendChild(card);
+    });
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estilos de mapa — Camina y Descubre</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #f5ead8; font-family: Georgia, sans-serif; }
+header { background: #2d4a35; padding: 1.5rem 2rem; }
+header h1 { color: #f5ead8; font-size: 1.1rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; }
+header p { color: rgba(245,234,216,0.55); font-size: 0.8rem; margin-top: 0.25rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+.card { background: #ede3cd; border: 1.5px solid rgba(45,74,53,0.15); border-radius: 10px; overflow: hidden; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s; }
+.card:hover { border-color: #2d4a35; box-shadow: 0 4px 20px rgba(45,74,53,0.15); }
+.card.sel { border-color: #2d4a35; border-width: 2.5px; box-shadow: 0 0 0 3px rgba(45,74,53,0.15); }
+.map { height: 220px; width: 100%; }
+.info { padding: 0.9rem 1rem; display: flex; justify-content: space-between; align-items: center; }
+.nombre { font-size: 0.9rem; font-weight: 700; color: #1a2e1f; }
+.desc { font-size: 0.75rem; color: #6a8a6e; margin-top: 0.15rem; }
+.badge { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.25rem 0.6rem; border-radius: 20px; background: #2d4a35; color: #f5ead8; opacity: 0; transition: opacity 0.2s; white-space: nowrap; }
+.card.sel .badge { opacity: 1; }
+footer { text-align: center; padding: 1rem 2rem 2rem; font-size: 0.8rem; color: #6a8a6e; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Estilos de mapa</h1>
+  <p>Camina y Descubre · Ramales de la Victoria · Haz clic para elegir</p>
+</header>
+<div class="grid" id="grid"></div>
+<footer>Todos gratuitos y sin API key · Haz clic en el que más te guste</footer>
+<script>
+var estilos = [
+  { nombre:'IGN España (Base)', desc:'Mapa oficial español — el más parecido a QGIS', url:'https://www.ign.es/wmts/ign-base?request=getTile&service=WMTS&VERSION=1.0.0&Layer=IGNBaseTodo&Style=default&Format=image/png&TILEMATRIXSET=GoogleMapsCompatible&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}', opts:{attribution:'© IGN',maxZoom:19} },
+  { nombre:'IGN MTN25 (Topográfico)', desc:'Mapa topográfico 1:25.000 del IGN', url:'https://www.ign.es/wmts/mapa-raster?request=getTile&service=WMTS&VERSION=1.0.0&Layer=MTN25&Style=default&Format=image/jpeg&TILEMATRIXSET=GoogleMapsCompatible&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}', opts:{attribution:'© IGN',maxZoom:18} },
+  { nombre:'OpenStreetMap', desc:'Clásico, muy detallado y actualizado', url:'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', opts:{attribution:'© OSM',maxZoom:19} },
+  { nombre:'CyclOSM', desc:'Rutas y senderos bien marcados', url:'https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png', opts:{attribution:'© CyclOSM',maxZoom:20} },
+  { nombre:'Esri Topográfico', desc:'Relieve y curvas de nivel de Esri', url:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', opts:{attribution:'© Esri',maxZoom:18} },
+  { nombre:'Esri Satélite', desc:'Foto aérea con etiquetas de lugares', url:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', opts:{attribution:'© Esri',maxZoom:20} },
+  { nombre:'Esri Calles', desc:'Limpio y legible, estilo Google Maps', url:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', opts:{attribution:'© Esri',maxZoom:18} },
+  { nombre:'Esri Gris', desc:'Minimalista — los tracks destacan al máximo', url:'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Canvas/MapServer/tile/{z}/{y}/{x}', opts:{attribution:'© Esri',maxZoom:16} }
+];
+var centro = [43.2513, -3.4607];
+var grid = document.getElementById('grid');
+estilos.forEach(function(e, i) {
+  var card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = '<div class="map" id="m'+i+'"></div><div class="info"><div><div class="nombre">'+e.nombre+'</div><div class="desc">'+e.desc+'</div></div><span class="badge">✓ Elegido</span></div>';
+  grid.appendChild(card);
+  setTimeout(function() {
+    var m = L.map('m'+i, { zoomControl:false, attributionControl:false }).setView(centro, 13);
+    L.tileLayer(e.url, e.opts).addTo(m);
+    card.addEventListener('click', function() {
+      document.querySelectorAll('.card').forEach(function(c){c.classList.remove('sel');});
+      card.classList.add('sel');
+    });
+  }, i * 60);
+});
+</script>
+</body>
+</html>
