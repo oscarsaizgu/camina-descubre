@@ -1,107 +1,165 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paseo de Pondra-Riancho — Camina y Descubre</title>
-    <link rel="stylesheet" href="css/estilos.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css">
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
-    <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Paseo de Pondra-Riancho — Camina y Descubre</title>
+<link href="css/estilos.css" rel="stylesheet"/>
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
+<link href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css" rel="stylesheet"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+<script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
 </head>
 <body class="pagina-ruta">
-
-    <a href="index.html" class="btn-volver">
-        <span class="btn-volver-completo">← TODAS LAS RUTAS</span>
-        <span class="btn-volver-corto">←</span>
-    </a>
-
-    <header>
-        <span class="ruta-header-label">CAMINA Y DESCUBRE</span>
-        <div class="ruta-header-num" aria-hidden="true">06</div>
-        <h1>Paseo de Pondra-Riancho</h1>
-        <p>RAMALES DE LA VICTORIA</p>
-    </header>
-
-    <main>
-        <section class="ruta-datos">
-            <div class="ruta-datos-inner">
-                <div class="ruta-dato">
-                    <img src="iconos/distancia.svg" alt="">
-                    <span class="ruta-dato-val">3,32 km</span>
-                    <span class="ruta-dato-lab">Distancia</span>
-                </div>
-                <div class="ruta-dato">
-                    <img src="iconos/reloj.svg" alt="">
-                    <span class="ruta-dato-val">50 min</span>
-                    <span class="ruta-dato-lab">Duración</span>
-                </div>
-                <div class="ruta-dato">
-                    <img src="iconos/altitud.svg" alt="">
-                    <span class="ruta-dato-val">15m</span>
-                    <span class="ruta-dato-lab">Desnivel</span>
-                </div>
-                <div class="ruta-dato">
-                    <img src="iconos/circular.svg" alt="">
-                    <span class="ruta-dato-val">Circular</span>
-                    <span class="ruta-dato-lab">Tipo</span>
-                </div>
-            </div>
-        </section>
-        <section class="ruta-mapa-bloque">
-            <div id="mapa-detalle"></div>
-            <div id="elevacion">
-                <div id="grafico-elevacion"></div>
-            </div>
-        </section>
-        <section class="ruta-puntos">
-            <div class="ruta-puntos-cabecera">
-                <span class="ruta-puntos-label">A LO LARGO DEL CAMINO</span>
-                <h2 class="ruta-puntos-titulo">PUNTOS DEL RECORRIDO</h2>
-            </div>
-            <div class="ruta-puntos-grid"></div>
-        </section>
-        <section class="ruta-descripcion">
-            <div class="ruta-descripcion-inner">
-                <span class="ruta-descripcion-label">DESCRIPCIÓN</span>
-                <h2 class="ruta-descripcion-titulo">EL RECORRIDO</h2>
-                <div class="ruta-descripcion-texto">
-                    <p>Si empezamos el paseo desde el puente de entrada al barrio de Pondra, podemos dejar el coche al lado de la parada de autobús que hay en la carretera que va a Carranza. Cruzamos el puente y atravesamos el barrio hasta llegar a la ermita de San Salvador y cogemos la carretera que pasa por debajo de la misma para recorrer la mies de Nogales, que va desde Pondra hasta el puente de Riancho.</p>
-                    <p>Cruzando dicho puente atravesamos la mies de Riancho, ocupada en parte por el Parque Empresarial Alto Asón, hasta llegar a la ermita de San Juan, desde donde saldremos a la carretera general y, cogiendo a la derecha, volveremos hasta el punto de inicio de la ruta.</p>
-                    <p>Durante todo el camino iremos por la orilla y cruzaremos el río Carranza, uno de los afluentes más importantes del río Asón.</p>
-                </div>
-            </div>
-        </section>
-        <section class="ruta-info">
-            <div class="ruta-info-cabecera">
-                <span class="ruta-info-label">LO QUE ENCONTRARÁS</span>
-                <h2 class="ruta-info-titulo">INFORMACIÓN ÚTIL</h2>
-            </div>
-            <div class="ruta-info-grid">
-                <div class="ruta-servicio"><img src="iconos/niños.svg" alt=""><span>Apta para niños</span></div>
-                <div class="ruta-servicio"><img src="iconos/compartido.svg" alt=""><span>Calzada compartida</span></div>
-                <div class="ruta-servicio"><img src="iconos/bici.svg" alt=""><span>Apta para bicicletas</span></div>
-                <div class="ruta-servicio"><img src="iconos/carrito.svg" alt=""><span>Apta para carritos</span></div>
-            </div>
-        </section>
-        <section class="ruta-cta">
-            <p class="ruta-cta-pregunta">¿LISTO PARA CAMINAR?</p>
-            <a href="seguir.html?ruta=pondra" class="ruta-cta-btn">SEGUIR LA RUTA →</a>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-logos">
-            <img src="logos/ramales.svg" alt="Ayuntamiento de Ramales de la Victoria">
-            <img src="logos/naturalblanco.png" alt="Ramales Natural">
-        </div>
-        <p class="footer-copy">© Oscar Saiz Gutiérrez, 2026</p>
-    </footer>
-
-    <script src="js/ruta-comun.js"></script>
-    <script src="js/pondra.js"></script>
-
+<a class="btn-volver" href="index.html">
+<span class="btn-volver-completo">← TODAS LAS RUTAS</span>
+<span class="btn-volver-corto">←</span>
+</a>
+<header>
+<span class="ruta-header-label">CAMINA Y DESCUBRE</span>
+<div aria-hidden="true" class="ruta-header-num">06</div>
+<h1>Paseo de Pondra-Riancho</h1>
+<p>RAMALES DE LA VICTORIA</p>
+</header>
+<main>
+<section class="ruta-datos">
+<div class="ruta-datos-inner">
+<div class="ruta-dato">
+<img alt="" src="iconos/distancia.svg"/>
+<span class="ruta-dato-val">3,32 km</span>
+<span class="ruta-dato-lab">Distancia</span>
+</div>
+<div class="ruta-dato">
+<img alt="" src="iconos/reloj.svg"/>
+<span class="ruta-dato-val">50 min</span>
+<span class="ruta-dato-lab">Duración</span>
+</div>
+<div class="ruta-dato">
+<img alt="" src="iconos/altitud.svg"/>
+<span class="ruta-dato-val">15m</span>
+<span class="ruta-dato-lab">Desnivel</span>
+</div>
+<div class="ruta-dato">
+<img alt="" src="iconos/circular.svg"/>
+<span class="ruta-dato-val">Circular</span>
+<span class="ruta-dato-lab">Tipo</span>
+</div>
+</div>
+</section>
+<section class="ruta-mapa-bloque">
+<div id="mapa-detalle"></div>
+<div id="elevacion">
+<div id="grafico-elevacion"></div>
+</div>
+</section>
+<section class="ruta-puntos">
+<div class="ruta-puntos-cabecera">
+<span class="ruta-puntos-label">A LO LARGO DEL CAMINO</span>
+<h2 class="ruta-puntos-titulo">PUNTOS DEL RECORRIDO</h2>
+</div>
+<div class="ruta-puntos-grid"></div>
+</section>
+<section class="ruta-descripcion">
+<div class="ruta-descripcion-inner">
+<span class="ruta-descripcion-label">DESCRIPCIÓN</span>
+<h2 class="ruta-descripcion-titulo">EL RECORRIDO</h2>
+<div class="ruta-descripcion-texto">
+<p>Si empezamos el paseo desde el puente de entrada al barrio de Pondra, podemos dejar el coche al lado de la parada de autobús que hay en la carretera que va a Carranza. Cruzamos el puente y atravesamos el barrio hasta llegar a la ermita de San Salvador y cogemos la carretera que pasa por debajo de la misma para recorrer la mies de Nogales, que va desde Pondra hasta el puente de Riancho.</p>
+<p>Cruzando dicho puente atravesamos la mies de Riancho, ocupada en parte por el Parque Empresarial Alto Asón, hasta llegar a la ermita de San Juan, desde donde saldremos a la carretera general y, cogiendo a la derecha, volveremos hasta el punto de inicio de la ruta.</p>
+<p>Durante todo el camino iremos por la orilla y cruzaremos el río Carranza, uno de los afluentes más importantes del río Asón.</p>
+</div>
+</div>
+</section>
+<section class="ruta-entorno">
+<div class="ruta-entorno-header">
+<span class="ruta-entorno-label">DESCUBRE EL ENTORNO</span>
+<h2 class="ruta-entorno-titulo">MIESES, RÍO<br/>Y ENCINAR</h2>
+<p class="ruta-entorno-intro">El Paseo de Riancho-Pondra recorre un paisaje de mieses, el bosque de ribera del río Carranza y el encinar cantábrico de la Peña Gibaja: tres entornos muy diferentes en apenas 3 km.</p>
+</div><div class="ruta-entorno-tabs"><button class="ruta-entorno-tab activa" data-panel="paisaje">El paisaje</button><button class="ruta-entorno-tab" data-panel="fauna">La fauna</button><button class="ruta-entorno-tab" data-panel="invasoras">Invasoras</button></div><div class="ruta-entorno-panel activo" id="panel-paisaje"><div class="ruta-entorno-bloque">
+<span class="ruta-entorno-cat-label">El paisaje</span>
+<h3 class="ruta-entorno-cat-titulo">MIESES Y BOSQUE DE RIBERA</h3>
+<div class="ruta-entorno-fila">
+<div class="ruta-entorno-fila-texto">
+<p class="ruta-entorno-texto">A ambos lados del río Carranza se extienden las <strong>mieses</strong>: prados de siega y de diente que junto con las huertas forman un paisaje agrario de elevada fertilidad, reducida pendiente y gran productividad. Además de especies silvestres herbáceas, encontramos cultivos como el maíz.</p>
+<p class="ruta-entorno-texto">A lo largo del río Carranza se desarrolla un <strong>bosque de ribera</strong> con disposición en galería, formado principalmente por alisos y sauces. En las laderas de la Peña Gibaja podemos observar el característico <strong>encinar cantábrico</strong>, que se desarrolla sobre la base caliza del terreno.</p>
+</div>
+<div class="ruta-entorno-fila-foto">
+<img alt="Entorno de Riancho-Pondra" src="fotos/riancho.jpg"/>
+</div>
+</div>
+<div class="ruta-entorno-lista">
+<span class="ruta-entorno-lista-item">Aliso <em>Alnus glutinosa</em></span>
+<span class="ruta-entorno-lista-item">Sauce <em>Salix alba</em></span>
+<span class="ruta-entorno-lista-item">Encina <em>Quercus ilex</em></span>
+<span class="ruta-entorno-lista-item">Maíz <em>Zea mays</em></span>
+</div>
+</div></div><div class="ruta-entorno-panel" id="panel-fauna"><div class="ruta-entorno-bloque">
+<span class="ruta-entorno-cat-label">La fauna</span>
+<h3 class="ruta-entorno-cat-titulo">VIDA SILVESTRE EN UN PAISAJE HUMANIZADO</h3>
+<div class="ruta-entorno-fila ruta-entorno-fila--invertida">
+<div class="ruta-entorno-fila-foto">
+<img alt="Puente del recorrido" src="fotos/puenteromano.jpeg"/>
+</div>
+<div class="ruta-entorno-fila-texto">
+<p class="ruta-entorno-texto">Aunque se trata de un paisaje humanizado, en estas zonas también habitan numerosos animales silvestres. Los <strong>corzos</strong> son frecuentes y pueden observarse al amanecer o al atardecer, junto a otros mamíferos como jabalíes, zorros, tejones, jinetas, comadrejas y ratones.</p>
+<p class="ruta-entorno-texto">También es fácil encontrar ánades, garzas, petirrojos, jilgueros, pinzones, lavanderas, arrendajos, urracas y cornejas, además de rapaces como milanos, busardos ratoneros y buitres. Entre la vegetación son habituales lagartos, lagartijas y el <strong>lución</strong>.</p>
+</div>
+</div>
+<div class="ruta-entorno-especies">
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Jabalí" src="fotos/fauna/jabali.jpg"/></div><span class="ruta-entorno-especie-nombre">JabalíSus scrofa</span><span class="ruta-entorno-especie-cientifico">Sus scrofa</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">JabalíSus scrofa</span><span class="ruta-entorno-especie-cientifico">Sus scrofa</span><p class="ruta-entorno-especie-desc">Especie característica de este tramo de la ruta.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Pico picapinos" src="fotos/fauna/picopicapinos.jpeg"/></div><span class="ruta-entorno-especie-nombre">Pico picapinos</span><span class="ruta-entorno-especie-cientifico">Dendrocopos major</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Pico picapinos</span><span class="ruta-entorno-especie-cientifico">Dendrocopos major</span><p class="ruta-entorno-especie-desc">El pájaro carpintero más común. Su tamborileo rítmico sobre los troncos es señal inequívoca de su presencia.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Lución" src="fotos/fauna/lucion.jpeg"/></div><span class="ruta-entorno-especie-nombre">Lución</span><span class="ruta-entorno-especie-cientifico">Anguis fragilis</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Lución</span><span class="ruta-entorno-especie-cientifico">Anguis fragilis</span><p class="ruta-entorno-especie-desc">Lagarto áptero que se confunde con una serpiente. Completamente inofensivo y beneficioso para el campo.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Garza real" src="fotos/fauna/garza.jpeg"/></div><span class="ruta-entorno-especie-nombre">Garza real</span><span class="ruta-entorno-especie-cientifico">Ardea cinerea</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Garza real</span><span class="ruta-entorno-especie-cientifico">Ardea cinerea</span><p class="ruta-entorno-especie-desc">Ave zancuda de gran porte habitual en las orillas del Asón. Caza peces con paciencia inmóvil.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Corzo" src="fotos/fauna/corzo.jpeg"/></div><span class="ruta-entorno-especie-nombre">Corzo</span><span class="ruta-entorno-especie-cientifico">Capreolus capreolus</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Corzo</span><span class="ruta-entorno-especie-cientifico">Capreolus capreolus</span><p class="ruta-entorno-especie-desc">El mayor mamífero del encinar. Por sus hábitos crepusculares, sus huellas son más fáciles de encontrar que el animal.</p></div></div></div>
+</div>
+<div class="ruta-entorno-lista">
+<span class="ruta-entorno-lista-item">Zorro <em>Vulpes vulpes</em></span>
+<span class="ruta-entorno-lista-item">Tejón <em>Meles meles</em></span>
+<span class="ruta-entorno-lista-item">Gineta <em>Genetta genetta</em></span>
+<span class="ruta-entorno-lista-item">Comadreja <em>Mustela nivalis</em></span>
+<span class="ruta-entorno-lista-item">Busardo ratonero <em>Buteo buteo</em></span>
+<span class="ruta-entorno-lista-item">Milano real <em>Milvus milvus</em></span>
+<span class="ruta-entorno-lista-item">Buitre leonado <em>Gyps fulvus</em></span>
+</div>
+</div></div><div class="ruta-entorno-panel" id="panel-invasoras"><div class="ruta-entorno-bloque">
+<span class="ruta-entorno-cat-label">Atención</span>
+<h3 class="ruta-entorno-cat-titulo">ESPECIES EXÓTICAS INVASORAS</h3>
+<p class="ruta-entorno-texto" style="margin-bottom:1.2rem;">A lo largo del recorrido podemos encontrar especies exóticas invasoras que compiten con la flora autóctona y alteran el equilibrio del ecosistema. Su presencia en los márgenes del río y los caminos es un problema creciente.</p>
+<div class="ruta-entorno-lista">
+<span class="ruta-entorno-lista-item">Crocosmia <em>Crocosmia × crocosmiiflora</em></span>
+<span class="ruta-entorno-lista-item">Tradescantia <em>Tradescantia fluminensis</em></span>
+<span class="ruta-entorno-lista-item">Caña común <em>Arundo donax</em></span>
+<span class="ruta-entorno-lista-item">Nomeolvides <em>Myosotis sp.</em></span>
+</div>
+</div></div>
+</section>
+<section class="ruta-info">
+<div class="ruta-info-cabecera">
+<span class="ruta-info-label">LO QUE ENCONTRARÁS</span>
+<h2 class="ruta-info-titulo">INFORMACIÓN ÚTIL</h2>
+</div>
+<div class="ruta-info-grid">
+<div class="ruta-servicio"><img alt="" src="iconos/niños.svg"/><span>Apta para niños</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/compartido.svg"/><span>Calzada compartida</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/bici.svg"/><span>Apta para bicicletas</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/carrito.svg"/><span>Apta para carritos</span></div>
+</div>
+</section>
+<section class="ruta-cta">
+<p class="ruta-cta-pregunta">¿LISTO PARA CAMINAR?</p>
+<a class="ruta-cta-btn" href="seguir.html?ruta=pondra">SEGUIR LA RUTA →</a>
+</section>
+</main>
+<footer>
+<div class="footer-logos">
+<img alt="Ayuntamiento de Ramales de la Victoria" src="logos/ramales.svg"/>
+<img alt="Ramales Natural" src="logos/naturalblanco.png"/>
+</div>
+<p class="footer-copy">© Oscar Saiz Gutiérrez, 2026</p>
+</footer>
+<script src="js/ruta-comun.js"></script>
+<script src="js/pondra.js"></script>
 </body>
 </html>

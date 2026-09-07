@@ -1,127 +1,193 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ruta de las Cuevas — Camina y Descubre</title>
-    <link rel="stylesheet" href="css/estilos.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css">
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
-    <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ruta de las Cuevas — Camina y Descubre</title>
+<link href="css/estilos.css" rel="stylesheet"/>
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
+<link href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css" rel="stylesheet"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+<script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
 </head>
 <body class="pagina-ruta">
-
-    <a href="index.html" class="btn-volver">
-        <span class="btn-volver-completo">← TODAS LAS RUTAS</span>
-        <span class="btn-volver-corto">←</span>
-    </a>
-
-    <header>
-        <span class="ruta-header-label">CAMINA Y DESCUBRE</span>
-        <div class="ruta-header-num" aria-hidden="true">01</div>
-        <h1>Ruta de las Cuevas</h1>
-        <p>RAMALES DE LA VICTORIA</p>
-    </header>
-
-    <main>
-        <section class="ruta-datos">
-            <div class="ruta-datos-inner">
-                <div class="ruta-dato">
-                    <img src="iconos/distancia.svg" alt="">
-                    <span class="ruta-dato-val">6 km</span>
-                    <span class="ruta-dato-lab">Distancia</span>
-                </div>
-                <div class="ruta-dato">
-                    <img src="iconos/reloj.svg" alt="">
-                    <span class="ruta-dato-val">1h</span>
-                    <span class="ruta-dato-lab">Duración</span>
-                </div>
-                <div class="ruta-dato">
-                    <img src="iconos/altitud.svg" alt="">
-                    <span class="ruta-dato-val">254m</span>
-                    <span class="ruta-dato-lab">Desnivel</span>
-                </div>
-                <div class="ruta-dato">
-                    <img src="iconos/circular.svg" alt="">
-                    <span class="ruta-dato-val">Lineal</span>
-                    <span class="ruta-dato-lab">Tipo</span>
-                </div>
-            </div>
-        </section>
-        <section class="ruta-mapa-bloque">
-            <div id="mapa-detalle"></div>
-            <div id="elevacion">
-                <div id="grafico-elevacion"></div>
-            </div>
-        </section>
-        <section class="ruta-puntos">
-            <div class="ruta-puntos-cabecera">
-                <span class="ruta-puntos-label">A LO LARGO DEL CAMINO</span>
-                <h2 class="ruta-puntos-titulo">PUNTOS DEL RECORRIDO</h2>
-            </div>
-            <div class="ruta-puntos-grid"></div>
-        </section>
-        <section class="ruta-descripcion">
-            <div class="ruta-descripcion-inner">
-                <span class="ruta-descripcion-label">DESCRIPCIÓN</span>
-                <h2 class="ruta-descripcion-titulo">EL RECORRIDO</h2>
-                <div class="ruta-descripcion-texto">
-                    <p>Desde el Ayuntamiento, tomamos la N-629 en dirección al Puerto de Los Tornos. A 300 metros, tras pasar el cuartel de la Guardia Civil, giramos a la izquierda por una carretera que pronto se convierte en un sendero que discurre por un encinar cantábrico. El camino bordea una imponente pared vertical de roca caliza, donde empieza la via ferrata El Cáliz.</p>
-                    <p>Llegamos al aparcamiento, desde donde un sendero asciende hasta el Mirador de Covalanas, con vistas espectaculares al pueblo de Ramales, el Pico San Vicente y la Sierra del Hornijo. Continuando el ascenso, alcanzamos la entrada de la Cueva de Covalanas, decorada con pinturas rupestres de ciervas de hace más de 20.000 años. Justo debajo, la Cueva del Mirón completa este núcleo arqueológico excepcional.</p>
-                    <p>Siguiendo el recorrido, llegamos a la Cueva de la Luz, antes de retomar el descenso, donde unas escaleras nos llevan hasta la Cueva el Haza, una ventana natural abierta al Pico San Vicente. El recorrido culmina en la Cueva de Cullalvera, cuya monumental entrada es uno de los rincones más impresionantes de la ruta. Desde aquí regresamos al Ayuntamiento, cerrando el círculo.</p>
-                </div>
-            </div>
-        </section>
-        <section class="ruta-info">
-            <div class="ruta-info-cabecera">
-                <span class="ruta-info-label">LO QUE ENCONTRARÁS</span>
-                <h2 class="ruta-info-titulo">INFORMACIÓN ÚTIL</h2>
-            </div>
-            <div class="ruta-info-grid">
-                <div class="ruta-servicio">
-                    <img src="iconos/picnic.svg" alt="">
-                    <span>Zona Picnic</span>
-                </div>
-                <div class="ruta-servicio">
-                    <img src="iconos/cuevas.svg" alt="">
-                    <span>Cueva</span>
-                </div>
-                <div class="ruta-servicio">
-                    <img src="iconos/niños.svg" alt="">
-                    <span>Apta para niños</span>
-                </div>
-                <div class="ruta-servicio">
-                    <img src="iconos/compartido.svg" alt="">
-                    <span>Calzada compartida</span>
-                </div>
-                <div class="ruta-servicio">
-                    <img src="iconos/bici.svg" alt="">
-                    <span>Apta para bicicletas</span>
-                </div>
-                <div class="ruta-servicio">
-                    <img src="iconos/restaurante.svg" alt="">
-                    <span>Restaurante</span>
-                </div>
-            </div>
-        </section>
-        <section class="ruta-cta">
-            <p class="ruta-cta-pregunta">¿LISTO PARA CAMINAR?</p>
-            <a href="seguir.html?ruta=cuevas" class="ruta-cta-btn">SEGUIR LA RUTA →</a>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-logos">
-            <img src="logos/ramales.svg" alt="Ayuntamiento de Ramales de la Victoria">
-            <img src="logos/naturalblanco.png" alt="Ramales Natural">
-        </div>
-        <p class="footer-copy">© Oscar Saiz Gutiérrez, 2026</p>
-    </footer>
-
-    <script src="js/ruta-comun.js"></script>
-    <script src="js/cuevas.js"></script>
-
+<a class="btn-volver" href="index.html">
+<span class="btn-volver-completo">← TODAS LAS RUTAS</span>
+<span class="btn-volver-corto">←</span>
+</a>
+<header>
+<span class="ruta-header-label">CAMINA Y DESCUBRE</span>
+<div aria-hidden="true" class="ruta-header-num">01</div>
+<h1>Ruta de las Cuevas</h1>
+<p>RAMALES DE LA VICTORIA</p>
+</header>
+<main>
+<section class="ruta-datos">
+<div class="ruta-datos-inner">
+<div class="ruta-dato">
+<img alt="" src="iconos/distancia.svg"/>
+<span class="ruta-dato-val">6 km</span>
+<span class="ruta-dato-lab">Distancia</span>
+</div>
+<div class="ruta-dato">
+<img alt="" src="iconos/reloj.svg"/>
+<span class="ruta-dato-val">1h</span>
+<span class="ruta-dato-lab">Duración</span>
+</div>
+<div class="ruta-dato">
+<img alt="" src="iconos/altitud.svg"/>
+<span class="ruta-dato-val">254m</span>
+<span class="ruta-dato-lab">Desnivel</span>
+</div>
+<div class="ruta-dato">
+<img alt="" src="iconos/circular.svg"/>
+<span class="ruta-dato-val">Lineal</span>
+<span class="ruta-dato-lab">Tipo</span>
+</div>
+</div>
+</section>
+<section class="ruta-mapa-bloque">
+<div id="mapa-detalle"></div>
+<div id="elevacion">
+<div id="grafico-elevacion"></div>
+</div>
+</section>
+<section class="ruta-puntos">
+<div class="ruta-puntos-cabecera">
+<span class="ruta-puntos-label">A LO LARGO DEL CAMINO</span>
+<h2 class="ruta-puntos-titulo">PUNTOS DEL RECORRIDO</h2>
+</div>
+<div class="ruta-puntos-grid"></div>
+</section>
+<section class="ruta-descripcion">
+<div class="ruta-descripcion-inner">
+<span class="ruta-descripcion-label">DESCRIPCIÓN</span>
+<h2 class="ruta-descripcion-titulo">EL RECORRIDO</h2>
+<div class="ruta-descripcion-texto">
+<p>Desde el Ayuntamiento, tomamos la N-629 en dirección al Puerto de Los Tornos. A 300 metros, tras pasar el cuartel de la Guardia Civil, giramos a la izquierda por una carretera que pronto se convierte en un sendero que discurre por un encinar cantábrico. El camino bordea una imponente pared vertical de roca caliza, donde empieza la via ferrata El Cáliz.</p>
+<p>Llegamos al aparcamiento, desde donde un sendero asciende hasta el Mirador de Covalanas, con vistas espectaculares al pueblo de Ramales, el Pico San Vicente y la Sierra del Hornijo. Continuando el ascenso, alcanzamos la entrada de la Cueva de Covalanas, decorada con pinturas rupestres de ciervas de hace más de 20.000 años. Justo debajo, la Cueva del Mirón completa este núcleo arqueológico excepcional.</p>
+<p>Siguiendo el recorrido, llegamos a la Cueva de la Luz, antes de retomar el descenso, donde unas escaleras nos llevan hasta la Cueva el Haza, una ventana natural abierta al Pico San Vicente. El recorrido culmina en la Cueva de Cullalvera, cuya monumental entrada es uno de los rincones más impresionantes de la ruta. Desde aquí regresamos al Ayuntamiento, cerrando el círculo.</p>
+</div>
+</div>
+</section>
+<section class="ruta-entorno">
+<div class="ruta-entorno-header">
+<span class="ruta-entorno-label">DESCUBRE EL ENTORNO</span>
+<h2 class="ruta-entorno-titulo">NATURALEZA<br/>E HISTORIA</h2>
+<p class="ruta-entorno-intro">Cada paso del camino es una oportunidad para conocer el encinar cantábrico, su fauna y los vestigios prehistóricos que dan nombre a esta ruta.</p>
+</div><div class="ruta-entorno-tabs"><button class="ruta-entorno-tab activa" data-panel="vegetacion">La vegetación</button><button class="ruta-entorno-tab" data-panel="fauna">La fauna</button></div><div class="ruta-entorno-panel activo" id="panel-vegetacion"><div class="ruta-entorno-bloque">
+<span class="ruta-entorno-cat-label">La vegetación</span>
+<h3 class="ruta-entorno-cat-titulo">EL ENCINAR CANTÁBRICO</h3>
+<div class="ruta-entorno-fila">
+<div class="ruta-entorno-fila-texto">
+<p class="ruta-entorno-texto">Durante todo el paseo recorreremos y tendremos vistas a espléndidas masas de encinar cantábrico. Siendo su distribución habitual el clima mediterráneo, estos encinares tienen carácter relicto apareciendo en climas oceánicos, como el nuestro, lejos de su ambiente original.</p>
+<p class="ruta-entorno-texto">En estos bosques, las encinas o carrascas forman un estrato arbóreo denso y oscuro, aunque tiene poca altura. Acompañando a la encina aparecen árboles como laureles, aladiernos, madroños, acebos y labiérnagos. El estrato arbustivo también es denso, con aligustre, cornejo, espino albar, rusco, endrino y cornicabra, además de trepadoras como zarzaparrilla, hiedra, liana o nueza negra.</p>
+</div>
+<div class="ruta-entorno-fila-foto">
+<img alt="Encinar cantábrico desde el mirador" src="fotos/mirador.jpg"/>
+</div>
+</div>
+<div class="ruta-entorno-caja">
+<span class="ruta-entorno-caja-titulo">LOS ENCINARES MONTAÑOSOS</span>
+<p>Los encinares montanos tienden a ocupar áreas con un microclima apropiado: vertientes pronunciadas con suelos rocosos, normalmente calizos, y bien drenados. Habitualmente aparecen en las solanas de las montañas y en zonas donde los vientos tienen un efecto desecante, haciendo que la humedad sea mínima.</p>
+</div>
+<div class="ruta-entorno-lista">
+<span class="ruta-entorno-lista-item">Encina <em>Quercus ilex</em></span>
+<span class="ruta-entorno-lista-item">Laurel <em>Laurus nobilis</em></span>
+<span class="ruta-entorno-lista-item">Aladierno <em>Rhamnus alaternus</em></span>
+<span class="ruta-entorno-lista-item">Madroño <em>Arbutus unedo</em></span>
+<span class="ruta-entorno-lista-item">Acebo <em>Ilex aquifolium</em></span>
+<span class="ruta-entorno-lista-item">Labiérnago <em>Phillyrea latifolia</em></span>
+<span class="ruta-entorno-lista-item">Cornejo <em>Cornus sanguinea</em></span>
+<span class="ruta-entorno-lista-item">Espino albar <em>Crataegus monogyna</em></span>
+<span class="ruta-entorno-lista-item">Rusco <em>Ruscus aculeatus</em></span>
+<span class="ruta-entorno-lista-item">Endrino <em>Prunus spinosa</em></span>
+<span class="ruta-entorno-lista-item">Zarzaparrilla <em>Smilax aspera</em></span>
+<span class="ruta-entorno-lista-item">Hiedra <em>Hedera helix</em></span>
+</div>
+</div></div><div class="ruta-entorno-panel" id="panel-fauna"><div class="ruta-entorno-bloque">
+<span class="ruta-entorno-cat-label">La fauna</span>
+<h3 class="ruta-entorno-cat-titulo">VIDA EN EL ENCINAR</h3>
+<div class="ruta-entorno-fila ruta-entorno-fila--invertida">
+<div class="ruta-entorno-fila-foto">
+<img alt="Paisaje del encinar" src="fotos/penapando.jpg"/>
+</div>
+<div class="ruta-entorno-fila-texto">
+<p class="ruta-entorno-texto">La fauna asociada a los encinares cantábricos es muy abundante y variada. Podremos observar pequeñas aves como petirrojos, jilgueros, currucas, carboneros y herrerillos; córvidos como corneja, chova, urraca y arrendajo.</p>
+<p class="ruta-entorno-texto">Será fácil que sobrevuele sobre nosotros alguna rapaz rupícola de las que viven asociadas a las paredes verticales de roca caliza, como buitre, halcón, búho, milano o cernícalo.</p>
+<p class="ruta-entorno-texto">Será fácil encontrar reptiles como lagartijas y lagartos verdes tomando el sol durante la primavera y el verano.</p>
+</div>
+</div>
+<div class="ruta-entorno-especies">
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Milano real" src="fotos/fauna/milano.jpg"/></div><span class="ruta-entorno-especie-nombre">Milano real</span><span class="ruta-entorno-especie-cientifico">Milvus milvus</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Milano real</span><span class="ruta-entorno-especie-cientifico">Milvus milvus</span><p class="ruta-entorno-especie-desc">Rapaz reconocible por su cola ahorquillada. Sobrevuela las paredes de roca caliza asociadas al encinar.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Ardilla roja" src="fotos/fauna/ardilla.jpg"/></div><span class="ruta-entorno-especie-nombre">Ardilla roja</span><span class="ruta-entorno-especie-cientifico">Sciurus vulgaris</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Ardilla roja</span><span class="ruta-entorno-especie-cientifico">Sciurus vulgaris</span><p class="ruta-entorno-especie-desc">Activa durante el día, se mueve con agilidad entre las ramas de robles y castaños centenarios.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Lagartija" src="fotos/fauna/lagartija.jpeg"/></div><span class="ruta-entorno-especie-nombre">Lagartija</span><span class="ruta-entorno-especie-cientifico">Podarcis hispanicus</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Lagartija</span><span class="ruta-entorno-especie-cientifico">Podarcis hispanicus</span><p class="ruta-entorno-especie-desc">Reptil muy común en el encinar. En primavera y verano es fácil verla tomando el sol sobre las rocas.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Petirrojo" src="fotos/fauna/petirrojo.jpg"/></div><span class="ruta-entorno-especie-nombre">Petirrojo</span><span class="ruta-entorno-especie-cientifico">Erithacus rubecula</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Petirrojo</span><span class="ruta-entorno-especie-cientifico">Erithacus rubecula</span><p class="ruta-entorno-especie-desc">Una de las aves más características del encinar cantábrico. Su canto melodioso acompaña todo el paseo.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Corzo" src="fotos/fauna/corzo.jpeg"/></div><span class="ruta-entorno-especie-nombre">Corzo</span><span class="ruta-entorno-especie-cientifico">Capreolus capreolus</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Corzo</span><span class="ruta-entorno-especie-cientifico">Capreolus capreolus</span><p class="ruta-entorno-especie-desc">El mayor mamífero del encinar. Por sus hábitos crepusculares, sus huellas son más fáciles de encontrar que el animal.</p></div></div></div>
+</div>
+<div class="ruta-entorno-lista">
+<span class="ruta-entorno-lista-item">Erizo <em>Erinaceus europaeus</em></span>
+<span class="ruta-entorno-lista-item">Garduña <em>Martes foina</em></span>
+<span class="ruta-entorno-lista-item">Gineta <em>Genetta genetta</em></span>
+<span class="ruta-entorno-lista-item">Zorro <em>Vulpes vulpes</em></span>
+<span class="ruta-entorno-lista-item">Tejón <em>Meles meles</em></span>
+<span class="ruta-entorno-lista-item">Jabalí <em>Sus scrofa</em></span>
+<span class="ruta-entorno-lista-item">Búho real <em>Bubo bubo</em></span>
+<span class="ruta-entorno-lista-item">Buitre leonado <em>Gyps fulvus</em></span>
+<span class="ruta-entorno-lista-item">Chova piquirroja <em>Pyrrhocorax pyrrhocorax</em></span>
+<span class="ruta-entorno-lista-item">Arrendajo <em>Garrulus glandarius</em></span>
+</div>
+</div></div>
+<!-- LA VEGETACIÓN -->
+<!-- LA FAUNA -->
+</section>
+<section class="ruta-info">
+<div class="ruta-info-cabecera">
+<span class="ruta-info-label">LO QUE ENCONTRARÁS</span>
+<h2 class="ruta-info-titulo">INFORMACIÓN ÚTIL</h2>
+</div>
+<div class="ruta-info-grid">
+<div class="ruta-servicio">
+<img alt="" src="iconos/picnic.svg"/>
+<span>Zona Picnic</span>
+</div>
+<div class="ruta-servicio">
+<img alt="" src="iconos/cuevas.svg"/>
+<span>Cueva</span>
+</div>
+<div class="ruta-servicio">
+<img alt="" src="iconos/niños.svg"/>
+<span>Apta para niños</span>
+</div>
+<div class="ruta-servicio">
+<img alt="" src="iconos/compartido.svg"/>
+<span>Calzada compartida</span>
+</div>
+<div class="ruta-servicio">
+<img alt="" src="iconos/bici.svg"/>
+<span>Apta para bicicletas</span>
+</div>
+<div class="ruta-servicio">
+<img alt="" src="iconos/restaurante.svg"/>
+<span>Restaurante</span>
+</div>
+</div>
+</section>
+<section class="ruta-cta">
+<p class="ruta-cta-pregunta">¿LISTO PARA CAMINAR?</p>
+<a class="ruta-cta-btn" href="seguir.html?ruta=cuevas">SEGUIR LA RUTA →</a>
+</section>
+</main>
+<footer>
+<div class="footer-logos">
+<img alt="Ayuntamiento de Ramales de la Victoria" src="logos/ramales.svg"/>
+<img alt="Ramales Natural" src="logos/naturalblanco.png"/>
+</div>
+<p class="footer-copy">© Oscar Saiz Gutiérrez, 2026</p>
+</footer>
+<script src="js/ruta-comun.js"></script>
+<script src="js/cuevas.js"></script>
 </body>
 </html>

@@ -241,3 +241,24 @@ function renderizarPuntosInteres(puntos) {
         grid.appendChild(card);
     });
 }
+
+// ── Entorno: tabs ────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.ruta-entorno-tab').forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            var section = this.closest('.ruta-entorno');
+            section.querySelectorAll('.ruta-entorno-tab').forEach(function (t) { t.classList.remove('activa'); });
+            section.querySelectorAll('.ruta-entorno-panel').forEach(function (p) { p.classList.remove('activo'); });
+            this.classList.add('activa');
+            var panel = section.querySelector('#panel-' + this.dataset.panel);
+            if (panel) panel.classList.add('activo');
+        });
+    });
+
+    // ── Entorno: flip cards ──────────────────────────────────────────────────
+    document.querySelectorAll('.ruta-entorno-especie').forEach(function (card) {
+        card.addEventListener('click', function () {
+            this.classList.toggle('girada');
+        });
+    });
+});

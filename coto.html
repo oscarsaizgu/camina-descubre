@@ -1,107 +1,160 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coto Cuende — Camina y Descubre</title>
-    <link rel="stylesheet" href="css/estilos.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css">
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
-    <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Coto Cuende — Camina y Descubre</title>
+<link href="css/estilos.css" rel="stylesheet"/>
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
+<link href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css" rel="stylesheet"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+<script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
 </head>
 <body class="pagina-ruta">
-
-    <a href="index.html" class="btn-volver">
-        <span class="btn-volver-completo">← TODAS LAS RUTAS</span>
-        <span class="btn-volver-corto">←</span>
-    </a>
-
-    <header>
-        <span class="ruta-header-label">CAMINA Y DESCUBRE</span>
-        <div class="ruta-header-num" aria-hidden="true">05</div>
-        <h1>Coto Cuende</h1>
-        <p>RAMALES DE LA VICTORIA</p>
-    </header>
-
-    <main>
-        <section class="ruta-datos">
-            <div class="ruta-datos-inner">
-                <div class="ruta-dato">
-                    <img src="iconos/distancia.svg" alt="">
-                    <span class="ruta-dato-val">1,26 km</span>
-                    <span class="ruta-dato-lab">Distancia</span>
-                </div>
-                <div class="ruta-dato">
-                    <img src="iconos/reloj.svg" alt="">
-                    <span class="ruta-dato-val">15 min</span>
-                    <span class="ruta-dato-lab">Duración</span>
-                </div>
-                <div class="ruta-dato">
-                    <img src="iconos/altitud.svg" alt="">
-                    <span class="ruta-dato-val">42m</span>
-                    <span class="ruta-dato-lab">Desnivel</span>
-                </div>
-                <div class="ruta-dato">
-                    <img src="iconos/circular.svg" alt="">
-                    <span class="ruta-dato-val">Ida y vuelta</span>
-                    <span class="ruta-dato-lab">Tipo</span>
-                </div>
-            </div>
-        </section>
-        <section class="ruta-mapa-bloque">
-            <div id="mapa-detalle"></div>
-            <div id="elevacion">
-                <div id="grafico-elevacion"></div>
-            </div>
-        </section>
-        <section class="ruta-puntos">
-            <div class="ruta-puntos-cabecera">
-                <span class="ruta-puntos-label">A LO LARGO DEL CAMINO</span>
-                <h2 class="ruta-puntos-titulo">PUNTOS DEL RECORRIDO</h2>
-            </div>
-            <div class="ruta-puntos-grid"></div>
-        </section>
-        <section class="ruta-descripcion">
-            <div class="ruta-descripcion-inner">
-                <span class="ruta-descripcion-label">DESCRIPCIÓN</span>
-                <h2 class="ruta-descripcion-titulo">EL RECORRIDO</h2>
-                <div class="ruta-descripcion-texto">
-                    <p>Dejaremos el coche en la estación de tren de Gibaja y desde ahí empezaremos la ruta dirigiéndonos hacía el barrio de Bárcena. Recorridos los primeros 100 metros llegaremos a un puente que no debemos cruzar, pero es aconsejable ir hasta la mitad para contemplar las bonitas vistas que nos ofrece del río Asón.</p>
-                    <p>Al inicio del puente, en la parte izquierda, cogeremos las escaleras que bajan hacía el río y ahí empieza un sendero que discurre por la orilla del río y que no debemos abandonar hasta llegar a nuestro destino, el refugio nº 6.</p>
-                    <p>Tengan precaución porque es un sendero estrecho que al final se convierte en una pasarela que va sobre el río, con el peligro que ello puede suponer. La vuelta se realizará por el mismo camino.</p>
-                </div>
-            </div>
-        </section>
-        <section class="ruta-info">
-            <div class="ruta-info-cabecera">
-                <span class="ruta-info-label">LO QUE ENCONTRARÁS</span>
-                <h2 class="ruta-info-titulo">INFORMACIÓN ÚTIL</h2>
-            </div>
-            <div class="ruta-info-grid">
-                <div class="ruta-servicio"><img src="iconos/niños.svg" alt=""><span>Apta para niños</span></div>
-                <div class="ruta-servicio"><img src="iconos/compartido.svg" alt=""><span>Calzada compartida</span></div>
-                <div class="ruta-servicio"><img src="iconos/fuente.svg" alt=""><span>Recurso hídrico</span></div>
-                <div class="ruta-servicio"><img src="iconos/restaurante.svg" alt=""><span>Restaurante</span></div>
-            </div>
-        </section>
-        <section class="ruta-cta">
-            <p class="ruta-cta-pregunta">¿LISTO PARA CAMINAR?</p>
-            <a href="seguir.html?ruta=coto" class="ruta-cta-btn">SEGUIR LA RUTA →</a>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-logos">
-            <img src="logos/ramales.svg" alt="Ayuntamiento de Ramales de la Victoria">
-            <img src="logos/naturalblanco.png" alt="Ramales Natural">
-        </div>
-        <p class="footer-copy">© Oscar Saiz Gutiérrez, 2026</p>
-    </footer>
-
-    <script src="js/ruta-comun.js"></script>
-    <script src="js/coto.js"></script>
-
+<a class="btn-volver" href="index.html">
+<span class="btn-volver-completo">← TODAS LAS RUTAS</span>
+<span class="btn-volver-corto">←</span>
+</a>
+<header>
+<span class="ruta-header-label">CAMINA Y DESCUBRE</span>
+<div aria-hidden="true" class="ruta-header-num">05</div>
+<h1>Coto Cuende</h1>
+<p>RAMALES DE LA VICTORIA</p>
+</header>
+<main>
+<section class="ruta-datos">
+<div class="ruta-datos-inner">
+<div class="ruta-dato">
+<img alt="" src="iconos/distancia.svg"/>
+<span class="ruta-dato-val">1,26 km</span>
+<span class="ruta-dato-lab">Distancia</span>
+</div>
+<div class="ruta-dato">
+<img alt="" src="iconos/reloj.svg"/>
+<span class="ruta-dato-val">15 min</span>
+<span class="ruta-dato-lab">Duración</span>
+</div>
+<div class="ruta-dato">
+<img alt="" src="iconos/altitud.svg"/>
+<span class="ruta-dato-val">42m</span>
+<span class="ruta-dato-lab">Desnivel</span>
+</div>
+<div class="ruta-dato">
+<img alt="" src="iconos/circular.svg"/>
+<span class="ruta-dato-val">Ida y vuelta</span>
+<span class="ruta-dato-lab">Tipo</span>
+</div>
+</div>
+</section>
+<section class="ruta-mapa-bloque">
+<div id="mapa-detalle"></div>
+<div id="elevacion">
+<div id="grafico-elevacion"></div>
+</div>
+</section>
+<section class="ruta-puntos">
+<div class="ruta-puntos-cabecera">
+<span class="ruta-puntos-label">A LO LARGO DEL CAMINO</span>
+<h2 class="ruta-puntos-titulo">PUNTOS DEL RECORRIDO</h2>
+</div>
+<div class="ruta-puntos-grid"></div>
+</section>
+<section class="ruta-descripcion">
+<div class="ruta-descripcion-inner">
+<span class="ruta-descripcion-label">DESCRIPCIÓN</span>
+<h2 class="ruta-descripcion-titulo">EL RECORRIDO</h2>
+<div class="ruta-descripcion-texto">
+<p>Dejaremos el coche en la estación de tren de Gibaja y desde ahí empezaremos la ruta dirigiéndonos hacía el barrio de Bárcena. Recorridos los primeros 100 metros llegaremos a un puente que no debemos cruzar, pero es aconsejable ir hasta la mitad para contemplar las bonitas vistas que nos ofrece del río Asón.</p>
+<p>Al inicio del puente, en la parte izquierda, cogeremos las escaleras que bajan hacía el río y ahí empieza un sendero que discurre por la orilla del río y que no debemos abandonar hasta llegar a nuestro destino, el refugio nº 6.</p>
+<p>Tengan precaución porque es un sendero estrecho que al final se convierte en una pasarela que va sobre el río, con el peligro que ello puede suponer. La vuelta se realizará por el mismo camino.</p>
+</div>
+</div>
+</section>
+<section class="ruta-entorno">
+<div class="ruta-entorno-header">
+<span class="ruta-entorno-label">DESCUBRE EL ENTORNO</span>
+<h2 class="ruta-entorno-titulo">UN BOSQUE<br/>ESENCIAL</h2>
+<p class="ruta-entorno-intro">Poco más de un kilómetro de sendero que discurre a lo largo del bosque de ribera del Asón, un lugar mágico donde alisedas y saucedas conforman un corredor ecológico de primer orden.</p>
+</div><div class="ruta-entorno-tabs"><button class="ruta-entorno-tab activa" data-panel="vegetacion">La vegetación</button><button class="ruta-entorno-tab" data-panel="fauna">La fauna</button></div><div class="ruta-entorno-panel activo" id="panel-vegetacion"><div class="ruta-entorno-bloque">
+<span class="ruta-entorno-cat-label">La vegetación</span>
+<h3 class="ruta-entorno-cat-titulo">HELECHOS Y HERBÁCEAS</h3>
+<div class="ruta-entorno-fila">
+<div class="ruta-entorno-fila-texto">
+<p class="ruta-entorno-texto">Además de las espectaculares alisedas y saucedas, acompañadas de laurel, avellano, olmos, plátanos, fresnos y chopos, durante todo el recorrido se pueden observar diferentes <strong>especies de helechos</strong>. Destaca una pequeña población de <strong>helecho real</strong> (<em>Osmunda regalis</em>), especie protegida de gran porte.</p>
+<p class="ruta-entorno-texto">Acompañando a los helechos encontramos numerosas <strong>herbáceas</strong>: hierba de San Roberto, hierbabuena, hipérico y artemisa.</p>
+</div>
+<div class="ruta-entorno-fila-foto">
+<img alt="Bosque de ribera del Coto Cuende" src="fotos/coto.jpg"/>
+</div>
+</div>
+<div class="ruta-entorno-caja">
+<span class="ruta-entorno-caja-titulo">UN BOSQUE ESENCIAL</span>
+<p class="ruta-entorno-texto">Entre las funciones ecológicas de estos bosques están regular el ciclo hidrológico, frenar la erosión y mantener el equilibrio del ecosistema fluvial, la biodiversidad y la conectividad. Constituyen corredores ecológicos de primer orden que ofrecen refugio y protección a los animales.</p>
+</div>
+<div class="ruta-entorno-lista">
+<span class="ruta-entorno-lista-item">Helecho real <em>Osmunda regalis</em></span>
+<span class="ruta-entorno-lista-item">Filipodio <em>Polypodium vulgare</em></span>
+<span class="ruta-entorno-lista-item">Doradilla <em>Asplenium trichomanes</em></span>
+<span class="ruta-entorno-lista-item">Culantrillo <em>Adiantum capillus-veneris</em></span>
+<span class="ruta-entorno-lista-item">Ceterach <em>Asplenium ceterach</em></span>
+<span class="ruta-entorno-lista-item">Hierbabuena <em>Mentha spicata</em></span>
+<span class="ruta-entorno-lista-item">Hipérico <em>Hypericum perforatum</em></span>
+<span class="ruta-entorno-lista-item">Artemisa <em>Artemisia vulgaris</em></span>
+<span class="ruta-entorno-lista-item">Hierba de San Roberto <em>Geranium robertianum</em></span>
+</div>
+</div></div><div class="ruta-entorno-panel" id="panel-fauna"><div class="ruta-entorno-bloque">
+<span class="ruta-entorno-cat-label">La fauna</span>
+<h3 class="ruta-entorno-cat-titulo">REFUGIO Y ALIMENTO</h3>
+<div class="ruta-entorno-fila ruta-entorno-fila--invertida">
+<div class="ruta-entorno-fila-foto">
+<img alt="Ribera del Asón" src="fotos/luz.jpg"/>
+</div>
+<div class="ruta-entorno-fila-texto">
+<p class="ruta-entorno-texto">El bosque y el río proporcionan refugio y alimento a numerosas especies. En las orillas podremos encontrar <strong>garzas reales</strong>, <strong>lavanderas cascadeñas</strong>, ánades reales y martines pescadores. En el agua viven diferentes especies de peces y entre la vegetación encontraremos reptiles y anfibios.</p>
+<p class="ruta-entorno-texto">El bosque también sirve de refugio para pequeños mamíferos como ratones de campo, ardillas y la emblemática <strong>nutria europea</strong>, además de una enorme diversidad de pequeños invertebrados.</p>
+</div>
+</div>
+<div class="ruta-entorno-especies">
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Lavandera cascadeña" src="fotos/fauna/lavandera.jpg"/></div><span class="ruta-entorno-especie-nombre">Lavandera cascadeña</span><span class="ruta-entorno-especie-cientifico">Motacilla cinerea</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Lavandera cascadeña</span><span class="ruta-entorno-especie-cientifico">Motacilla cinerea</span><p class="ruta-entorno-especie-desc">Ave de riachuelos rápidos. Mueve la cola constantemente mientras camina por las orillas pedregosas.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Mirlo acuático" src="fotos/fauna/mirlo.jpg"/></div><span class="ruta-entorno-especie-nombre">Mirlo acuático</span><span class="ruta-entorno-especie-cientifico">Cinclus cinclus</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Mirlo acuático</span><span class="ruta-entorno-especie-cientifico">Cinclus cinclus</span><p class="ruta-entorno-especie-desc">Ave singular que camina bajo el agua para buscar invertebrados en el lecho del río.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Salamandra" src="fotos/fauna/salamandra.jpg"/></div><span class="ruta-entorno-especie-nombre">Salamandra</span><span class="ruta-entorno-especie-cientifico">Salamandra salamandra</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Salamandra</span><span class="ruta-entorno-especie-cientifico">Salamandra salamandra</span><p class="ruta-entorno-especie-desc">Anfibio de llamativos colores negro y amarillo. Activa en noches húmedas. Completamente inofensiva.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Martín pescador" src="fotos/fauna/martin.jpg"/></div><span class="ruta-entorno-especie-nombre">Martín pescador</span><span class="ruta-entorno-especie-cientifico">Alcedo atthis</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Martín pescador</span><span class="ruta-entorno-especie-cientifico">Alcedo atthis</span><p class="ruta-entorno-especie-desc">Pequeño, veloz y de colores brillantes. Se lanza en picado sobre el agua para capturar peces.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Nutria europea" src="fotos/fauna/nutria.jpg"/></div><span class="ruta-entorno-especie-nombre">Nutria europea</span><span class="ruta-entorno-especie-cientifico">Lutra lutra</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Nutria europea</span><span class="ruta-entorno-especie-cientifico">Lutra lutra</span><p class="ruta-entorno-especie-desc">Mamífero semiacuático y esquivo. Su presencia indica un ecosistema fluvial en excelente estado de conservación.</p></div></div></div>
+</div>
+<div class="ruta-entorno-lista">
+<span class="ruta-entorno-lista-item">Trucha común <em>Salmo trutta</em></span>
+<span class="ruta-entorno-lista-item">Ánade real <em>Anas platyrhynchos</em></span>
+<span class="ruta-entorno-lista-item">Garza real <em>Ardea cinerea</em></span>
+</div>
+</div></div>
+</section>
+<section class="ruta-info">
+<div class="ruta-info-cabecera">
+<span class="ruta-info-label">LO QUE ENCONTRARÁS</span>
+<h2 class="ruta-info-titulo">INFORMACIÓN ÚTIL</h2>
+</div>
+<div class="ruta-info-grid">
+<div class="ruta-servicio"><img alt="" src="iconos/niños.svg"/><span>Apta para niños</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/compartido.svg"/><span>Calzada compartida</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/fuente.svg"/><span>Recurso hídrico</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/restaurante.svg"/><span>Restaurante</span></div>
+</div>
+</section>
+<section class="ruta-cta">
+<p class="ruta-cta-pregunta">¿LISTO PARA CAMINAR?</p>
+<a class="ruta-cta-btn" href="seguir.html?ruta=coto">SEGUIR LA RUTA →</a>
+</section>
+</main>
+<footer>
+<div class="footer-logos">
+<img alt="Ayuntamiento de Ramales de la Victoria" src="logos/ramales.svg"/>
+<img alt="Ramales Natural" src="logos/naturalblanco.png"/>
+</div>
+<p class="footer-copy">© Oscar Saiz Gutiérrez, 2026</p>
+</footer>
+<script src="js/ruta-comun.js"></script>
+<script src="js/coto.js"></script>
 </body>
 </html>

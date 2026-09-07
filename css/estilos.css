@@ -1492,3 +1492,350 @@ body.pagina-ruta main {
     .ruta-servicio img { width: 38px; height: 38px; }
     .ruta-cta { padding: 3rem 1.5rem 4rem; }
 }
+
+
+/* ═══════════════════════════════════════════════════════
+   DESCUBRE EL ENTORNO — sección editorial de naturaleza
+   Fondo: verde oscuro. Categorías con ritmo alternado.
+════════════════════════════════════════════════════════ */
+
+/* ── Sección principal ── */
+.ruta-entorno {
+    background-color: var(--verde);
+    color: var(--crema);
+    padding: 0 0 5rem;
+}
+
+/* ── Cabecera de sección ── */
+.ruta-entorno-header {
+    text-align: center;
+    padding: 4rem 2rem 3.5rem;
+    border-bottom: 1px solid rgba(245,234,216,0.1);
+    position: relative;
+    overflow: hidden;
+}
+.ruta-entorno-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 38px,
+        rgba(245,234,216,0.025) 38px,
+        rgba(245,234,216,0.025) 39px
+    );
+    pointer-events: none;
+}
+.ruta-entorno-label {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.57rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(245,234,216,0.35);
+    display: block;
+    margin-bottom: 0.8rem;
+    position: relative;
+}
+.ruta-entorno-titulo {
+    font-family: 'Lovelo', sans-serif;
+    font-size: clamp(2rem, 6vw, 3.8rem);
+    color: var(--crema);
+    line-height: 1.0;
+    letter-spacing: 0.03em;
+    margin-bottom: 1.2rem;
+    position: relative;
+}
+.ruta-entorno-intro {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.88rem;
+    color: rgba(245,234,216,0.55);
+    max-width: 540px;
+    margin: 0 auto;
+    line-height: 1.7;
+    position: relative;
+}
+
+/* ── Bloque de categoría ── */
+.ruta-entorno-bloque {
+    padding: 3.5rem 2rem 0;
+    max-width: 960px;
+    margin: 0 auto;
+}
+.ruta-entorno-bloque + .ruta-entorno-bloque {
+    border-top: 1px solid rgba(245,234,216,0.08);
+    margin-top: 3.5rem;
+    padding-top: 3.5rem;
+}
+
+/* Título de categoría */
+.ruta-entorno-cat-label {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(245,234,216,0.32);
+    display: block;
+    margin-bottom: 0.3rem;
+}
+.ruta-entorno-cat-titulo {
+    font-family: 'Lovelo', sans-serif;
+    font-size: clamp(1.3rem, 3.5vw, 2.2rem);
+    color: var(--crema);
+    letter-spacing: 0.04em;
+    margin-bottom: 1.6rem;
+    line-height: 1.1;
+}
+
+/* Texto de introducción de la categoría */
+.ruta-entorno-texto {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.78;
+    color: rgba(245,234,216,0.72);
+    margin-bottom: 1rem;
+}
+.ruta-entorno-texto:last-child { margin-bottom: 0; }
+
+/* ── Layout: foto + texto lado a lado ── */
+.ruta-entorno-fila {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    margin-top: 2rem;
+}
+.ruta-entorno-fila--invertida {
+    grid-template-columns: 1fr 1fr;
+}
+.ruta-entorno-fila--invertida .ruta-entorno-fila-foto { order: 2; }
+.ruta-entorno-fila--invertida .ruta-entorno-fila-texto { order: 1; }
+
+.ruta-entorno-fila-foto {
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+}
+.ruta-entorno-fila-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.75) brightness(0.85);
+    display: block;
+}
+.ruta-entorno-fila-foto-placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(245,234,216,0.06);
+    border-radius: 12px;
+    aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ruta-entorno-fila-foto-placeholder span {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(245,234,216,0.2);
+}
+
+/* ── Caja destacada ── */
+.ruta-entorno-caja {
+    background-color: rgba(245,234,216,0.06);
+    border-left: 2px solid rgba(245,234,216,0.2);
+    border-radius: 0 8px 8px 0;
+    padding: 1.4rem 1.6rem;
+    margin: 2rem 0;
+}
+.ruta-entorno-caja-titulo {
+    font-family: 'Lovelo', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--crema);
+    opacity: 0.6;
+    display: block;
+    margin-bottom: 0.6rem;
+}
+.ruta-entorno-caja p {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.83rem;
+    line-height: 1.72;
+    color: rgba(245,234,216,0.65);
+}
+
+/* ── Grid de especies ── */
+.ruta-entorno-especies {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1.2rem;
+    margin-top: 2rem;
+}
+.ruta-entorno-especie {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+.ruta-entorno-especie-foto {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: rgba(245,234,216,0.05);
+    margin-bottom: 0.5rem;
+}
+.ruta-entorno-especie-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.75) brightness(0.82);
+}
+.ruta-entorno-especie-nombre {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--crema);
+    line-height: 1.3;
+}
+.ruta-entorno-especie-cientifico {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.67rem;
+    font-style: italic;
+    color: rgba(245,234,216,0.38);
+    line-height: 1.2;
+}
+
+/* ── Lista compacta de especies ── */
+.ruta-entorno-lista {
+    margin-top: 1.4rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.2rem;
+}
+.ruta-entorno-lista-item {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.8rem;
+    color: rgba(245,234,216,0.65);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.ruta-entorno-lista-item::before {
+    content: '·';
+    color: rgba(245,234,216,0.25);
+    font-size: 1rem;
+}
+.ruta-entorno-lista-item em {
+    font-style: italic;
+    color: rgba(245,234,216,0.38);
+    font-size: 0.72rem;
+}
+
+/* ── Separador decorativo ── */
+.ruta-entorno-sep {
+    display: flex;
+    justify-content: center;
+    padding: 2.5rem 0 0;
+    opacity: 0.18;
+}
+.ruta-entorno-sep svg { width: 120px; }
+
+/* ── Responsive ── */
+@media (max-width: 700px) {
+    .ruta-entorno-fila,
+    .ruta-entorno-fila--invertida {
+        grid-template-columns: 1fr;
+    }
+    .ruta-entorno-fila--invertida .ruta-entorno-fila-foto { order: 0; }
+    .ruta-entorno-fila--invertida .ruta-entorno-fila-texto { order: 0; }
+    .ruta-entorno-bloque { padding: 2.5rem 1.2rem 0; }
+    .ruta-entorno-especies { grid-template-columns: repeat(3, 1fr); gap: 0.9rem; }
+    .ruta-entorno-header { padding: 3rem 1.5rem 2.5rem; }
+}
+@media (max-width: 400px) {
+    .ruta-entorno-especies { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── ENTORNO: TABS ─────────────────────────────────────────────────────────── */
+.ruta-entorno-tabs {
+    display: flex;
+    border-bottom: 1px solid rgba(245,234,216,0.12);
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.ruta-entorno-tabs::-webkit-scrollbar { display: none; }
+.ruta-entorno-tab {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(245,234,216,0.35);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 1.4rem 1.8rem 1.4rem 0;
+    margin-right: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.ruta-entorno-tab:hover { color: rgba(245,234,216,0.65); }
+.ruta-entorno-tab.activa { color: var(--crema); border-bottom-color: var(--crema); }
+
+.ruta-entorno-panel { display: none; }
+.ruta-entorno-panel.activo { display: block; }
+
+/* ── ENTORNO: FLIP CARDS ───────────────────────────────────────────────────── */
+.ruta-entorno-especie {
+    perspective: 900px;
+    cursor: pointer;
+}
+.ruta-entorno-especie-inner {
+    position: relative;
+    transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+}
+.ruta-entorno-especie.girada .ruta-entorno-especie-inner {
+    transform: rotateY(180deg);
+}
+.ruta-entorno-especie-front,
+.ruta-entorno-especie-back {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+.ruta-entorno-especie-back {
+    position: absolute;
+    inset: 0;
+    background: rgba(245,234,216,0.07);
+    border-radius: 8px;
+    padding: 1.1rem 1rem;
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.35rem;
+    overflow-y: auto;
+}
+.ruta-entorno-especie-desc {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.72rem;
+    line-height: 1.65;
+    color: rgba(245,234,216,0.65);
+    margin: 0.3rem 0 0;
+}
+.ruta-entorno-especie-hint {
+    display: block;
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.52rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(245,234,216,0.18);
+    text-align: center;
+    margin-top: 0.5rem;
+}

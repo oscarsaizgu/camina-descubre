@@ -3,6 +3,10 @@
 // ====================================================
 
 var GPX = 'data/vega.gpx';
+var ESCALA_ALTITUD = {
+    min: 0,
+    max: 200
+};
 
 var puntosInteres = [
     { coords: [43.257757822382096, -3.469872258786685],  nombre: "Puente Romano",          foto: "fotos/puenteromano.jpeg" },
@@ -18,7 +22,7 @@ var puntosInteres = [
 
 var mapa = inicializarMapaRuta();
 
-var elevacion = crearElevacion('#grafico-elevacion');
+var elevacion = crearElevacion('#grafico-elevacion', ESCALA_ALTITUD);
 elevacion.addTo(mapa);
 elevacion.load(GPX);
 

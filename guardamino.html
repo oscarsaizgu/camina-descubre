@@ -1,114 +1,164 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paseo de Guardamino — Camina y Descubre</title>
-    <link rel="stylesheet" href="css/estilos.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css">
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
-    <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Paseo de Guardamino — Camina y Descubre</title>
+<link href="css/estilos.css" rel="stylesheet"/>
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
+<link href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css" rel="stylesheet"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+<script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
 </head>
 <body class="pagina-ruta">
-
-    <a href="index.html" class="btn-volver">
-        <span class="btn-volver-completo">← TODAS LAS RUTAS</span>
-        <span class="btn-volver-corto">←</span>
-    </a>
-
-    <header>
-        <span class="ruta-header-label">CAMINA Y DESCUBRE</span>
-        <div class="ruta-header-num" aria-hidden="true">03</div>
-        <h1>Paseo de Guardamino</h1>
-        <p>RAMALES DE LA VICTORIA</p>
-    </header>
-
-    <main>
-        <section class="ruta-datos">
-            <div class="ruta-datos-inner">
-                <div class="ruta-dato">
-                    <img src="iconos/distancia.svg" alt="">
-                    <span class="ruta-dato-val" id="dato-distancia">4,71 km</span>
-                    <span class="ruta-dato-lab">Distancia</span>
-                </div>
-                <div class="ruta-dato">
-                    <img src="iconos/reloj.svg" alt="">
-                    <span class="ruta-dato-val" id="dato-duracion">60 min</span>
-                    <span class="ruta-dato-lab">Duración</span>
-                </div>
-                <div class="ruta-dato">
-                    <img src="iconos/altitud.svg" alt="">
-                    <span class="ruta-dato-val" id="dato-desnivel">146m</span>
-                    <span class="ruta-dato-lab">Desnivel</span>
-                </div>
-                <div class="ruta-dato">
-                    <img src="iconos/circular.svg" alt="">
-                    <span class="ruta-dato-val" id="dato-tipo">Circular</span>
-                    <span class="ruta-dato-lab">Tipo</span>
-                </div>
-            </div>
-        </section>
-        <section class="ruta-mapa-bloque">
-            <div id="selector-variante">
-                <button id="btn-variante-a" class="variante-activa" onclick="activarVariante('a')">Ruta principal</button>
-                <button id="btn-variante-b" onclick="activarVariante('b')">Ruta secundaria</button>
-            </div>
-            <div id="mapa-detalle"></div>
-            <div id="elevacion">
-                <div id="grafico-elevacion"></div>
-                <div id="grafico-elevacion-b" style="display:none;"></div>
-            </div>
-        </section>
-        <section class="ruta-puntos">
-            <div class="ruta-puntos-cabecera">
-                <span class="ruta-puntos-label">A LO LARGO DEL CAMINO</span>
-                <h2 class="ruta-puntos-titulo">PUNTOS DEL RECORRIDO</h2>
-            </div>
-            <div class="ruta-puntos-grid"></div>
-        </section>
-        <section class="ruta-descripcion">
-            <div class="ruta-descripcion-inner">
-                <span class="ruta-descripcion-label">DESCRIPCIÓN</span>
-                <h2 class="ruta-descripcion-titulo">EL RECORRIDO</h2>
-                <div class="ruta-descripcion-texto">
-                    <p id="texto-descripcion"></p>
-                </div>
-            </div>
-        </section>
-        <section class="ruta-info">
-            <div class="ruta-info-cabecera">
-                <span class="ruta-info-label">LO QUE ENCONTRARÁS</span>
-                <h2 class="ruta-info-titulo">INFORMACIÓN ÚTIL</h2>
-            </div>
-            <div class="ruta-info-grid">
-                <div class="ruta-servicio"><img src="iconos/picnic.svg" alt=""><span>Zona Picnic</span></div>
-                <div class="ruta-servicio"><img src="iconos/parqueinfantil.svg" alt=""><span>Parque infantil</span></div>
-                <div class="ruta-servicio"><img src="iconos/niños.svg" alt=""><span>Apta para niños</span></div>
-                <div class="ruta-servicio"><img src="iconos/compartido.svg" alt=""><span>Calzada compartida</span></div>
-                <div class="ruta-servicio"><img src="iconos/bici.svg" alt=""><span>Apta para bicicletas</span></div>
-                <div class="ruta-servicio"><img src="iconos/fuente.svg" alt=""><span>Recurso hídrico</span></div>
-                <div class="ruta-servicio"><img src="iconos/restaurante.svg" alt=""><span>Restaurante</span></div>
-                <div class="ruta-servicio"><img src="iconos/carrito.svg" alt=""><span>Apta para carritos</span></div>
-            </div>
-        </section>
-        <section class="ruta-cta">
-            <p class="ruta-cta-pregunta">¿LISTO PARA CAMINAR?</p>
-            <a href="seguir.html?ruta=guardamino" class="ruta-cta-btn">SEGUIR LA RUTA →</a>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-logos">
-            <img src="logos/ramales.svg" alt="Ayuntamiento de Ramales de la Victoria">
-            <img src="logos/naturalblanco.png" alt="Ramales Natural">
-        </div>
-        <p class="footer-copy">© Oscar Saiz Gutiérrez, 2026</p>
-    </footer>
-
-    <script src="js/ruta-comun.js"></script>
-    <script src="js/guardamino.js"></script>
-
+<a class="btn-volver" href="index.html">
+<span class="btn-volver-completo">← TODAS LAS RUTAS</span>
+<span class="btn-volver-corto">←</span>
+</a>
+<header>
+<span class="ruta-header-label">CAMINA Y DESCUBRE</span>
+<div aria-hidden="true" class="ruta-header-num">03</div>
+<h1>Paseo de Guardamino</h1>
+<p>RAMALES DE LA VICTORIA</p>
+</header>
+<main>
+<section class="ruta-datos">
+<div class="ruta-datos-inner">
+<div class="ruta-dato">
+<img alt="" src="iconos/distancia.svg"/>
+<span class="ruta-dato-val" id="dato-distancia">4,71 km</span>
+<span class="ruta-dato-lab">Distancia</span>
+</div>
+<div class="ruta-dato">
+<img alt="" src="iconos/reloj.svg"/>
+<span class="ruta-dato-val" id="dato-duracion">60 min</span>
+<span class="ruta-dato-lab">Duración</span>
+</div>
+<div class="ruta-dato">
+<img alt="" src="iconos/altitud.svg"/>
+<span class="ruta-dato-val" id="dato-desnivel">146m</span>
+<span class="ruta-dato-lab">Desnivel</span>
+</div>
+<div class="ruta-dato">
+<img alt="" src="iconos/circular.svg"/>
+<span class="ruta-dato-val" id="dato-tipo">Circular</span>
+<span class="ruta-dato-lab">Tipo</span>
+</div>
+</div>
+</section>
+<section class="ruta-mapa-bloque">
+<div id="selector-variante">
+<button class="variante-activa" id="btn-variante-a" onclick="activarVariante('a')">Ruta principal</button>
+<button id="btn-variante-b" onclick="activarVariante('b')">Ruta secundaria</button>
+</div>
+<div id="mapa-detalle"></div>
+<div id="elevacion">
+<div id="grafico-elevacion"></div>
+<div id="grafico-elevacion-b" style="display:none;"></div>
+</div>
+</section>
+<section class="ruta-puntos">
+<div class="ruta-puntos-cabecera">
+<span class="ruta-puntos-label">A LO LARGO DEL CAMINO</span>
+<h2 class="ruta-puntos-titulo">PUNTOS DEL RECORRIDO</h2>
+</div>
+<div class="ruta-puntos-grid"></div>
+</section>
+<section class="ruta-descripcion">
+<div class="ruta-descripcion-inner">
+<span class="ruta-descripcion-label">DESCRIPCIÓN</span>
+<h2 class="ruta-descripcion-titulo">EL RECORRIDO</h2>
+<div class="ruta-descripcion-texto">
+<p id="texto-descripcion"></p>
+</div>
+</div>
+</section>
+<section class="ruta-entorno">
+<div class="ruta-entorno-header">
+<span class="ruta-entorno-label">DESCUBRE EL ENTORNO</span>
+<h2 class="ruta-entorno-titulo">PAISAJE RURAL<br/>Y NATURALEZA</h2>
+<p class="ruta-entorno-intro">Guardamino conserva la esencia del paisaje ganadero tradicional: prados, huertas y fincas entre manchas de bosque y encinar cantábrico en las laderas que rodean la comarca.</p>
+</div><div class="ruta-entorno-tabs"><button class="ruta-entorno-tab activa" data-panel="paisaje">El paisaje</button><button class="ruta-entorno-tab" data-panel="fauna">La fauna</button></div><div class="ruta-entorno-panel activo" id="panel-paisaje"><div class="ruta-entorno-bloque">
+<span class="ruta-entorno-cat-label">El paisaje</span>
+<h3 class="ruta-entorno-cat-titulo">PRADOS, HUERTAS Y ENCINAR</h3>
+<div class="ruta-entorno-fila">
+<div class="ruta-entorno-fila-texto">
+<p class="ruta-entorno-texto">Esta ruta nos acerca a uno de los paisajes más rurales de Ramales. A lo largo del recorrido caminaremos entre casas, muros y fincas donde la actividad agroganadera ha dejado su huella durante generaciones.</p>
+<p class="ruta-entorno-texto">Los prados ocupan buena parte de las fincas y son uno de los elementos que mejor representan el paisaje ganadero tradicional. Junto a ellos todavía se conservan pequeñas huertas destinadas al consumo propio. Un paisaje abierto que contrasta con las manchas de bosque y encinar cantábrico que aparecen en las laderas circundantes.</p>
+</div>
+<div class="ruta-entorno-fila-foto">
+<img alt="Paisaje rural desde Guardamino" src="fotos/mirador.jpg"/>
+</div>
+</div>
+<div class="ruta-entorno-caja">
+<span class="ruta-entorno-caja-titulo">LOS ÁRBOLES DEL CAMINO</span>
+<p class="ruta-entorno-texto">En las diferentes fincas aparecen ejemplares de roble, fresno y castaño, árboles ligados al paisaje tradicional de la comarca. A media distancia, sobre las laderas de las montañas, pueden distinguirse manchas de encinar cantábrico.</p>
+</div>
+<div class="ruta-entorno-lista">
+<span class="ruta-entorno-lista-item">Roble <em>Quercus robur</em></span>
+<span class="ruta-entorno-lista-item">Fresno <em>Fraxinus excelsior</em></span>
+<span class="ruta-entorno-lista-item">Castaño <em>Castanea sativa</em></span>
+<span class="ruta-entorno-lista-item">Encina <em>Quercus ilex</em></span>
+</div>
+</div></div><div class="ruta-entorno-panel" id="panel-fauna"><div class="ruta-entorno-bloque">
+<span class="ruta-entorno-cat-label">La fauna</span>
+<h3 class="ruta-entorno-cat-titulo">MIRA AL CIELO</h3>
+<div class="ruta-entorno-fila ruta-entorno-fila--invertida">
+<div class="ruta-entorno-fila-foto">
+<img alt="Entorno de Guardamino" src="fotos/iglesia.jpg"/>
+</div>
+<div class="ruta-entorno-fila-texto">
+<p class="ruta-entorno-texto">Es muy fácil encontrar pequeñas aves como petirrojos, herrerillos y cornejas. Sobre los prados también es habitual ver rapaces planeando: busardos ratoneros, buitres leonados y milanos.</p>
+<p class="ruta-entorno-texto">Durante el recorrido encontraremos también animales domésticos como vacas, burros, perros o gallinas. Pero esta es también una zona donde pastan mamíferos silvestres como corzos, zorros, jabalíes, garduñas, erizos y varios roedores.</p>
+</div>
+</div>
+<div class="ruta-entorno-especies">
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Petirrojo" src="fotos/fauna/petirrojo.jpg"/></div><span class="ruta-entorno-especie-nombre">Petirrojo</span><span class="ruta-entorno-especie-cientifico">Erithacus rubecula</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Petirrojo</span><span class="ruta-entorno-especie-cientifico">Erithacus rubecula</span><p class="ruta-entorno-especie-desc">Una de las aves más características del encinar cantábrico. Su canto melodioso acompaña todo el paseo.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Herrerillo" src="fotos/fauna/herrerillo.jpeg"/></div><span class="ruta-entorno-especie-nombre">Herrerillo</span><span class="ruta-entorno-especie-cientifico">Cyanistes caeruleus</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Herrerillo</span><span class="ruta-entorno-especie-cientifico">Cyanistes caeruleus</span><p class="ruta-entorno-especie-desc">Pequeño pájaro muy activo, inconfundible por su capucha azul. Habitual en setos y jardines de toda la comarca.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Busardo ratonero" src="fotos/fauna/busardo.jpg"/></div><span class="ruta-entorno-especie-nombre">Busardo ratonero</span><span class="ruta-entorno-especie-cientifico">Buteo buteo</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Busardo ratonero</span><span class="ruta-entorno-especie-cientifico">Buteo buteo</span><p class="ruta-entorno-especie-desc">La rapaz más común de los prados. Planea en círculos sobre los pastos en busca de pequeños mamíferos.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Buitre leonado" src="fotos/fauna/buitre.jpg"/></div><span class="ruta-entorno-especie-nombre">Buitre leonadoGyps fulvus</span><span class="ruta-entorno-especie-cientifico">Gyps fulvus</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Buitre leonadoGyps fulvus</span><span class="ruta-entorno-especie-cientifico">Gyps fulvus</span><p class="ruta-entorno-especie-desc">Especie característica de este tramo de la ruta.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Milano negro" src="fotos/fauna/milanonegro.jpg"/></div><span class="ruta-entorno-especie-nombre">Milano negro</span><span class="ruta-entorno-especie-cientifico">Milvus migrans</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Milano negro</span><span class="ruta-entorno-especie-cientifico">Milvus migrans</span><p class="ruta-entorno-especie-desc">Rapaz migratoria presente en primavera y verano. Reconocible por su cola levemente ahorquillada.</p></div></div></div>
+</div>
+<div class="ruta-entorno-lista">
+<span class="ruta-entorno-lista-item">Bisbita pratense <em>Anthus pratensis</em></span>
+<span class="ruta-entorno-lista-item">Corneja <em>Corvus corone</em></span>
+<span class="ruta-entorno-lista-item">Colirrojo tizón <em>Phoenicurus ochruros</em></span>
+<span class="ruta-entorno-lista-item">Urraca <em>Pica pica</em></span>
+<span class="ruta-entorno-lista-item">Arrendajo <em>Garrulus glandarius</em></span>
+</div>
+</div></div>
+</section>
+<section class="ruta-info">
+<div class="ruta-info-cabecera">
+<span class="ruta-info-label">LO QUE ENCONTRARÁS</span>
+<h2 class="ruta-info-titulo">INFORMACIÓN ÚTIL</h2>
+</div>
+<div class="ruta-info-grid">
+<div class="ruta-servicio"><img alt="" src="iconos/picnic.svg"/><span>Zona Picnic</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/parqueinfantil.svg"/><span>Parque infantil</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/niños.svg"/><span>Apta para niños</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/compartido.svg"/><span>Calzada compartida</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/bici.svg"/><span>Apta para bicicletas</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/fuente.svg"/><span>Recurso hídrico</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/restaurante.svg"/><span>Restaurante</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/carrito.svg"/><span>Apta para carritos</span></div>
+</div>
+</section>
+<section class="ruta-cta">
+<p class="ruta-cta-pregunta">¿LISTO PARA CAMINAR?</p>
+<a class="ruta-cta-btn" href="seguir.html?ruta=guardamino">SEGUIR LA RUTA →</a>
+</section>
+</main>
+<footer>
+<div class="footer-logos">
+<img alt="Ayuntamiento de Ramales de la Victoria" src="logos/ramales.svg"/>
+<img alt="Ramales Natural" src="logos/naturalblanco.png"/>
+</div>
+<p class="footer-copy">© Oscar Saiz Gutiérrez, 2026</p>
+</footer>
+<script src="js/ruta-comun.js"></script>
+<script src="js/guardamino.js"></script>
 </body>
 </html>

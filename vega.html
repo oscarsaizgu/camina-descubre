@@ -1,135 +1,201 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paseo de Vegacorredor — Camina y Descubre</title>
-    <link rel="stylesheet" href="css/estilos.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css">
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
-    <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Paseo de Vegacorredor — Camina y Descubre</title>
+<link href="css/estilos.css" rel="stylesheet"/>
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
+<link href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css" rel="stylesheet"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+<script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
 </head>
 <body class="pagina-ruta">
-
-    <a href="index.html" class="btn-volver">
-        <span class="btn-volver-completo">← TODAS LAS RUTAS</span>
-        <span class="btn-volver-corto">←</span>
-    </a>
-
-    <header>
-        <span class="ruta-header-label">CAMINA Y DESCUBRE</span>
-        <div class="ruta-header-num" aria-hidden="true">02</div>
-        <h1>Paseo de Vegacorredor</h1>
-        <p>RAMALES DE LA VICTORIA</p>
-    </header>
-
-    <main>
-        <section class="ruta-datos">
-            <div class="ruta-datos-inner">
-                <div class="ruta-dato">
-                    <img src="iconos/distancia.svg" alt="">
-                    <span class="ruta-dato-val">7 km</span>
-                    <span class="ruta-dato-lab">Distancia</span>
-                </div>
-                <div class="ruta-dato">
-                    <img src="iconos/reloj.svg" alt="">
-                    <span class="ruta-dato-val">1h 30min</span>
-                    <span class="ruta-dato-lab">Duración</span>
-                </div>
-                <div class="ruta-dato">
-                    <img src="iconos/altitud.svg" alt="">
-                    <span class="ruta-dato-val">58m</span>
-                    <span class="ruta-dato-lab">Desnivel</span>
-                </div>
-                <div class="ruta-dato">
-                    <img src="iconos/circular.svg" alt="">
-                    <span class="ruta-dato-val">Circular</span>
-                    <span class="ruta-dato-lab">Tipo</span>
-                </div>
-            </div>
-        </section>
-        <section class="ruta-mapa-bloque">
-            <div id="mapa-detalle"></div>
-            <div id="elevacion">
-                <div id="grafico-elevacion"></div>
-            </div>
-        </section>
-        <section class="ruta-puntos">
-            <div class="ruta-puntos-cabecera">
-                <span class="ruta-puntos-label">A LO LARGO DEL CAMINO</span>
-                <h2 class="ruta-puntos-titulo">PUNTOS DEL RECORRIDO</h2>
-            </div>
-            <div class="ruta-puntos-grid"></div>
-        </section>
-        <section class="ruta-descripcion">
-            <div class="ruta-descripcion-inner">
-                <span class="ruta-descripcion-label">DESCRIPCIÓN</span>
-                <h2 class="ruta-descripcion-titulo">EL RECORRIDO</h2>
-                <div class="ruta-descripcion-texto">
-                    <p>Empezando la ruta en el Ayuntamiento, llegando a la Plaza Duques de la Victoria, por detrás de la iglesia cogemos la calle Manuel Marure que nos llevará a Entrepuentes, zona donde se unen el río Asón y su principal afluente, el río Gándara. Aquí encontraremos un antiguo puente medieval, un molino (ahora propiedad privada) y la presa Don Cecilio.</p>
-                    <p>Siguiendo la carretera atravesaremos una zona ajardinada y área recreativa que nos lleva al Bº Vegacorredor. Una vez aquí subimos por la carretera de la izquierda en dirección al Bº Helguero, el cual atravesaremos y donde podremos visitar la Fuente Iseña, manantial que abastece Ramales.</p>
-                    <p>Siguiendo el camino regresaremos hasta el Humilladero Ánima de Iseña y desde aquí, volveremos por el mismo recorrido hasta la plaza.</p>
-                </div>
-            </div>
-        </section>
-        <section class="ruta-info">
-            <div class="ruta-info-cabecera">
-                <span class="ruta-info-label">LO QUE ENCONTRARÁS</span>
-                <h2 class="ruta-info-titulo">INFORMACIÓN ÚTIL</h2>
-            </div>
-            <div class="ruta-info-grid">
-                <div class="ruta-servicio">
-                    <img src="iconos/picnic.svg" alt="">
-                    <span>Zona Picnic</span>
-                </div>
-                <div class="ruta-servicio">
-                    <img src="iconos/parqueinfantil.svg" alt="">
-                    <span>Parque infantil</span>
-                </div>
-                <div class="ruta-servicio">
-                    <img src="iconos/niños.svg" alt="">
-                    <span>Apta para niños</span>
-                </div>
-                <div class="ruta-servicio">
-                    <img src="iconos/compartido.svg" alt="">
-                    <span>Calzada compartida</span>
-                </div>
-                <div class="ruta-servicio">
-                    <img src="iconos/bici.svg" alt="">
-                    <span>Apta para bicicletas</span>
-                </div>
-                <div class="ruta-servicio">
-                    <img src="iconos/fuente.svg" alt="">
-                    <span>Recurso hídrico</span>
-                </div>
-                <div class="ruta-servicio">
-                    <img src="iconos/restaurante.svg" alt="">
-                    <span>Restaurante</span>
-                </div>
-                <div class="ruta-servicio">
-                    <img src="iconos/carrito.svg" alt="">
-                    <span>Apta para carritos</span>
-                </div>
-            </div>
-        </section>
-        <section class="ruta-cta">
-            <p class="ruta-cta-pregunta">¿LISTO PARA CAMINAR?</p>
-            <a href="seguir.html?ruta=vega" class="ruta-cta-btn">SEGUIR LA RUTA →</a>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-logos">
-            <img src="logos/ramales.svg" alt="Ayuntamiento de Ramales de la Victoria">
-            <img src="logos/naturalblanco.png" alt="Ramales Natural">
-        </div>
-        <p class="footer-copy">© Oscar Saiz Gutiérrez, 2026</p>
-    </footer>
-
-    <script src="js/ruta-comun.js"></script>
-    <script src="js/vega.js"></script>
-
+<a class="btn-volver" href="index.html">
+<span class="btn-volver-completo">← TODAS LAS RUTAS</span>
+<span class="btn-volver-corto">←</span>
+</a>
+<header>
+<span class="ruta-header-label">CAMINA Y DESCUBRE</span>
+<div aria-hidden="true" class="ruta-header-num">02</div>
+<h1>Paseo de Vegacorredor</h1>
+<p>RAMALES DE LA VICTORIA</p>
+</header>
+<main>
+<section class="ruta-datos">
+<div class="ruta-datos-inner">
+<div class="ruta-dato">
+<img alt="" src="iconos/distancia.svg"/>
+<span class="ruta-dato-val">7 km</span>
+<span class="ruta-dato-lab">Distancia</span>
+</div>
+<div class="ruta-dato">
+<img alt="" src="iconos/reloj.svg"/>
+<span class="ruta-dato-val">1h 30min</span>
+<span class="ruta-dato-lab">Duración</span>
+</div>
+<div class="ruta-dato">
+<img alt="" src="iconos/altitud.svg"/>
+<span class="ruta-dato-val">58m</span>
+<span class="ruta-dato-lab">Desnivel</span>
+</div>
+<div class="ruta-dato">
+<img alt="" src="iconos/circular.svg"/>
+<span class="ruta-dato-val">Circular</span>
+<span class="ruta-dato-lab">Tipo</span>
+</div>
+</div>
+</section>
+<section class="ruta-mapa-bloque">
+<div id="mapa-detalle"></div>
+<div id="elevacion">
+<div id="grafico-elevacion"></div>
+</div>
+</section>
+<section class="ruta-puntos">
+<div class="ruta-puntos-cabecera">
+<span class="ruta-puntos-label">A LO LARGO DEL CAMINO</span>
+<h2 class="ruta-puntos-titulo">PUNTOS DEL RECORRIDO</h2>
+</div>
+<div class="ruta-puntos-grid"></div>
+</section>
+<section class="ruta-descripcion">
+<div class="ruta-descripcion-inner">
+<span class="ruta-descripcion-label">DESCRIPCIÓN</span>
+<h2 class="ruta-descripcion-titulo">EL RECORRIDO</h2>
+<div class="ruta-descripcion-texto">
+<p>Empezando la ruta en el Ayuntamiento, llegando a la Plaza Duques de la Victoria, por detrás de la iglesia cogemos la calle Manuel Marure que nos llevará a Entrepuentes, zona donde se unen el río Asón y su principal afluente, el río Gándara. Aquí encontraremos un antiguo puente medieval, un molino (ahora propiedad privada) y la presa Don Cecilio.</p>
+<p>Siguiendo la carretera atravesaremos una zona ajardinada y área recreativa que nos lleva al Bº Vegacorredor. Una vez aquí subimos por la carretera de la izquierda en dirección al Bº Helguero, el cual atravesaremos y donde podremos visitar la Fuente Iseña, manantial que abastece Ramales.</p>
+<p>Siguiendo el camino regresaremos hasta el Humilladero Ánima de Iseña y desde aquí, volveremos por el mismo recorrido hasta la plaza.</p>
+</div>
+</div>
+</section>
+<section class="ruta-entorno">
+<div class="ruta-entorno-header">
+<span class="ruta-entorno-label">DESCUBRE EL ENTORNO</span>
+<h2 class="ruta-entorno-titulo">TRES HÁBITATS,<br/>UN PASEO</h2>
+<p class="ruta-entorno-intro">En pocos kilómetros, el Paseo de Vegacorredor reúne bosque de ribera, bosque mixto con centenarios castaños y el espectacular encinar cantábrico de la Sierra del Hornijo.</p>
+</div><div class="ruta-entorno-tabs"><button class="ruta-entorno-tab activa" data-panel="vegetacion">La vegetación</button><button class="ruta-entorno-tab" data-panel="fauna">La fauna</button><button class="ruta-entorno-tab" data-panel="invasoras">Invasoras</button></div><div class="ruta-entorno-panel activo" id="panel-vegetacion"><div class="ruta-entorno-bloque">
+<span class="ruta-entorno-cat-label">La vegetación</span>
+<h3 class="ruta-entorno-cat-titulo">TRES HÁBITATS EN POCOS KILÓMETROS</h3>
+<div class="ruta-entorno-fila">
+<div class="ruta-entorno-fila-texto">
+<p class="ruta-entorno-texto">El paseo comienza junto a la orilla del río Asón, donde disfrutaremos de un frondoso <strong>bosque de ribera</strong>. Crecen alisos, sauces, fresnos, plátanos, olmos y avellanos, acompañados de arbustos como el cornejo, el rosal silvestre, la zarzaparrilla y el espino albar.</p>
+<p class="ruta-entorno-texto">Camino de Helguero, bordeamos un <strong>bosque mixto</strong> de gran valor, con robles, castaños, laureles, hayas y arces, y una zona recreativa presidida por un grupo de tilos y unos castaños centenarios.</p>
+<p class="ruta-entorno-texto">Al término de Vegacorredor, de vuelta hacia Ramales, nos acompaña el <strong>encinar cantábrico</strong> que se extiende por las laderas de la Sierra del Hornijo y el Pico San Vicente.</p>
+</div>
+<div class="ruta-entorno-fila-foto">
+<img alt="Bosque de Vegacorredor" src="fotos/parquevega.jpeg"/>
+</div>
+</div>
+<div class="ruta-entorno-lista">
+<span class="ruta-entorno-lista-item">Aliso <em>Alnus glutinosa</em></span>
+<span class="ruta-entorno-lista-item">Sauce <em>Salix alba</em></span>
+<span class="ruta-entorno-lista-item">Fresno <em>Fraxinus excelsior</em></span>
+<span class="ruta-entorno-lista-item">Avellano <em>Corylus avellana</em></span>
+<span class="ruta-entorno-lista-item">Roble <em>Quercus robur</em></span>
+<span class="ruta-entorno-lista-item">Castaño <em>Castanea sativa</em></span>
+<span class="ruta-entorno-lista-item">Haya <em>Fagus sylvatica</em></span>
+<span class="ruta-entorno-lista-item">Encina <em>Quercus ilex</em></span>
+<span class="ruta-entorno-lista-item">Madroño <em>Arbutus unedo</em></span>
+<span class="ruta-entorno-lista-item">Aladierno <em>Rhamnus alaternus</em></span>
+<span class="ruta-entorno-lista-item">Labiérnago <em>Phillyrea latifolia</em></span>
+</div>
+</div></div><div class="ruta-entorno-panel" id="panel-fauna"><div class="ruta-entorno-bloque">
+<span class="ruta-entorno-cat-label">La fauna</span>
+<h3 class="ruta-entorno-cat-titulo">UNA FAUNA IGUALMENTE VARIADA</h3>
+<div class="ruta-entorno-fila ruta-entorno-fila--invertida">
+<div class="ruta-entorno-fila-foto">
+<img alt="Río Asón" src="fotos/presa.jpg"/>
+</div>
+<div class="ruta-entorno-fila-texto">
+<p class="ruta-entorno-texto">La gran diversidad de hábitats del recorrido permite observar una fauna igualmente variada. En el entorno fluvial encontraremos aves como el <strong>ánade real</strong>, el <strong>mirlo acuático</strong>, la <strong>garza real</strong> y la <strong>lavandera</strong>, además de peces como la trucha o el salmón.</p>
+<p class="ruta-entorno-texto">En los bosques podremos ver aves forestales —petirrojos, trepadores, urracas, pájaros carpinteros, arrendajos, cornejas y carboneros— y mamíferos como el corzo, el jabalí, el tejón, el zorro, la garduña, la gineta, el erizo y la ardilla. También abundan los invertebrados: avispas, escarabajos, caracoles, arañas y mariposas.</p>
+</div>
+</div>
+<div class="ruta-entorno-especies">
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Garza real" src="fotos/fauna/garza.jpeg"/></div><span class="ruta-entorno-especie-nombre">Garza real</span><span class="ruta-entorno-especie-cientifico">Ardea cinerea</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Garza real</span><span class="ruta-entorno-especie-cientifico">Ardea cinerea</span><p class="ruta-entorno-especie-desc">Ave zancuda de gran porte habitual en las orillas del Asón. Caza peces con paciencia inmóvil.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Trucha común" src="fotos/fauna/trucha.jpg"/></div><span class="ruta-entorno-especie-nombre">Trucha común</span><span class="ruta-entorno-especie-cientifico">Salmo trutta</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Trucha común</span><span class="ruta-entorno-especie-cientifico">Salmo trutta</span><p class="ruta-entorno-especie-desc">Pez emblemático del río Asón y bioindicador de la calidad del agua. Indicador de aguas limpias y bien oxigenadas.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Corzo" src="fotos/fauna/corzo.jpeg"/></div><span class="ruta-entorno-especie-nombre">Corzo</span><span class="ruta-entorno-especie-cientifico">Capreolus capreolus</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Corzo</span><span class="ruta-entorno-especie-cientifico">Capreolus capreolus</span><p class="ruta-entorno-especie-desc">El mayor mamífero del encinar. Por sus hábitos crepusculares, sus huellas son más fáciles de encontrar que el animal.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Urraca" src="fotos/fauna/urraca.jpg"/></div><span class="ruta-entorno-especie-nombre">Urraca</span><span class="ruta-entorno-especie-cientifico">Pica pica</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Urraca</span><span class="ruta-entorno-especie-cientifico">Pica pica</span><p class="ruta-entorno-especie-desc">Córvido inteligente y curioso, habitual en los bordes del bosque mixto y los caminos.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Ardilla roja" src="fotos/fauna/ardilla.jpg"/></div><span class="ruta-entorno-especie-nombre">Ardilla roja</span><span class="ruta-entorno-especie-cientifico">Sciurus vulgaris</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Ardilla roja</span><span class="ruta-entorno-especie-cientifico">Sciurus vulgaris</span><p class="ruta-entorno-especie-desc">Activa durante el día, se mueve con agilidad entre las ramas de robles y castaños centenarios.</p></div></div></div>
+</div>
+</div></div><div class="ruta-entorno-panel" id="panel-invasoras"><div class="ruta-entorno-bloque">
+<span class="ruta-entorno-cat-label">Atención</span>
+<h3 class="ruta-entorno-cat-titulo">OJO CON LAS INVASORAS</h3>
+<div class="ruta-entorno-fila">
+<div class="ruta-entorno-fila-texto">
+<p class="ruta-entorno-texto">A lo largo del recorrido podemos encontrar especies exóticas invasoras que compiten con la flora autóctona y alteran el equilibrio del ecosistema. Su presencia en los márgenes del río y los caminos es un problema creciente que es importante conocer y no contribuir a extender.</p>
+</div>
+<div class="ruta-entorno-fila-foto">
+<img alt="Vegetación de ribera" src="fotos/secundario.jpg"/>
+</div>
+</div>
+<div class="ruta-entorno-lista">
+<span class="ruta-entorno-lista-item">Acanto <em>Acanthus</em></span>
+<span class="ruta-entorno-lista-item">Falsa acacia <em>Robinia pseudoacacia</em></span>
+<span class="ruta-entorno-lista-item">Tradescantia <em>Tradescantia fluminensis</em></span>
+<span class="ruta-entorno-lista-item">Crocosmia <em>Crocosmia × crocosmiiflora</em></span>
+<span class="ruta-entorno-lista-item">Caña común <em>Arundo donax</em></span>
+<span class="ruta-entorno-lista-item">Don Diego <em>Mirabilis jalapa</em></span>
+</div>
+</div></div>
+</section>
+<section class="ruta-info">
+<div class="ruta-info-cabecera">
+<span class="ruta-info-label">LO QUE ENCONTRARÁS</span>
+<h2 class="ruta-info-titulo">INFORMACIÓN ÚTIL</h2>
+</div>
+<div class="ruta-info-grid">
+<div class="ruta-servicio">
+<img alt="" src="iconos/picnic.svg"/>
+<span>Zona Picnic</span>
+</div>
+<div class="ruta-servicio">
+<img alt="" src="iconos/parqueinfantil.svg"/>
+<span>Parque infantil</span>
+</div>
+<div class="ruta-servicio">
+<img alt="" src="iconos/niños.svg"/>
+<span>Apta para niños</span>
+</div>
+<div class="ruta-servicio">
+<img alt="" src="iconos/compartido.svg"/>
+<span>Calzada compartida</span>
+</div>
+<div class="ruta-servicio">
+<img alt="" src="iconos/bici.svg"/>
+<span>Apta para bicicletas</span>
+</div>
+<div class="ruta-servicio">
+<img alt="" src="iconos/fuente.svg"/>
+<span>Recurso hídrico</span>
+</div>
+<div class="ruta-servicio">
+<img alt="" src="iconos/restaurante.svg"/>
+<span>Restaurante</span>
+</div>
+<div class="ruta-servicio">
+<img alt="" src="iconos/carrito.svg"/>
+<span>Apta para carritos</span>
+</div>
+</div>
+</section>
+<section class="ruta-cta">
+<p class="ruta-cta-pregunta">¿LISTO PARA CAMINAR?</p>
+<a class="ruta-cta-btn" href="seguir.html?ruta=vega">SEGUIR LA RUTA →</a>
+</section>
+</main>
+<footer>
+<div class="footer-logos">
+<img alt="Ayuntamiento de Ramales de la Victoria" src="logos/ramales.svg"/>
+<img alt="Ramales Natural" src="logos/naturalblanco.png"/>
+</div>
+<p class="footer-copy">© Oscar Saiz Gutiérrez, 2026</p>
+</footer>
+<script src="js/ruta-comun.js"></script>
+<script src="js/vega.js"></script>
 </body>
 </html>

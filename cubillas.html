@@ -1,111 +1,165 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paseo de Cubillas — Camina y Descubre</title>
-    <link rel="stylesheet" href="css/estilos.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css">
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
-    <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Paseo de Cubillas — Camina y Descubre</title>
+<link href="css/estilos.css" rel="stylesheet"/>
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
+<link href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css" rel="stylesheet"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+<script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
 </head>
 <body class="pagina-ruta">
-
-    <a href="index.html" class="btn-volver">
-        <span class="btn-volver-completo">← TODAS LAS RUTAS</span>
-        <span class="btn-volver-corto">←</span>
-    </a>
-
-    <header>
-        <span class="ruta-header-label">CAMINA Y DESCUBRE</span>
-        <div class="ruta-header-num" aria-hidden="true">04</div>
-        <h1>Paseo de Cubillas</h1>
-        <p>RAMALES DE LA VICTORIA</p>
-    </header>
-
-    <main>
-        <section class="ruta-datos">
-            <div class="ruta-datos-inner">
-                <div class="ruta-dato">
-                    <img src="iconos/distancia.svg" alt="">
-                    <span class="ruta-dato-val">4 km</span>
-                    <span class="ruta-dato-lab">Distancia</span>
-                </div>
-                <div class="ruta-dato">
-                    <img src="iconos/reloj.svg" alt="">
-                    <span class="ruta-dato-val">45 min</span>
-                    <span class="ruta-dato-lab">Duración</span>
-                </div>
-                <div class="ruta-dato">
-                    <img src="iconos/altitud.svg" alt="">
-                    <span class="ruta-dato-val">23m</span>
-                    <span class="ruta-dato-lab">Desnivel</span>
-                </div>
-                <div class="ruta-dato">
-                    <img src="iconos/circular.svg" alt="">
-                    <span class="ruta-dato-val">Circular</span>
-                    <span class="ruta-dato-lab">Tipo</span>
-                </div>
-            </div>
-        </section>
-        <section class="ruta-mapa-bloque">
-            <div id="mapa-detalle"></div>
-            <div id="elevacion">
-                <div id="grafico-elevacion"></div>
-            </div>
-        </section>
-        <section class="ruta-puntos">
-            <div class="ruta-puntos-cabecera">
-                <span class="ruta-puntos-label">A LO LARGO DEL CAMINO</span>
-                <h2 class="ruta-puntos-titulo">PUNTOS DEL RECORRIDO</h2>
-            </div>
-            <div class="ruta-puntos-grid"></div>
-        </section>
-        <section class="ruta-descripcion">
-            <div class="ruta-descripcion-inner">
-                <span class="ruta-descripcion-label">DESCRIPCIÓN</span>
-                <h2 class="ruta-descripcion-titulo">EL RECORRIDO</h2>
-                <div class="ruta-descripcion-texto">
-                    <p>Empezamos la ruta en el Ayuntamiento, dirigiéndonos por la N-629 hasta el cruce con la carretera de Arredondo (CA-261) que tomaremos a la izquierda, seguidamente giramos a la derecha por la calle estrecha que pasa detrás de la casa amarilla.</p>
-                    <p>A partir de ahí, continuamos por una senda peatonal, cruzaremos un puente de madera que nos llevará a rodear una zona con varias instalaciones deportivas y zonas ajardinadas.</p>
-                    <p>Regresando de nuevo al puente volveremos por el mismo camino hasta la carretera general donde cogemos, de frente, por la calle Manuel González Peral para finalizar el recorrido en el punto de inicio.</p>
-                </div>
-            </div>
-        </section>
-        <section class="ruta-info">
-            <div class="ruta-info-cabecera">
-                <span class="ruta-info-label">LO QUE ENCONTRARÁS</span>
-                <h2 class="ruta-info-titulo">INFORMACIÓN ÚTIL</h2>
-            </div>
-            <div class="ruta-info-grid">
-                <div class="ruta-servicio"><img src="iconos/picnic.svg" alt=""><span>Zona Picnic</span></div>
-                <div class="ruta-servicio"><img src="iconos/parqueinfantil.svg" alt=""><span>Parque infantil</span></div>
-                <div class="ruta-servicio"><img src="iconos/niños.svg" alt=""><span>Apta para niños</span></div>
-                <div class="ruta-servicio"><img src="iconos/compartido.svg" alt=""><span>Calzada compartida</span></div>
-                <div class="ruta-servicio"><img src="iconos/bici.svg" alt=""><span>Apta para bicicletas</span></div>
-                <div class="ruta-servicio"><img src="iconos/fuente.svg" alt=""><span>Recurso hídrico</span></div>
-                <div class="ruta-servicio"><img src="iconos/restaurante.svg" alt=""><span>Restaurante</span></div>
-                <div class="ruta-servicio"><img src="iconos/carrito.svg" alt=""><span>Apta para carritos</span></div>
-            </div>
-        </section>
-        <section class="ruta-cta">
-            <p class="ruta-cta-pregunta">¿LISTO PARA CAMINAR?</p>
-            <a href="seguir.html?ruta=cubillas" class="ruta-cta-btn">SEGUIR LA RUTA →</a>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-logos">
-            <img src="logos/ramales.svg" alt="Ayuntamiento de Ramales de la Victoria">
-            <img src="logos/naturalblanco.png" alt="Ramales Natural">
-        </div>
-        <p class="footer-copy">© Oscar Saiz Gutiérrez, 2026</p>
-    </footer>
-
-    <script src="js/ruta-comun.js"></script>
-    <script src="js/cubillas.js"></script>
-
+<a class="btn-volver" href="index.html">
+<span class="btn-volver-completo">← TODAS LAS RUTAS</span>
+<span class="btn-volver-corto">←</span>
+</a>
+<header>
+<span class="ruta-header-label">CAMINA Y DESCUBRE</span>
+<div aria-hidden="true" class="ruta-header-num">04</div>
+<h1>Paseo de Cubillas</h1>
+<p>RAMALES DE LA VICTORIA</p>
+</header>
+<main>
+<section class="ruta-datos">
+<div class="ruta-datos-inner">
+<div class="ruta-dato">
+<img alt="" src="iconos/distancia.svg"/>
+<span class="ruta-dato-val">4 km</span>
+<span class="ruta-dato-lab">Distancia</span>
+</div>
+<div class="ruta-dato">
+<img alt="" src="iconos/reloj.svg"/>
+<span class="ruta-dato-val">45 min</span>
+<span class="ruta-dato-lab">Duración</span>
+</div>
+<div class="ruta-dato">
+<img alt="" src="iconos/altitud.svg"/>
+<span class="ruta-dato-val">23m</span>
+<span class="ruta-dato-lab">Desnivel</span>
+</div>
+<div class="ruta-dato">
+<img alt="" src="iconos/circular.svg"/>
+<span class="ruta-dato-val">Circular</span>
+<span class="ruta-dato-lab">Tipo</span>
+</div>
+</div>
+</section>
+<section class="ruta-mapa-bloque">
+<div id="mapa-detalle"></div>
+<div id="elevacion">
+<div id="grafico-elevacion"></div>
+</div>
+</section>
+<section class="ruta-puntos">
+<div class="ruta-puntos-cabecera">
+<span class="ruta-puntos-label">A LO LARGO DEL CAMINO</span>
+<h2 class="ruta-puntos-titulo">PUNTOS DEL RECORRIDO</h2>
+</div>
+<div class="ruta-puntos-grid"></div>
+</section>
+<section class="ruta-descripcion">
+<div class="ruta-descripcion-inner">
+<span class="ruta-descripcion-label">DESCRIPCIÓN</span>
+<h2 class="ruta-descripcion-titulo">EL RECORRIDO</h2>
+<div class="ruta-descripcion-texto">
+<p>Empezamos la ruta en el Ayuntamiento, dirigiéndonos por la N-629 hasta el cruce con la carretera de Arredondo (CA-261) que tomaremos a la izquierda, seguidamente giramos a la derecha por la calle estrecha que pasa detrás de la casa amarilla.</p>
+<p>A partir de ahí, continuamos por una senda peatonal, cruzaremos un puente de madera que nos llevará a rodear una zona con varias instalaciones deportivas y zonas ajardinadas.</p>
+<p>Regresando de nuevo al puente volveremos por el mismo camino hasta la carretera general donde cogemos, de frente, por la calle Manuel González Peral para finalizar el recorrido en el punto de inicio.</p>
+</div>
+</div>
+</section>
+<section class="ruta-entorno">
+<div class="ruta-entorno-header">
+<span class="ruta-entorno-label">DESCUBRE EL ENTORNO</span>
+<h2 class="ruta-entorno-titulo">BOSQUE VIVO<br/>EN CADA ESTACIÓN</h2>
+<p class="ruta-entorno-intro">El Paseo de Cubillas cambia de rostro con las estaciones: los ocres del otoño, el bosque desnudo del invierno, el verdor de la primavera y los frutos del verano.</p>
+</div><div class="ruta-entorno-tabs"><button class="ruta-entorno-tab activa" data-panel="vegetacion">La vegetación</button><button class="ruta-entorno-tab" data-panel="fauna">La fauna</button></div><div class="ruta-entorno-panel activo" id="panel-vegetacion"><div class="ruta-entorno-bloque">
+<span class="ruta-entorno-cat-label">La vegetación</span>
+<h3 class="ruta-entorno-cat-titulo">BOSQUE DE RIBERA Y ROBLEDAL</h3>
+<div class="ruta-entorno-fila">
+<div class="ruta-entorno-fila-texto">
+<p class="ruta-entorno-texto">El principal atractivo de este recorrido es su <strong>bosque de ribera</strong>, que acompaña al río formando una característica disposición en galería. Alisos, sauces, fresnos, plátanos, olmos y avellanos se mezclan con arbustos como el cornejo, el rosal silvestre, la zarzaparrilla y el espino albar.</p>
+<p class="ruta-entorno-texto">Junto al bosque de ribera encontramos un <strong>pequeño robledal</strong> con hermosos ejemplares de roble. Bajo sus copas crece un sotobosque formado por hiedras, zarzamoras y nueza negra, que ofrece alimento y cobijo a la fauna.</p>
+</div>
+<div class="ruta-entorno-fila-foto">
+<img alt="Bosque de ribera de Cubillas" src="fotos/parquecubillas.jpg"/>
+</div>
+</div>
+<div class="ruta-entorno-lista">
+<span class="ruta-entorno-lista-item">Aliso <em>Alnus glutinosa</em></span>
+<span class="ruta-entorno-lista-item">Sauce <em>Salix alba</em></span>
+<span class="ruta-entorno-lista-item">Fresno <em>Fraxinus excelsior</em></span>
+<span class="ruta-entorno-lista-item">Plátano <em>Platanus hispanica</em></span>
+<span class="ruta-entorno-lista-item">Olmo <em>Ulmus minor</em></span>
+<span class="ruta-entorno-lista-item">Avellano <em>Corylus avellana</em></span>
+<span class="ruta-entorno-lista-item">Roble <em>Quercus robur</em></span>
+<span class="ruta-entorno-lista-item">Cornejo <em>Cornus sanguinea</em></span>
+<span class="ruta-entorno-lista-item">Zarzamora <em>Rubus ulmifolius</em></span>
+<span class="ruta-entorno-lista-item">Hiedra <em>Hedera helix</em></span>
+</div>
+</div></div><div class="ruta-entorno-panel" id="panel-fauna"><div class="ruta-entorno-bloque">
+<span class="ruta-entorno-cat-label">La fauna</span>
+<h3 class="ruta-entorno-cat-titulo">UN BOSQUE LLENO DE VIDA</h3>
+<div class="ruta-entorno-fila ruta-entorno-fila--invertida">
+<div class="ruta-entorno-fila-foto">
+<img alt="Entorno fluvial" src="fotos/presa.jpg"/>
+</div>
+<div class="ruta-entorno-fila-texto">
+<p class="ruta-entorno-texto">Si activamos nuestros sentidos, descubriremos que este bosque está lleno de vida. Algunos animales podremos observarlos directamente, otros se harán notar con sus sonidos y, en muchas ocasiones, solo encontraremos sus huellas y rastros.</p>
+<p class="ruta-entorno-texto"><strong>Junto al río</strong> podemos encontrar el ánade real, el mirlo acuático, el martín pescador, la lavandera y la garza real. Bajo el agua viven la trucha y el salmón, además de reptiles y pequeños mamíferos. <strong>Entre los robles</strong> habitan arrendajos, carboneros, herrerillos, trepadores, pájaros carpinteros, zorros, ginetas, ardillas y ratones de campo.</p>
+</div>
+</div>
+<div class="ruta-entorno-especies">
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Ánade real" src="fotos/fauna/anade.jpg"/></div><span class="ruta-entorno-especie-nombre">Ánade real</span><span class="ruta-entorno-especie-cientifico">Anas platyrhynchos</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Ánade real</span><span class="ruta-entorno-especie-cientifico">Anas platyrhynchos</span><p class="ruta-entorno-especie-desc">El pato más común del río. El macho luce una inconfundible cabeza verde metálica en la época de celo.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Mirlo acuático" src="fotos/fauna/mirlo.jpg"/></div><span class="ruta-entorno-especie-nombre">Mirlo acuático</span><span class="ruta-entorno-especie-cientifico">Cinclus cinclus</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Mirlo acuático</span><span class="ruta-entorno-especie-cientifico">Cinclus cinclus</span><p class="ruta-entorno-especie-desc">Ave singular que camina bajo el agua para buscar invertebrados en el lecho del río.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Martín pescador" src="fotos/fauna/martin.jpg"/></div><span class="ruta-entorno-especie-nombre">Martín pescador</span><span class="ruta-entorno-especie-cientifico">Alcedo atthis</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Martín pescador</span><span class="ruta-entorno-especie-cientifico">Alcedo atthis</span><p class="ruta-entorno-especie-desc">Pequeño, veloz y de colores brillantes. Se lanza en picado sobre el agua para capturar peces.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Trucha común" src="fotos/fauna/trucha.jpg"/></div><span class="ruta-entorno-especie-nombre">Trucha común</span><span class="ruta-entorno-especie-cientifico">Salmo trutta</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Trucha común</span><span class="ruta-entorno-especie-cientifico">Salmo trutta</span><p class="ruta-entorno-especie-desc">Pez emblemático del río Asón y bioindicador de la calidad del agua. Indicador de aguas limpias y bien oxigenadas.</p></div></div></div>
+<div class="ruta-entorno-especie"><div class="ruta-entorno-especie-inner"><div class="ruta-entorno-especie-front"><div class="ruta-entorno-especie-foto"><img alt="Zorro común" src="fotos/fauna/zorro.jpeg"/></div><span class="ruta-entorno-especie-nombre">Zorro común</span><span class="ruta-entorno-especie-cientifico">Vulpes vulpes</span><span class="ruta-entorno-especie-hint">· toca para más ·</span></div><div class="ruta-entorno-especie-back"><span class="ruta-entorno-especie-nombre">Zorro común</span><span class="ruta-entorno-especie-cientifico">Vulpes vulpes</span><p class="ruta-entorno-especie-desc">Omnívoro y adaptable, habita tanto el bosque como los márgenes del río. De hábitos principalmente crepusculares.</p></div></div></div>
+</div>
+<div class="ruta-entorno-lista">
+<span class="ruta-entorno-lista-item">Garza real <em>Ardea cinerea</em></span>
+<span class="ruta-entorno-lista-item">Lavandera <em>Motacilla alba</em></span>
+<span class="ruta-entorno-lista-item">Salmón atlántico <em>Salmo salar</em></span>
+<span class="ruta-entorno-lista-item">Lagartija <em>Podarcis hispanicus</em></span>
+<span class="ruta-entorno-lista-item">Culebra viperina <em>Natrix maura</em></span>
+<span class="ruta-entorno-lista-item">Gineta <em>Genetta genetta</em></span>
+<span class="ruta-entorno-lista-item">Ardilla roja <em>Sciurus vulgaris</em></span>
+</div>
+</div></div>
+</section>
+<section class="ruta-info">
+<div class="ruta-info-cabecera">
+<span class="ruta-info-label">LO QUE ENCONTRARÁS</span>
+<h2 class="ruta-info-titulo">INFORMACIÓN ÚTIL</h2>
+</div>
+<div class="ruta-info-grid">
+<div class="ruta-servicio"><img alt="" src="iconos/picnic.svg"/><span>Zona Picnic</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/parqueinfantil.svg"/><span>Parque infantil</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/niños.svg"/><span>Apta para niños</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/compartido.svg"/><span>Calzada compartida</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/bici.svg"/><span>Apta para bicicletas</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/fuente.svg"/><span>Recurso hídrico</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/restaurante.svg"/><span>Restaurante</span></div>
+<div class="ruta-servicio"><img alt="" src="iconos/carrito.svg"/><span>Apta para carritos</span></div>
+</div>
+</section>
+<section class="ruta-cta">
+<p class="ruta-cta-pregunta">¿LISTO PARA CAMINAR?</p>
+<a class="ruta-cta-btn" href="seguir.html?ruta=cubillas">SEGUIR LA RUTA →</a>
+</section>
+</main>
+<footer>
+<div class="footer-logos">
+<img alt="Ayuntamiento de Ramales de la Victoria" src="logos/ramales.svg"/>
+<img alt="Ramales Natural" src="logos/naturalblanco.png"/>
+</div>
+<p class="footer-copy">© Oscar Saiz Gutiérrez, 2026</p>
+</footer>
+<script src="js/ruta-comun.js"></script>
+<script src="js/cubillas.js"></script>
 </body>
 </html>
