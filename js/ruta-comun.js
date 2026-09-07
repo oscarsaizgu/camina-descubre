@@ -229,16 +229,133 @@ function renderizarPuntosInteres(puntos) {
                 '<span class="punto-num">' + num + '</span>' +
                 '<span class="punto-nombre">' + p.nombre + '</span>' +
             '</div>';
-        if (p.foto || p.streetview) {
+        if (p.foto || p.streetview || p.descripcion) {
+            card.style.cursor = 'pointer';
             card.addEventListener('click', function() {
-                if (p.streetview) {
+                if (document.getElementById('ficha-overlay')) {
+                    abrirFichaPunto(p);
+                } else if (p.streetview) {
                     abrirLightboxSV(p.foto, p.nombre, p.streetview);
-                } else {
+                } else if (p.foto) {
                     abrirLightboxFoto(p.foto, p.nombre);
                 }
             });
         }
         grid.appendChild(card);
+    });
+}
+
+
+
+// ── Ficha de punto de interés (modal enriquecido) ─────────────────────────
+
+function crearFichaPunto() {
+    var overlay = document.createElement('div');
+    overlay.id = 'ficha-overlay';
+    overlay.innerHTML =
+        '<div id="ficha-panel">' +
+            '<div id="ficha-topbar"><button id="ficha-cerrar">✕</button></div>' +
+            '<div id="ficha-media">' +
+                '<img id="ficha-foto" alt="">' +
+                '<iframe id="ficha-sv" allowfullscreen="" loading="lazy"></iframe>' +
+            '</div>' +
+            '<div id="ficha-cuerpo">' +
+                '<span id="ficha-categoria"></span>' +
+                '<h2 id="ficha-nombre"></h2>' +
+                '<p id="ficha-descripcion"></p>' +
+                '<div id="ficha-sec-historia" class="ficha-seccion">' +
+                    '<span class="ficha-seccion-titulo">Historia</span>' +
+                    '<p id="ficha-historia"></p>' +
+                '</div>' +
+                '<div id="ficha-sec-info" class="ficha-seccion">' +
+                    '<span class="ficha-seccion-titulo">Información práctica</span>' +
+                    '<p id="ficha-info"></p>' +
+                '</div>' +
+                '<a id="ficha-enlace" href="#" target="_blank" rel="noopener">Más información →</a>' +
+            '</div>' +
+        '</div>';
+    document.body.appendChild(overlay);
+
+    document.getElementById('ficha-cerrar').addEventListener('click', cerrarFichaPunto);
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) cerrarFichaPunto();
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') cerrarFichaPunto();
+    });
+}
+
+function cerrarFichaPunto() {
+    var overlay = document.getElementById('ficha-overlay');
+    if (overlay) overlay.classList.remove('abierta');
+    var sv = document.getElementById('ficha-sv');
+    if (sv) { sv.src = ''; sv.style.display = 'none'; }
+}
+
+function abrirFichaPunto(punto) {
+    var overlay = document.getElementById('ficha-overlay');
+    if (!overlay) return;
+
+    var cat = document.getElementById('ficha-categoria');
+    cat.textContent = punto.categoria || '';
+    cat.style.display = punto.categoria ? 'block' : 'none';
+
+    document.getElementById('ficha-nombre').textContent = punto.nombre;
+
+    var foto  = document.getElementById('ficha-foto');
+    var sv    = document.getElementById('ficha-sv');
+    var media = document.getElementById('ficha-media');
+    foto.style.display = 'none';
+    sv.style.display   = 'none';
+    sv.src = '';
+    if (punto.streetview) {
+        sv.src = punto.streetview;
+        sv.style.display = 'block';
+        media.style.display = 'block';
+    } else if (punto.foto) {
+        foto.src = punto.foto;
+        foto.style.display = 'block';
+        media.style.display = 'block';
+    } else {
+        media.style.display = 'none';
+    }
+
+    var desc = document.getElementById('ficha-descripcion');
+    desc.textContent = punto.descripcion || '';
+    desc.style.display = punto.descripcion ? 'block' : 'none';
+
+    var secHist = document.getElementById('ficha-sec-historia');
+    document.getElementById('ficha-historia').textContent = punto.historia || '';
+    secHist.style.display = punto.historia ? 'block' : 'none';
+
+    var secInfo = document.getElementById('ficha-sec-info');
+    document.getElementById('ficha-info').textContent = punto.informacionPractica || '';
+    secInfo.style.display = punto.informacionPractica ? 'block' : 'none';
+
+    var enlace = document.getElementById('ficha-enlace');
+    if (punto.enlaceOficial) {
+        enlace.href = punto.enlaceOficial;
+        enlace.style.display = 'inline-flex';
+    } else {
+        enlace.style.display = 'none';
+    }
+
+    overlay.classList.add('abierta');
+    document.getElementById('ficha-panel').scrollTop = 0;
+}
+
+function crearMarcadoresConFicha(mapa, puntosInteres) {
+    puntosInteres.forEach(function(punto) {
+        var marker = L.marker(punto.coords, { icon: iconoMarker }).addTo(mapa);
+        marker.on('mouseover', function() {
+            var contenido = '<b>' + punto.nombre + '</b>';
+            if (punto.foto) {
+                contenido += '<br><img src="' + punto.foto + '" style="width:150px;margin-top:5px;border-radius:4px;">';
+            }
+            this.bindPopup(contenido, { closeButton: false, maxWidth: 200, autoPan: false }).openPopup();
+        });
+        marker.on('mouseout', function() { this.closePopup(); });
+        marker.on('click', function() { abrirFichaPunto(punto); });
     });
 }
 
