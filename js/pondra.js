@@ -7,7 +7,8 @@ var GPX = 'data/pondra.gpx';
 var puntosInteres = [
     // Sin puntos de interés por ahora.
     // Para añadir uno, copia esta línea y rellena los datos:
-    // { coords: [latitud, longitud], nombre: "Nombre del sitio", foto: "fotos/nombre.jpg" },
+    // { coords: [latitud, longitud], nombre: "Nombre del sitio", foto: "fotos/nombre.jpg",
+    //   categoria: "Tipo", descripcion: "...", historia: null, informacionPractica: null, enlaceOficial: null },
 ];
 
 // ====================================================
@@ -22,7 +23,7 @@ elevacion.load(GPX);
 
 cargarTrack(mapa, GPX, 0.1);
 
-crearLightbox();
-crearMarcadores(mapa, puntosInteres);
+crearFichaPunto();
+crearMarcadoresConFicha(mapa, puntosInteres);
 
 renderizarPuntosInteres(puntosInteres);
