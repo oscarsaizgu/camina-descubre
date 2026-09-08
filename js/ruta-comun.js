@@ -510,37 +510,76 @@ function abrirLightboxSV(foto, nombre, svUrl) {
 }
 
 
-// ── Renderiza tarjetas de puntos de interés ───────────
+// ── Renderiza itinerario editorial de puntos de interés ───────────
 // Conectada bidireccionalmente con el mapa.
 function renderizarPuntosInteres(puntos) {
-    var grid    = document.querySelector('.ruta-puntos-grid');
     var seccion = document.querySelector('.ruta-puntos');
-    if (!grid) return;
+    if (!seccion) return;
+    var oldGrid = seccion.querySelector('.ruta-puntos-grid');
     if (!puntos || puntos.length === 0) {
-        if (seccion) seccion.style.display = 'none';
+        seccion.style.display = 'none';
         return;
     }
     _poiCardsLista = [];
 
+    var lista = document.createElement('div');
+    lista.className = 'poi-itinerario';
+    if (oldGrid) {
+        oldGrid.parentNode.insertBefore(lista, oldGrid);
+        oldGrid.parentNode.removeChild(oldGrid);
+    } else {
+        seccion.appendChild(lista);
+    }
+
+    var total = puntos.length;
+
     puntos.forEach(function(p, i) {
         var num = String(i + 1).padStart(2, '0');
-        var fotoHTML = p.foto
-            ? '<img src="' + p.foto + '" alt="' + p.nombre + '" loading="lazy">'
-            : '<span class="punto-card-foto-placeholder">' + (p.streetview ? '360°' : '·') + '</span>';
+        var esPar = (i % 2 !== 0);
 
-        var card = document.createElement('div');
-        card.className = 'punto-card';
-        card.innerHTML =
-            '<div class="punto-card-foto">' + fotoHTML + '</div>' +
-            '<div class="punto-card-cuerpo">' +
-                '<span class="punto-num">' + num + '</span>' +
-                '<span class="punto-nombre">' + p.nombre + '</span>' +
-                (p.descripcion ? '<span class="punto-desc">' + p.descripcion + '</span>' : '') +
+        // Primera frase de la descripción
+        var primeraSentencia = '';
+        if (p.descripcion) {
+            var match = p.descripcion.match(/^[^.!?]+[.!?]/);
+            primeraSentencia = match ? match[0] : p.descripcion.split(' ').slice(0, 20).join(' ');
+        }
+
+        // Bloque foto / streetview
+        var fotoHTML = '';
+        if (p.foto) {
+            fotoHTML = '<div class="poi-foto"><img src="' + p.foto + '" alt="' + p.nombre + '" loading="lazy"></div>';
+        } else if (p.streetview) {
+            fotoHTML = '<div class="poi-foto poi-foto--sv"><span class="poi-sv-icono">360°</span></div>';
+        }
+
+        // Enlace de acción
+        var accionHTML = p.streetview
+            ? '<span class="poi-accion">Ver vista 360° →</span>'
+            : '';
+
+        // Categoría
+        var categoriaHTML = p.categoria
+            ? '<span class="poi-categoria-label">' + p.categoria + '</span>'
+            : '';
+
+        var article = document.createElement('article');
+        article.className = 'punto-card poi-item' + (esPar ? ' poi-item--par' : '');
+        article.innerHTML =
+            '<div class="poi-numero">' +
+                '<span class="poi-num-texto">' + num + '</span>' +
+                (i < total - 1 ? '<div class="poi-hilo"></div>' : '') +
+            '</div>' +
+            '<div class="poi-cuerpo">' +
+                categoriaHTML +
+                '<h3 class="poi-nombre-titulo">' + p.nombre + '</h3>' +
+                fotoHTML +
+                (primeraSentencia ? '<p class="poi-descripcion-breve">' + primeraSentencia + '</p>' : '') +
+                accionHTML +
             '</div>';
 
         if (p.foto || p.streetview || p.descripcion) {
-            card.style.cursor = 'pointer';
-            card.addEventListener('click', function() {
+            article.style.cursor = 'pointer';
+            article.addEventListener('click', function() {
                 _activarMarcador(i);
                 if (_mapaRuta && _mapaListo && p.coords) {
                     _volarAPunto(p.coords);
@@ -559,9 +598,24 @@ function renderizarPuntosInteres(puntos) {
             });
         }
 
-        _poiCardsLista.push(card);
-        grid.appendChild(card);
+        _poiCardsLista.push(article);
+        lista.appendChild(article);
     });
+
+    // Animaciones de entrada al hacer scroll
+    if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (e.isIntersecting) {
+                    e.target.classList.add('poi-visible');
+                    obs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        lista.querySelectorAll('.poi-item').forEach(function(el) { obs.observe(el); });
+    } else {
+        lista.querySelectorAll('.poi-item').forEach(function(el) { el.classList.add('poi-visible'); });
+    }
 }
 
 
