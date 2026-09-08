@@ -2328,14 +2328,17 @@ body.pagina-ruta main {
    Solo afecta a páginas de ruta (.pagina-ruta)
    ═════════════════════════════════════════════════════ */
 
+/* Contenedor: altura = 20px zona título + 91px gráfico */
 .pagina-ruta .ruta-mapa-bloque #elevacion {
     position: relative;
+    height: 111px;
+    padding-top: 20px;
 }
-/* Etiqueta "PERFIL DEL RECORRIDO" */
+/* Etiqueta "PERFIL DEL RECORRIDO" — zona propia encima del gráfico */
 .pagina-ruta .ruta-mapa-bloque #elevacion::before {
     content: 'PERFIL DEL RECORRIDO';
     position: absolute;
-    top: 0.5rem;
+    top: 0.35rem;
     left: 1.2rem;
     font-family: 'CanvaSans', sans-serif;
     font-size: 0.44rem;
