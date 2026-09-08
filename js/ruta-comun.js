@@ -63,7 +63,8 @@ function crearElevacion(divId) {
         closeBtn:     false,
         waypoints:    false,
         wptIcons:     false,
-        polyline:     false
+        polyline:     false,
+        margins:      { top: 10, right: 20, bottom: 22, left: 55 }
     });
 }
 

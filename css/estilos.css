@@ -2370,7 +2370,14 @@ body.pagina-ruta main {
     stroke: rgba(245, 234, 216, 0.12) !important;
 }
 .pagina-ruta #grafico-elevacion .axis text,
-.pagina-ruta #grafico-elevacion .y.axis text,
+.pagina-ruta #grafico-elevacion .y.axis text {
+    fill: rgba(245, 234, 216, 0.72) !important;
+    font-family: 'CanvaSans', sans-serif !important;
+    font-size: 8px !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.06em !important;
+    stroke: none !important;
+}
 .pagina-ruta #grafico-elevacion .x.axis text {
     fill: rgba(245, 234, 216, 0.82) !important;
     font-family: 'CanvaSans', sans-serif !important;
@@ -2439,4 +2446,9 @@ body.pagina-ruta main {
         gap: 0.9rem;
     }
     #cluster-popover { max-width: calc(100vw - 2rem); }
+}
+
+/* Eje Y del perfil de elevación: el SVG no debe recortar sus propias etiquetas */
+.pagina-ruta #grafico-elevacion svg {
+    overflow: visible;
 }
