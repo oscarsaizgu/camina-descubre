@@ -13,6 +13,8 @@ var _boundsIniciales  = null;   // límites del track para restablecer la vista
 var _mapaListo        = false;  // true tras cargarTrack + fitBounds
 var _clusterExpandido = [];     // marcadores individuales al expandir cluster
 var _clusterOriginal  = null;   // { grupo, marker } del cluster actualmente expandido
+var _fichaSource      = null;   // 'section' | null — contexto de apertura de la ficha
+var _fichaScrollY     = 0;      // scrollY guardado al abrir ficha desde la sección
 
 
 // ── Inicializa el mapa (bloqueado: sin interacción de usuario) ──
@@ -569,11 +571,26 @@ function renderizarPuntosInteres(puntos) {
 
         var fotoHTML = '';
         if (p.foto) {
+            var imgClase = 'poi-card-foto-img' + (p.encuadreClase ? ' ' + p.encuadreClase : '');
             fotoHTML = '<div class="poi-card-foto"><img src="' + p.foto +
-                '" alt="' + p.nombre + '" loading="lazy"></div>';
+                '" alt="' + p.nombre + '" class="' + imgClase + '" loading="lazy"></div>';
         }
-        // Punto sin foto (ej: Mirador Pared del Eco con solo streetview):
-        // no se muestra placeholder, el contenido de texto ocupa ese espacio
+        // Punto sin foto: el contenido de texto ocupa ese espacio
+
+        // Bloque secreto (opcional, p.ej. punto 04 de vega)
+        var secretoHTML = '';
+        if (p.secreto) {
+            var _sfotos = (p.secreto.fotos || []).map(function(sf) {
+                return '<img src="' + sf + '" alt="" loading="lazy">';
+            }).join('');
+            secretoHTML =
+                '<div class="poi-secreto">' +
+                    '<span class="poi-secreto-label">' + (p.secreto.titulo || '') + '</span>' +
+                    '<p class="poi-secreto-texto">' + (p.secreto.texto || '') + '</p>' +
+                    '<button class="poi-secreto-accion" type="button">Descubrir →</button>' +
+                    '<div class="poi-secreto-gallery">' + _sfotos + '</div>' +
+                '</div>';
+        }
 
         var tieneClic = !!(p.foto || p.streetview || p.descripcion);
         var textoAcc  = p.streetview ? 'Ver panorámica 360° →' : 'Descubrir más →';
@@ -591,28 +608,38 @@ function renderizarPuntosInteres(puntos) {
                 '<h3 class="poi-card-nombre">' + p.nombre + '</h3>' +
                 (primeraSentencia ? '<p class="poi-card-desc">' + primeraSentencia + '</p>' : '') +
                 (tieneClic ? '<span class="poi-card-accion">' + textoAcc + '</span>' : '') +
+                secretoHTML +
             '</div>';
 
         if (tieneClic) {
             card.style.cursor = 'pointer';
-            card.addEventListener('click', function() {
+            card.addEventListener('click', function(e) {
+                // No abrir ficha si el clic es dentro del bloque secreto
+                if (e.target.closest && e.target.closest('.poi-secreto')) return;
                 irA(i);
                 _activarMarcador(i);
-                if (_mapaRuta && _mapaListo && p.coords) {
-                    _volarAPunto(p.coords);
-                    var mapaEl = document.getElementById('mapa-detalle');
-                    if (mapaEl) mapaEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-                if (document.getElementById('tarjeta-previa')) {
-                    abrirTarjetaPrevia(p);
-                } else if (document.getElementById('ficha-overlay')) {
-                    abrirFichaPunto(p);
+                // Desde la sección: abrir ficha sin desplazar al mapa
+                if (document.getElementById('ficha-overlay')) {
+                    abrirFichaPunto(p, 'section');
                 } else if (p.streetview) {
                     abrirLightboxSV(p.foto, p.nombre, p.streetview);
                 } else if (p.foto) {
                     abrirLightboxFoto(p.foto, p.nombre);
                 }
             });
+        }
+
+        // Listener del bloque secreto (si existe)
+        if (p.secreto) {
+            var _secretoEl  = card.querySelector('.poi-secreto');
+            var _secretoBtn = card.querySelector('.poi-secreto-accion');
+            if (_secretoBtn && _secretoEl) {
+                _secretoBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var rev = _secretoEl.classList.toggle('poi-secreto--revelado');
+                    _secretoBtn.textContent = rev ? 'Ocultar ←' : 'Descubrir →';
+                });
+            }
         }
 
         _poiCardsLista.push(card);
@@ -723,11 +750,31 @@ function cerrarFichaPunto() {
     if (overlay) overlay.classList.remove('abierta');
     var sv = document.getElementById('ficha-sv');
     if (sv) { sv.src = ''; sv.style.display = 'none'; }
+    if (_fichaSource === 'section') {
+        document.body.style.overflow   = '';
+        document.body.style.position   = '';
+        document.body.style.top        = '';
+        document.body.style.width      = '';
+        window.scrollTo(0, _fichaScrollY);
+    } else {
+        document.body.style.overflow = '';
+    }
+    _fichaSource = null;
 }
 
-function abrirFichaPunto(punto) {
+function abrirFichaPunto(punto, source) {
     var overlay = document.getElementById('ficha-overlay');
     if (!overlay) return;
+    _fichaSource = source || null;
+    if (_fichaSource === 'section') {
+        _fichaScrollY = window.scrollY;
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.top = '-' + _fichaScrollY + 'px';
+        document.body.style.width = '100%';
+    } else {
+        document.body.style.overflow = 'hidden';
+    }
 
     var cat = document.getElementById('ficha-categoria');
     cat.textContent = punto.categoria || '';
