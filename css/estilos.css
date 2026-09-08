@@ -2455,3 +2455,144 @@ body.pagina-ruta main {
 .pagina-ruta #grafico-elevacion svg {
     overflow: visible;
 }
+
+/* ═══════════════════════════════════════════════════════
+   HERO DE RUTA — primera pantalla (solo .pagina-ruta)
+   ═══════════════════════════════════════════════════════ */
+
+/* Contenedor hero: ocupa una pantalla completa */
+.pagina-ruta .ruta-hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--verde);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Header más compacto dentro del hero */
+.pagina-ruta .ruta-hero header {
+    padding: 2.8rem 2rem 1.2rem;
+    flex-shrink: 0;
+}
+
+/* Datos: menos padding vertical para que todo entre */
+.pagina-ruta .ruta-hero .ruta-datos .ruta-dato {
+    padding: 0.85rem 0.5rem;
+}
+
+/* Mapa-elevación: ocupa el espacio restante */
+.pagina-ruta .ruta-hero .ruta-mapa-bloque {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+/* Mapa: crece para llenar */
+.pagina-ruta .ruta-hero .ruta-mapa-bloque #mapa-detalle {
+    flex: 1;
+    height: auto !important;
+    min-height: 180px;
+}
+
+/* Elevación: mantiene su altura fija, no se estira */
+.pagina-ruta .ruta-hero .ruta-mapa-bloque #elevacion {
+    flex-shrink: 0;
+}
+
+/* ── Flecha de scroll (solo ruta, no toca index.html) ── */
+.ruta-scroll-arrow {
+    position: absolute;
+    bottom: 1.1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(245, 234, 216, 0.35);
+    text-decoration: none;
+    transition: color 0.25s ease, opacity 0.35s ease;
+    z-index: 20;
+    line-height: 0;
+}
+.ruta-scroll-arrow:hover {
+    color: rgba(245, 234, 216, 0.75);
+}
+.ruta-scroll-arrow.oculta {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Icono de la flecha: bounce suave en un span hijo */
+.ruta-scroll-icono {
+    display: block;
+}
+
+/* ── Animaciones de entrada del hero ── */
+@media (prefers-reduced-motion: no-preference) {
+
+    /* Bounce de la flecha — sobre el span hijo, sin interferir con transform del padre */
+    .ruta-scroll-icono {
+        animation: ruta-flecha-flotar 2.4s ease-in-out 1.2s infinite;
+    }
+    @keyframes ruta-flecha-flotar {
+        0%, 100% { transform: translateY(0); }
+        50%       { transform: translateY(7px); }
+    }
+
+    /* Entrada del hero: fade + rise suave */
+    .pagina-ruta .ruta-hero header {
+        animation: ruta-entrada 0.55s cubic-bezier(0.22,1,0.36,1) 0s both;
+    }
+    .pagina-ruta .ruta-hero .ruta-datos {
+        animation: ruta-entrada 0.55s cubic-bezier(0.22,1,0.36,1) 0.1s both;
+    }
+    .pagina-ruta .ruta-hero .ruta-mapa-bloque {
+        animation: ruta-entrada 0.6s cubic-bezier(0.22,1,0.36,1) 0.18s both;
+    }
+    .ruta-scroll-arrow {
+        animation: ruta-scroll-aparece 0.5s ease 0.5s both;
+    }
+
+    @keyframes ruta-entrada {
+        from { opacity: 0; transform: translateY(14px); }
+        to   { opacity: 1; transform: none; }
+    }
+    @keyframes ruta-scroll-aparece {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+}
+
+/* ── Responsive del hero ── */
+
+/* Portátil / tablet grande */
+@media (max-width: 1024px) {
+    .pagina-ruta .ruta-hero header {
+        padding: 2.4rem 1.8rem 1rem;
+    }
+}
+
+/* Tablet / móvil grande */
+@media (max-width: 768px) {
+    .pagina-ruta .ruta-hero header {
+        padding: 2rem 1.4rem 0.8rem;
+    }
+    .pagina-ruta .ruta-hero .ruta-datos .ruta-dato {
+        padding: 0.7rem 0.4rem;
+    }
+    .pagina-ruta .ruta-hero .ruta-mapa-bloque #mapa-detalle {
+        min-height: 160px;
+    }
+}
+
+/* Móvil pequeño */
+@media (max-width: 480px) {
+    .pagina-ruta .ruta-hero header {
+        padding: 1.6rem 1.2rem 0.6rem;
+    }
+    .pagina-ruta .ruta-hero .ruta-datos .ruta-dato {
+        padding: 0.6rem 0.3rem;
+    }
+}
+
+/* ── Scroll suave para las páginas de ruta ── */
+/* (también se activa vía JS en ruta-comun.js) */

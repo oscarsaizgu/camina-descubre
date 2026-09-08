@@ -680,3 +680,25 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+// ── Scroll suave + flecha de hero en páginas de ruta ──────────────────
+(function () {
+    // Activar scroll suave en páginas de ruta
+    document.documentElement.style.scrollBehavior = 'smooth';
+
+    var arrow = document.querySelector('.ruta-scroll-arrow');
+    if (!arrow) return;
+
+    var threshold = 50; // px de scroll para ocultar la flecha
+
+    function actualizarFlecha() {
+        if (window.scrollY > threshold) {
+            arrow.classList.add('oculta');
+        } else {
+            arrow.classList.remove('oculta');
+        }
+    }
+
+    window.addEventListener('scroll', actualizarFlecha, { passive: true });
+    actualizarFlecha(); // estado inicial
+})();
