@@ -211,7 +211,7 @@ body {
 ───────────────────────────────────────────── */
 #mapa-general {
     background-color: var(--crema);
-    padding: 4rem 1.5rem 3rem;
+    padding: 2rem 1.5rem 2rem;
 }
 
 /* Cabecera editorial compartida */
@@ -983,8 +983,8 @@ main {
     .hero-icono-montana { width: 72px; }
 
     /* Mapa general */
-    #mapa-general { padding: 2.5rem 1rem 2rem; }
-    .mapa-portada-contenedor { height: clamp(280px, 55vw, 380px); }
+    #mapa-general { padding: 1rem 1rem 1.5rem; }
+    .mapa-portada-contenedor { height: clamp(340px, 55vh, 480px); }
     #hint-mapa { font-size: 0.55rem; }
 
     /* Leyenda en móvil */

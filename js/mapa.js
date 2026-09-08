@@ -7,7 +7,7 @@
 var mapa = L.map('mapa', {
     zoomControl: false,
     attributionControl: false
-}).setView([43.2513, -3.4607], 14);
+}).setView([43.255, -3.466], 13);
 
 // Capa base IGN España — mapa oficial, sin API key
 L.tileLayer('https://www.ign.es/wmts/ign-base?request=getTile&service=WMTS&VERSION=1.0.0&Layer=IGNBaseTodo&Style=default&Format=image/png&TILEMATRIXSET=GoogleMapsCompatible&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}', {
@@ -135,6 +135,17 @@ function pintarPopup(marcador, color) {
 
 // ─── Carga de tracks GPX ─────────────────────────────────────
 var capas = {};
+var _boundsLista = [];
+var _totalRutas  = rutas.length;
+
+function _ajustarBounds(b) {
+    _boundsLista.push(b);
+    if (_boundsLista.length === _totalRutas) {
+        var combined = _boundsLista[0];
+        _boundsLista.slice(1).forEach(function(bb) { combined = combined.extend(bb); });
+        mapa.fitBounds(combined, { padding: [28, 28] });
+    }
+}
 
 rutas.forEach(function(ruta) {
     var opciones = {
