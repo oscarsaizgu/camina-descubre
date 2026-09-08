@@ -2402,177 +2402,290 @@ body.pagina-ruta main {
    Solo afecta a páginas de ruta (.pagina-ruta)
    ═════════════════════════════════════════════════════ */
 
+/* ═══════════════════════════════════════════════════════
+   PUNTOS DEL RECORRIDO — recorrido horizontal
+   Solo afecta a .pagina-ruta. NO toca index.html.
+   ═══════════════════════════════════════════════════════ */
+
 .pagina-ruta .ruta-puntos {
-    padding: 4rem 2rem 5rem;
+    position: relative;
+    background: var(--verde);
+    /* height la fija el JS según el contenido */
 }
 
-/* ── Subtítulo cabecera puntos ────────────────────────── */
+/* Cabecera dentro del stage */
+.pagina-ruta .ruta-puntos .ruta-puntos-cabecera {
+    flex: 0 0 auto;
+    padding: 3rem 8vw 0.8rem;
+}
+
 .pagina-ruta .ruta-puntos-subtitulo {
     font-family: 'CanvaSans', sans-serif;
-    font-size: 0.85rem;
-    color: rgba(245, 234, 216, 0.5);
+    font-size: 0.8rem;
+    color: rgba(245, 234, 216, 0.42);
     margin: 0.3rem 0 0;
     letter-spacing: 0.03em;
 }
 
-/* ── Itinerario editorial ─────────────────────────────── */
-.poi-itinerario {
-    max-width: 720px;
-    margin: 2.5rem auto 0;
-}
-
-.poi-item {
-    display: grid;
-    grid-template-columns: 3rem 1fr;
-    gap: 0 1.5rem;
-    margin-bottom: 3.5rem;
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.55s ease, transform 0.55s ease;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .poi-item { opacity: 1; transform: none; transition: none; }
-}
-
-.poi-item.poi-visible {
-    opacity: 1;
-    transform: none;
-}
-
-.poi-numero {
+/* ── Stage sticky ──────────────────────────────────────── */
+.poi-scroll-stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding-top: 0.15rem;
 }
 
-.poi-num-texto {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--crema);
-    opacity: 0.22;
-    line-height: 1;
-    transition: opacity 0.2s;
+/* ── Indicador de progreso ─────────────────────────────── */
+.poi-progreso {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 8vw 1rem;
+}
+
+.poi-progreso-texto {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    color: rgba(245, 234, 216, 0.32);
+    display: flex;
+    align-items: baseline;
+    gap: 0.25em;
+}
+
+.poi-progreso-actual {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: rgba(245, 234, 216, 0.65);
+    transition: color 0.3s;
     font-variant-numeric: tabular-nums;
 }
 
-.poi-hilo {
-    width: 1px;
+.poi-progreso-barra {
     flex: 1;
-    min-height: 2rem;
-    background: rgba(245, 234, 216, 0.15);
-    margin-top: 0.6rem;
-}
-
-.poi-cuerpo {
-    padding-bottom: 0.5rem;
-}
-
-.poi-categoria-label {
-    display: inline-block;
-    font-family: 'CanvaSans', sans-serif;
-    font-size: 0.62rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(245, 234, 216, 0.4);
-    margin-bottom: 0.35rem;
-}
-
-.poi-nombre-titulo {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--crema);
-    margin: 0 0 0.9rem;
-    line-height: 1.2;
-}
-
-.poi-foto {
-    width: 100%;
-    border-radius: 6px;
+    max-width: 140px;
+    height: 1px;
+    background: rgba(245, 234, 216, 0.1);
+    position: relative;
     overflow: hidden;
-    margin-bottom: 0.85rem;
-    background: rgba(45, 74, 53, 0.4);
 }
 
-.poi-foto img {
+.poi-progreso-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 0%;
+    background: rgba(245, 234, 216, 0.4);
+    transition: width 0.12s linear;
+}
+
+/* ── Escena: área clipping del track ──────────────────── */
+.poi-escena {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+/* ── Track horizontal ──────────────────────────────────── */
+.poi-track {
+    display: flex;
+    align-items: flex-start;
+    gap: 3.5rem;
+    padding: 0.5rem 28vw 2rem 8vw;
+    height: 100%;
+    will-change: transform;
+}
+
+/* ── Tarjeta individual ────────────────────────────────── */
+.poi-card {
+    flex: 0 0 240px;
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    transition: opacity 0.35s ease;
+}
+
+/* Header: dot + número + línea de conexión */
+.poi-card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1.1rem;
+    position: relative;
+}
+
+/* Línea horizontal que llega hasta la siguiente tarjeta */
+.poi-card-header::after {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 4px; /* centro del dot */
+    width: calc(100% + 3.5rem);
+    height: 1px;
+    background: rgba(245, 234, 216, 0.1);
+    pointer-events: none;
+}
+
+.poi-card:last-child .poi-card-header::after {
+    display: none;
+}
+
+.poi-card-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(245, 234, 216, 0.25);
+    background: transparent;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+    transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+    flex-shrink: 0;
+}
+
+.poi-card-num {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: rgba(245, 234, 216, 0.25);
+    font-variant-numeric: tabular-nums;
+    transition: color 0.3s;
+    line-height: 1;
+}
+
+/* Cuerpo */
+.poi-card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Foto */
+.poi-card-foto {
     width: 100%;
-    height: auto;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 0.8rem;
+    background: rgba(45, 74, 53, 0.5);
+    aspect-ratio: 4 / 3;
+}
+
+.poi-card-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
-    transition: transform 0.4s ease;
+    transition: transform 0.45s ease;
 }
 
-.poi-item:hover .poi-foto img {
-    transform: scale(1.03);
+.poi-card:hover .poi-card-foto img {
+    transform: scale(1.04);
 }
 
-.poi-foto--sv {
-    aspect-ratio: 16 / 7;
+.poi-card-foto--sv {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.poi-sv-icono {
-    font-size: 1.6rem;
-    opacity: 0.3;
+.poi-card-sv-ico {
     font-family: 'CanvaSans', sans-serif;
-    letter-spacing: 0.12em;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    opacity: 0.22;
 }
 
-.poi-descripcion-breve {
+/* Categoría */
+.poi-card-cat {
     font-family: 'CanvaSans', sans-serif;
-    font-size: 0.82rem;
-    color: rgba(245, 234, 216, 0.58);
-    line-height: 1.65;
+    font-size: 0.57rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(245, 234, 216, 0.35);
+    margin-bottom: 0.28rem;
+}
+
+/* Nombre */
+.poi-card-nombre {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--crema);
+    margin: 0 0 0.55rem;
+    line-height: 1.25;
+}
+
+/* Descripción */
+.poi-card-desc {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.75rem;
+    color: rgba(245, 234, 216, 0.5);
+    line-height: 1.62;
     margin: 0 0 0.6rem;
 }
 
-.poi-accion {
-    display: inline-block;
+/* Acción */
+.poi-card-accion {
     font-family: 'CanvaSans', sans-serif;
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
+    font-size: 0.68rem;
+    letter-spacing: 0.07em;
     color: var(--crema);
-    opacity: 0.6;
-    border-bottom: 1px solid rgba(245, 234, 216, 0.28);
+    opacity: 0.45;
+    border-bottom: 1px solid rgba(245, 234, 216, 0.2);
     padding-bottom: 1px;
+    align-self: flex-start;
     transition: opacity 0.2s;
 }
 
-.poi-item:hover .poi-accion { opacity: 1; }
+.poi-card:hover .poi-card-accion { opacity: 0.85; }
 
-/* Desktop: ítems pares — foto a la derecha */
-@media (min-width: 640px) {
-    .poi-item--par .poi-cuerpo {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0 1.5rem;
-        align-items: start;
-    }
-    .poi-item--par .poi-foto {
-        grid-column: 2;
-        grid-row: 1 / 5;
-        margin-bottom: 0;
-    }
-    .poi-item--par .poi-categoria-label { grid-column: 1; }
-    .poi-item--par .poi-nombre-titulo    { grid-column: 1; }
-    .poi-item--par .poi-descripcion-breve { grid-column: 1; }
-    .poi-item--par .poi-accion           { grid-column: 1; }
+/* ── Estado: tarjeta en vista (seguimiento de scroll) ─── */
+.poi-card-en-vista .poi-card-dot {
+    background: rgba(168, 196, 154, 0.35);
+    border-color: rgba(168, 196, 154, 0.75);
 }
 
-/* Estado activo: resalta número */
-.poi-item.punto-card-activa .poi-num-texto {
-    opacity: 0.9;
+.poi-card-en-vista .poi-card-num {
+    color: rgba(168, 196, 154, 0.8);
+}
+
+/* ── Estado: activo por clic (conectado con mapa) ──────── */
+.poi-card.punto-card-activa .poi-card-dot {
+    background: #a8c49a;
+    border-color: #a8c49a;
+    box-shadow: 0 0 8px rgba(168, 196, 154, 0.45);
+}
+
+.poi-card.punto-card-activa .poi-card-num {
     color: #a8c49a;
 }
 
+/* Tarjetas no en vista ni activas: ligeramente apagadas */
+.poi-card:not(.poi-card-en-vista):not(.punto-card-activa) {
+    opacity: 0.55;
+}
+
+/* ── Responsive ────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .pagina-ruta .ruta-puntos .ruta-puntos-cabecera { padding: 2rem 5vw 0.7rem; }
+    .poi-progreso { padding: 0 5vw 0.9rem; }
+    .poi-track {
+        gap: 1.5rem;
+        padding-left: 5vw;
+        padding-right: 35vw;
+    }
+    .poi-card {
+        flex: 0 0 68vw;
+        width: 68vw;
+    }
+    .poi-card-header::after {
+        width: calc(100% + 1.5rem);
+    }
+    .poi-card-nombre { font-size: 0.9rem; }
+}
+
 @media (max-width: 768px) {
-    .pagina-ruta .ruta-puntos { padding: 2.5rem 1rem 3rem; }
-    .poi-itinerario { margin-top: 1.5rem; }
-    .poi-item { grid-template-columns: 2.2rem 1fr; gap: 0 1rem; margin-bottom: 2.5rem; }
-    .poi-num-texto { font-size: 1.1rem; }
-    .poi-nombre-titulo { font-size: 1.05rem; }
     #cluster-popover { max-width: calc(100vw - 2rem); }
 }
 
