@@ -2369,8 +2369,10 @@ body.pagina-ruta main {
 .pagina-ruta #grafico-elevacion .axis path {
     stroke: rgba(245, 234, 216, 0.12) !important;
 }
-.pagina-ruta #grafico-elevacion .axis text {
-    fill: rgba(245, 234, 216, 0.45) !important;
+.pagina-ruta #grafico-elevacion .axis text,
+.pagina-ruta #grafico-elevacion .y.axis text,
+.pagina-ruta #grafico-elevacion .x.axis text {
+    fill: rgba(245, 234, 216, 0.82) !important;
     font-family: 'CanvaSans', sans-serif !important;
     font-size: 8px !important;
     letter-spacing: 0.04em !important;
