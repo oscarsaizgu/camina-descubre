@@ -2347,15 +2347,13 @@ body.pagina-ruta main {
     line-height: 1;
 }
 /* Área del gráfico: desplazada para dejar hueco a la etiqueta */
-.pagina-ruta #grafico-elevacion {
-    padding-top: 1.4rem;
-}
+/* .pagina-ruta #grafico-elevacion — no extra padding needed; ::before label is absolute */
 /* Colores del SVG de elevación */
 .pagina-ruta #grafico-elevacion .area,
 .pagina-ruta #grafico-elevacion path.area {
-    fill: rgba(245, 234, 216, 0.13) !important;
-    stroke: rgba(245, 234, 216, 0.38) !important;
-    stroke-width: 1.4 !important;
+    fill: rgba(245, 234, 216, 0.2) !important;
+    stroke: rgba(245, 234, 216, 0.55) !important;
+    stroke-width: 1.6 !important;
 }
 .pagina-ruta #grafico-elevacion .axis line,
 .pagina-ruta #grafico-elevacion .axis path {

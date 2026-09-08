@@ -291,9 +291,11 @@ function crearClusterPopover() {
 
     document.addEventListener('click', function(e) {
         var pop = document.getElementById('cluster-popover');
-        if (pop && pop.classList.contains('visible') && !pop.contains(e.target)) {
-            cerrarClusterPopover();
-        }
+        if (!pop || !pop.classList.contains('visible')) return;
+        if (pop.contains(e.target)) return;
+        // Ignore clicks that originated on a cluster marker (they open the popover)
+        if (e.target && e.target.closest && e.target.closest('.poi-cluster')) return;
+        cerrarClusterPopover();
     });
 }
 
