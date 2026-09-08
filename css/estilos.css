@@ -997,11 +997,23 @@ main {
     .leaflet-popup-content-wrapper { min-width: 140px; max-width: 200px; }
     .leaflet-popup { max-width: calc(100vw - 40px) !important; }
 
-    /* Rutas grid */
+    /* Rutas grid — tarjetas horizontales en móvil */
     .rutas-grid { padding: 0; }
-    .ruta-card-foto { aspect-ratio: 16/9; }
-    .ruta-card-cuerpo { padding: 1rem 1.2rem 1.4rem; }
-    .ruta-num { font-size: 2.5rem; }
+    .ruta-card { flex-direction: row; min-height: 115px; }
+    .ruta-card-foto {
+        width: 38%;
+        aspect-ratio: unset;
+        flex-shrink: 0;
+        align-self: stretch;
+    }
+    .ruta-card-cuerpo {
+        flex: 1;
+        padding: 0.85rem 1rem 0.85rem 0.85rem;
+        align-items: center;
+        gap: 0.55rem;
+    }
+    .ruta-num { font-size: 2rem; }
+    .ruta-card-nombre { font-size: 0.95rem; }
 
     /* Página de ruta — reorganizar secciones */
     main {
