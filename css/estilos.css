@@ -2355,6 +2355,11 @@ body.pagina-ruta main {
     border: none !important;
     box-shadow: none !important;
 }
+/* El <rect class="background"> del SVG usa fill, no background-color */
+.pagina-ruta #grafico-elevacion rect.background,
+.pagina-ruta #grafico-elevacion .background rect {
+    fill: transparent !important;
+}
 /* Colores del SVG de elevación: crema sobre verde */
 .pagina-ruta #grafico-elevacion .area,
 .pagina-ruta #grafico-elevacion path.area {
