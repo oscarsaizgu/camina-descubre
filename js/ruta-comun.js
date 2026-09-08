@@ -510,50 +510,52 @@ function abrirLightboxSV(foto, nombre, svUrl) {
 }
 
 
-// ── Recorrido horizontal (scroll-driven) — solo pagina-ruta ──────
-// Bidireccionalmente conectada con el mapa.
+// ── Carrusel editorial de puntos de interés (solo .pagina-ruta) ──
+// Bidireccionalmente conectada con el mapa. Sin scroll-hijacking.
 function renderizarPuntosInteres(puntos) {
     var seccion = document.querySelector('.ruta-puntos');
     if (!seccion) return;
 
     // Limpiar versiones previas
-    ['.ruta-puntos-grid', '.poi-itinerario', '.poi-scroll-stage'].forEach(function(sel) {
+    ['.ruta-puntos-grid', '.poi-itinerario', '.poi-scroll-stage', '.poi-carrusel'].forEach(function(sel) {
         var el = seccion.querySelector(sel);
         if (el) el.parentNode.removeChild(el);
     });
+    seccion.style.height = ''; // eliminar height fijada por versión sticky anterior
 
     if (!puntos || puntos.length === 0) { seccion.style.display = 'none'; return; }
 
     _poiCardsLista = [];
     var total = puntos.length;
+    var indiceActual = 0;
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // ── Stage sticky ────────────────────────────────────────
-    var stage = document.createElement('div');
-    stage.className = 'poi-scroll-stage';
+    // ── Estructura ──────────────────────────────────────────
+    var carrusel = document.createElement('div');
+    carrusel.className = 'poi-carrusel';
 
-    // Mover cabecera existente al stage
-    var cab = seccion.querySelector('.ruta-puntos-cabecera');
-    if (cab) stage.appendChild(cab);
-
-    // Indicador de progreso
-    var progEl = document.createElement('div');
-    progEl.className = 'poi-progreso';
-    progEl.innerHTML =
-        '<div class="poi-progreso-texto">' +
+    // Barra de controles
+    var controls = document.createElement('div');
+    controls.className = 'poi-controls';
+    controls.innerHTML =
+        '<button class="poi-ctrl poi-ctrl--prev" aria-label="Punto anterior">' +
+            '<svg viewBox="0 0 16 16" width="12" height="12"><polyline points="10 3 5 8 10 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+        '</button>' +
+        '<div class="poi-progreso">' +
             '<span class="poi-progreso-actual">01</span>' +
             '<span class="poi-progreso-sep"> / </span>' +
-            '<span class="poi-progreso-total">' + String(total).padStart(2,'0') + '</span>' +
+            '<span class="poi-progreso-total">' + String(total).padStart(2, '0') + '</span>' +
         '</div>' +
-        '<div class="poi-progreso-barra"><div class="poi-progreso-fill"></div></div>';
-    stage.appendChild(progEl);
+        '<button class="poi-ctrl poi-ctrl--next" aria-label="Siguiente punto">' +
+            '<svg viewBox="0 0 16 16" width="12" height="12"><polyline points="6 3 11 8 6 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+        '</button>';
+    carrusel.appendChild(controls);
 
-    // Escena + track
-    var escena = document.createElement('div');
-    escena.className = 'poi-escena';
-
-    var track = document.createElement('div');
-    track.className = 'poi-track';
+    // Rail
+    var railWrapper = document.createElement('div');
+    railWrapper.className = 'poi-rail-wrapper';
+    var rail = document.createElement('div');
+    rail.className = 'poi-rail';
 
     // ── Tarjetas ─────────────────────────────────────────────
     puntos.forEach(function(p, i) {
@@ -569,25 +571,24 @@ function renderizarPuntosInteres(puntos) {
         if (p.foto) {
             fotoHTML = '<div class="poi-card-foto"><img src="' + p.foto +
                 '" alt="' + p.nombre + '" loading="lazy"></div>';
-        } else if (p.streetview) {
-            fotoHTML = '<div class="poi-card-foto poi-card-foto--sv">' +
-                '<span class="poi-card-sv-ico">360°</span></div>';
         }
+        // Punto sin foto (ej: Mirador Pared del Eco con solo streetview):
+        // no se muestra placeholder, el contenido de texto ocupa ese espacio
 
         var tieneClic = !!(p.foto || p.streetview || p.descripcion);
-        var textoAcc  = p.streetview ? 'Ver vista 360° →' : 'Descubrir más →';
+        var textoAcc  = p.streetview ? 'Ver panorámica 360° →' : 'Descubrir más →';
 
         var card = document.createElement('article');
-        card.className = 'punto-card poi-card';
+        card.className = 'punto-card poi-card' + (p.foto ? '' : ' poi-card--sin-foto');
         card.innerHTML =
             '<div class="poi-card-header">' +
                 '<div class="poi-card-dot"></div>' +
                 '<span class="poi-card-num">' + num + '</span>' +
             '</div>' +
             '<div class="poi-card-body">' +
+                fotoHTML +
                 (p.categoria ? '<span class="poi-card-cat">' + p.categoria + '</span>' : '') +
                 '<h3 class="poi-card-nombre">' + p.nombre + '</h3>' +
-                fotoHTML +
                 (primeraSentencia ? '<p class="poi-card-desc">' + primeraSentencia + '</p>' : '') +
                 (tieneClic ? '<span class="poi-card-accion">' + textoAcc + '</span>' : '') +
             '</div>';
@@ -595,6 +596,7 @@ function renderizarPuntosInteres(puntos) {
         if (tieneClic) {
             card.style.cursor = 'pointer';
             card.addEventListener('click', function() {
+                irA(i);
                 _activarMarcador(i);
                 if (_mapaRuta && _mapaListo && p.coords) {
                     _volarAPunto(p.coords);
@@ -614,94 +616,65 @@ function renderizarPuntosInteres(puntos) {
         }
 
         _poiCardsLista.push(card);
-        track.appendChild(card);
+        rail.appendChild(card);
     });
 
-    escena.appendChild(track);
-    stage.appendChild(escena);
-    seccion.appendChild(stage);
+    railWrapper.appendChild(rail);
+    carrusel.appendChild(railWrapper);
+    seccion.appendChild(carrusel);
 
-    // ── Motor de scroll ──────────────────────────────────────
-    var actualEl  = progEl.querySelector('.poi-progreso-actual');
-    var fillEl    = progEl.querySelector('.poi-progreso-fill');
-    var cards     = Array.from(track.querySelectorAll('.poi-card'));
-    var currentX  = 0;
-    var targetX   = 0;
-    var rafId     = null;
-    var idxVista  = -1;
-    var secTop    = 0;
+    // ── Navegación ───────────────────────────────────────────
+    var btnPrev  = controls.querySelector('.poi-ctrl--prev');
+    var btnNext  = controls.querySelector('.poi-ctrl--next');
+    var actualEl = controls.querySelector('.poi-progreso-actual');
+    var cards    = Array.from(rail.querySelectorAll('.poi-card'));
 
-    function calcSecTop() {
-        var t = 0, el = seccion;
-        while (el) { t += el.offsetTop; el = el.offsetParent; }
-        secTop = t;
+    function actualizarEstado() {
+        btnPrev.disabled = indiceActual === 0;
+        btnNext.disabled = indiceActual === total - 1;
+        if (actualEl) actualEl.textContent = String(indiceActual + 1).padStart(2, '0');
+        cards.forEach(function(c, i) {
+            c.classList.toggle('poi-card-activa-rail', i === indiceActual);
+        });
     }
 
-    function ajustarAltura() {
-        var maxT = Math.max(0, track.scrollWidth - escena.offsetWidth);
-        // ratio 0.85: 1px horizontal ≈ 1.18px vertical → movimiento natural pero no vertiginoso
-        seccion.style.height = (window.innerHeight + maxT / 0.85) + 'px';
+    function irA(idx) {
+        indiceActual = Math.max(0, Math.min(total - 1, idx));
+        var card = cards[indiceActual];
+        if (!card) { actualizarEstado(); return; }
+
+        // offsetLeft: posición natural en el layout (no afectada por transform)
+        var railPadLeft = parseFloat(getComputedStyle(rail).paddingLeft) || 0;
+        var targetX = Math.max(0, card.offsetLeft - railPadLeft);
+
+        rail.style.transition = reducedMotion
+            ? 'none'
+            : 'transform 0.42s cubic-bezier(0.25,0.46,0.45,0.94)';
+        rail.style.transform = 'translateX(-' + targetX + 'px)';
+
+        actualizarEstado();
     }
 
-    function progreso() {
-        var en = window.scrollY - secTop;
-        var total2 = seccion.offsetHeight - window.innerHeight;
-        return total2 > 0 ? Math.max(0, Math.min(1, en / total2)) : 0;
-    }
+    btnPrev.addEventListener('click', function() { irA(indiceActual - 1); });
+    btnNext.addEventListener('click', function() { irA(indiceActual + 1); });
 
-    function actualizar(p) {
-        var maxT = Math.max(0, track.scrollWidth - escena.offsetWidth);
-        targetX = -(p * maxT);
-
-        var idx = Math.min(Math.floor(p * total), total - 1);
-        if (idx !== idxVista) {
-            idxVista = idx;
-            cards.forEach(function(c, i) {
-                c.classList.toggle('poi-card-en-vista', i === idx);
-            });
-            if (actualEl) actualEl.textContent = String(idx + 1).padStart(2, '0');
+    // Swipe táctil — solo reacciona si el gesto es más horizontal que vertical
+    var txStart = 0, tyStart = 0;
+    railWrapper.addEventListener('touchstart', function(e) {
+        txStart = e.touches[0].clientX;
+        tyStart = e.touches[0].clientY;
+    }, { passive: true });
+    railWrapper.addEventListener('touchend', function(e) {
+        var dx = e.changedTouches[0].clientX - txStart;
+        var dy = e.changedTouches[0].clientY - tyStart;
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+            if (dx < 0) irA(indiceActual + 1);
+            else        irA(indiceActual - 1);
         }
-        if (fillEl) fillEl.style.width = (p * 100).toFixed(1) + '%';
-    }
+    }, { passive: true });
 
-    function paso() {
-        rafId = null;
-        var d = targetX - currentX;
-        if (Math.abs(d) < 0.35) {
-            currentX = targetX;
-        } else {
-            currentX += d * 0.11;
-            rafId = requestAnimationFrame(paso);
-        }
-        track.style.transform = 'translateX(' + currentX.toFixed(2) + 'px)';
-    }
-
-    function onScroll() {
-        var p = progreso();
-        actualizar(p);
-        if (reducedMotion) {
-            currentX = targetX;
-            track.style.transform = 'translateX(' + currentX.toFixed(2) + 'px)';
-        } else {
-            if (!rafId) rafId = requestAnimationFrame(paso);
-        }
-    }
-
-    // Inicializar tras primer render (las tarjetas necesitan estar en el DOM para medir)
-    setTimeout(function() {
-        calcSecTop();
-        ajustarAltura();
-        onScroll();
-    }, 150);
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', function() {
-        calcSecTop();
-        ajustarAltura();
-        currentX = targetX;
-        track.style.transform = 'translateX(' + currentX.toFixed(2) + 'px)';
-        onScroll();
-    });
+    // Estado inicial
+    actualizarEstado();
 }
 
 
@@ -841,4 +814,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
     window.addEventListener('scroll', actualizarFlecha, { passive: true });
     actualizarFlecha(); // estado inicial
+})();
+
+// ── Flechas de navegación entre secciones ────────────────────────────
+(function () {
+    var secciones = ['#camino', '#ruta-descripcion', '#ruta-entorno', '#ruta-info'];
+    var selectores = [
+        '.ruta-puntos',
+        '.ruta-descripcion',
+        '.ruta-entorno',
+        '.ruta-info'
+    ];
+
+    function crearFlecha(seccionEl, targetId) {
+        var flecha = document.createElement('a');
+        flecha.className = 'seccion-flecha';
+        flecha.href = targetId;
+        flecha.setAttribute('aria-label', 'Siguiente sección');
+        flecha.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+        flecha.addEventListener('click', function (e) {
+            e.preventDefault();
+            var target = document.querySelector(targetId);
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+        seccionEl.appendChild(flecha);
+    }
+
+    selectores.forEach(function (sel, i) {
+        if (i >= selectores.length - 1) return; // última sección no necesita flecha
+        var el = document.querySelector(sel);
+        if (!el) return;
+        var nextId = secciones[i + 1];
+        if (!document.querySelector(nextId)) return;
+        crearFlecha(el, nextId);
+    });
 })();

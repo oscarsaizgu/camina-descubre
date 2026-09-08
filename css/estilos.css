@@ -2403,286 +2403,282 @@ body.pagina-ruta main {
    ═════════════════════════════════════════════════════ */
 
 /* ═══════════════════════════════════════════════════════
-   PUNTOS DEL RECORRIDO — recorrido horizontal
+   PUNTOS DEL RECORRIDO — carrusel horizontal
    Solo afecta a .pagina-ruta. NO toca index.html.
    ═══════════════════════════════════════════════════════ */
 
 .pagina-ruta .ruta-puntos {
     position: relative;
     background: var(--verde);
-    /* height la fija el JS según el contenido */
+    padding-bottom: 3rem;
 }
 
-/* Cabecera dentro del stage */
+/* Cabecera */
 .pagina-ruta .ruta-puntos .ruta-puntos-cabecera {
-    flex: 0 0 auto;
-    padding: 3rem 8vw 0.8rem;
+    padding: 3rem 8vw 1.5rem;
+    text-align: center;
 }
+
+.pagina-ruta .ruta-puntos-label { color: #f5ead8; }
+.pagina-ruta .ruta-puntos-titulo { color: #f5ead8; }
 
 .pagina-ruta .ruta-puntos-subtitulo {
-    font-family: 'CanvaSans', sans-serif;
-    font-size: 0.8rem;
-    color: rgba(245, 234, 216, 0.42);
-    margin: 0.3rem 0 0;
-    letter-spacing: 0.03em;
+    margin: 0;
+    color: rgba(245,234,216,0.7);
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
 }
 
-/* ── Stage sticky ──────────────────────────────────────── */
-.poi-scroll-stage {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    height: 100svh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+/* ── Carrusel ────────────────────────────────────────── */
+.poi-carrusel {
+    position: relative;
+    width: 100%;
 }
 
-/* ── Indicador de progreso ─────────────────────────────── */
-.poi-progreso {
-    flex: 0 0 auto;
+/* Controles prev/next + indicador */
+.poi-controls {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 0 8vw 1rem;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 0 8vw 0.8rem;
 }
 
-.poi-progreso-texto {
-    font-family: 'CanvaSans', sans-serif;
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
-    color: rgba(245, 234, 216, 0.32);
-    display: flex;
-    align-items: baseline;
-    gap: 0.25em;
-}
-
-.poi-progreso-actual {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: rgba(245, 234, 216, 0.65);
-    transition: color 0.3s;
-    font-variant-numeric: tabular-nums;
-}
-
-.poi-progreso-barra {
-    flex: 1;
-    max-width: 140px;
-    height: 1px;
-    background: rgba(245, 234, 216, 0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-.poi-progreso-fill {
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 0%;
-    background: rgba(245, 234, 216, 0.4);
-    transition: width 0.12s linear;
-}
-
-/* ── Escena: área clipping del track ──────────────────── */
-.poi-escena {
-    flex: 1;
-    overflow: hidden;
-    position: relative;
-}
-
-/* ── Track horizontal ──────────────────────────────────── */
-.poi-track {
-    display: flex;
-    align-items: flex-start;
-    gap: 3.5rem;
-    padding: 0.5rem 28vw 2rem 8vw;
-    height: 100%;
-    will-change: transform;
-}
-
-/* ── Tarjeta individual ────────────────────────────────── */
-.poi-card {
-    flex: 0 0 240px;
-    width: 240px;
-    display: flex;
-    flex-direction: column;
-    transition: opacity 0.35s ease;
-}
-
-/* Header: dot + número + línea de conexión */
-.poi-card-header {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 1.1rem;
-    position: relative;
-}
-
-/* Línea horizontal que llega hasta la siguiente tarjeta */
-.poi-card-header::after {
-    content: '';
-    position: absolute;
-    left: 10px;
-    top: 4px; /* centro del dot */
-    width: calc(100% + 3.5rem);
-    height: 1px;
-    background: rgba(245, 234, 216, 0.1);
-    pointer-events: none;
-}
-
-.poi-card:last-child .poi-card-header::after {
-    display: none;
-}
-
-.poi-card-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: 1.5px solid rgba(245, 234, 216, 0.25);
-    background: transparent;
-    margin-bottom: 0.5rem;
-    position: relative;
-    z-index: 1;
-    transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
-    flex-shrink: 0;
-}
-
-.poi-card-num {
-    font-size: 0.6rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    color: rgba(245, 234, 216, 0.25);
-    font-variant-numeric: tabular-nums;
-    transition: color 0.3s;
-    line-height: 1;
-}
-
-/* Cuerpo */
-.poi-card-body {
-    display: flex;
-    flex-direction: column;
-}
-
-/* Foto */
-.poi-card-foto {
-    width: 100%;
-    border-radius: 5px;
-    overflow: hidden;
-    margin-bottom: 0.8rem;
-    background: rgba(45, 74, 53, 0.5);
-    aspect-ratio: 4 / 3;
-}
-
-.poi-card-foto img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.45s ease;
-}
-
-.poi-card:hover .poi-card-foto img {
-    transform: scale(1.04);
-}
-
-.poi-card-foto--sv {
+.poi-ctrl {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.poi-card-sv-ico {
-    font-family: 'CanvaSans', sans-serif;
-    font-size: 1.1rem;
-    letter-spacing: 0.15em;
-    opacity: 0.22;
-}
-
-/* Categoría */
-.poi-card-cat {
-    font-family: 'CanvaSans', sans-serif;
-    font-size: 0.57rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: rgba(245, 234, 216, 0.35);
-    margin-bottom: 0.28rem;
-}
-
-/* Nombre */
-.poi-card-nombre {
-    font-size: 0.98rem;
-    font-weight: 700;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1.5px solid rgba(245,234,216,0.35);
+    border-radius: 50%;
+    background: transparent;
     color: var(--crema);
-    margin: 0 0 0.55rem;
-    line-height: 1.25;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    flex-shrink: 0;
 }
 
-/* Descripción */
-.poi-card-desc {
-    font-family: 'CanvaSans', sans-serif;
+.poi-ctrl:hover:not(:disabled) {
+    background: rgba(245,234,216,0.12);
+    border-color: rgba(245,234,216,0.7);
+}
+
+.poi-ctrl:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.poi-progreso {
     font-size: 0.75rem;
-    color: rgba(245, 234, 216, 0.5);
-    line-height: 1.62;
-    margin: 0 0 0.6rem;
+    letter-spacing: 0.08em;
+    color: rgba(245,234,216,0.55);
+    min-width: 3rem;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
 }
 
-/* Acción */
-.poi-card-accion {
-    font-family: 'CanvaSans', sans-serif;
-    font-size: 0.68rem;
-    letter-spacing: 0.07em;
+/* Wrapper con overflow hidden */
+.poi-rail-wrapper {
+    overflow: hidden;
+    touch-action: pan-y;
+    cursor: grab;
+}
+
+.poi-rail-wrapper:active {
+    cursor: grabbing;
+}
+
+/* Rail deslizante */
+.poi-rail {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0.5rem 8vw 1.5rem;
+    will-change: transform;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* ── Tarjeta POI ─────────────────────────────────────── */
+.poi-card {
+    flex: 0 0 300px;
+    width: 300px;
+    background: rgba(245,234,216,0.07);
+    border: 1px solid rgba(245,234,216,0.15);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.25s, box-shadow 0.25s;
+    scroll-snap-align: none;
+}
+
+.poi-card:hover {
+    border-color: rgba(245,234,216,0.35);
+}
+
+.poi-card.punto-card-activa {
+    border-color: var(--crema);
+    box-shadow: 0 0 0 2px rgba(245,234,216,0.25);
+}
+
+/* Cabecera de tarjeta: número + línea conectora */
+.poi-card-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1rem 0.6rem;
+}
+
+.poi-card-header::after {
+    content: '';
+    position: absolute;
+    left: calc(1rem + 1.6rem + 0.6rem); /* tras el dot */
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 1px;
+    background: rgba(245,234,216,0.18);
+}
+
+.poi-card-dot {
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    background: var(--crema);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    z-index: 1;
+}
+
+.poi-card-num {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--verde);
+    letter-spacing: 0.04em;
+    line-height: 1;
+}
+
+/* Cuerpo: foto + meta */
+.poi-card-body {
+    padding: 0 1rem 1rem;
+}
+
+.poi-card-foto {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 6px;
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.poi-card-cat {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(245,234,216,0.55);
+    margin-bottom: 0.3rem;
+}
+
+.poi-card-nombre {
+    font-size: 0.95rem;
+    font-weight: 600;
     color: var(--crema);
-    opacity: 0.45;
-    border-bottom: 1px solid rgba(245, 234, 216, 0.2);
-    padding-bottom: 1px;
-    align-self: flex-start;
+    margin-bottom: 0.45rem;
+    line-height: 1.3;
+}
+
+.poi-card-desc {
+    font-size: 0.8rem;
+    color: rgba(245,234,216,0.75);
+    line-height: 1.5;
+    margin-bottom: 0.7rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.poi-card-accion {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--crema);
+    opacity: 0.7;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
     transition: opacity 0.2s;
 }
 
-.poi-card:hover .poi-card-accion { opacity: 0.85; }
+.poi-card-accion:hover { opacity: 1; }
 
-/* ── Estado: tarjeta en vista (seguimiento de scroll) ─── */
-.poi-card-en-vista .poi-card-dot {
-    background: rgba(168, 196, 154, 0.35);
-    border-color: rgba(168, 196, 154, 0.75);
+/* Tarjeta sin foto */
+.poi-card--sin-foto .poi-card-body {
+    padding-top: 0.25rem;
 }
 
-.poi-card-en-vista .poi-card-num {
-    color: rgba(168, 196, 154, 0.8);
+/* ── Flechas de sección ──────────────────────────────── */
+.seccion-flecha {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1.5px solid rgba(245,234,216,0.35);
+    border-radius: 50%;
+    color: var(--crema);
+    text-decoration: none;
+    animation: seccion-bounce 2s ease-in-out infinite;
+    transition: background 0.2s, border-color 0.2s;
 }
 
-/* ── Estado: activo por clic (conectado con mapa) ──────── */
-.poi-card.punto-card-activa .poi-card-dot {
-    background: #a8c49a;
-    border-color: #a8c49a;
-    box-shadow: 0 0 8px rgba(168, 196, 154, 0.45);
+.seccion-flecha:hover {
+    background: rgba(245,234,216,0.12);
+    border-color: rgba(245,234,216,0.7);
+    animation: none;
 }
 
-.poi-card.punto-card-activa .poi-card-num {
-    color: #a8c49a;
+/* Secciones claras: ajustar color */
+.ruta-descripcion .seccion-flecha,
+.ruta-entorno .seccion-flecha,
+.ruta-info .seccion-flecha {
+    border-color: rgba(45,74,53,0.3);
+    color: var(--verde);
 }
 
-/* Tarjetas no en vista ni activas: ligeramente apagadas */
-.poi-card:not(.poi-card-en-vista):not(.punto-card-activa) {
-    opacity: 0.55;
+.ruta-descripcion .seccion-flecha:hover,
+.ruta-entorno .seccion-flecha:hover,
+.ruta-info .seccion-flecha:hover {
+    background: rgba(45,74,53,0.08);
+    border-color: rgba(45,74,53,0.6);
 }
 
-/* ── Responsive ────────────────────────────────────────── */
+@keyframes seccion-bounce {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .seccion-flecha { animation: none; }
+}
+
+/* ── Responsive ──────────────────────────────────────── */
 @media (max-width: 640px) {
-    .pagina-ruta .ruta-puntos .ruta-puntos-cabecera { padding: 2rem 5vw 0.7rem; }
-    .poi-progreso { padding: 0 5vw 0.9rem; }
-    .poi-track {
-        gap: 1.5rem;
-        padding-left: 5vw;
-        padding-right: 35vw;
-    }
-    .poi-card {
-        flex: 0 0 68vw;
-        width: 68vw;
-    }
-    .poi-card-header::after {
-        width: calc(100% + 1.5rem);
-    }
-    .poi-card-nombre { font-size: 0.9rem; }
+    .pagina-ruta .ruta-puntos .ruta-puntos-cabecera { padding: 1rem 5vw 0rem; }
+    .poi-controls { padding: 0 5vw 0.6rem; }
+    .poi-rail { padding: 0.5rem 5vw 1rem; gap: 1rem; }
+    .poi-card { flex: 0 0 80vw; width: 80vw; }
+    .poi-card-foto { height: 140px; }
+}
+
+@media (max-width: 600px) {
+    .pagina-ruta .ruta-puntos { padding: 0rem 1rem 2.5rem; }
 }
 
 @media (max-width: 768px) {
