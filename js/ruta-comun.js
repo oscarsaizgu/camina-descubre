@@ -6,22 +6,32 @@
 
 // ── Estado global compartido ──────────────────────────
 var _mapaRuta         = null;   // referencia al mapa activo
-var _poiMarcadores    = [];     // L.Marker[] en orden de puntosInteres
+var _poiMarcadores    = [];     // L.Marker[] (null si en cluster) en orden de puntosInteres
 var _poiCardsLista    = [];     // elementos DOM de .punto-card en orden
 var _tarjetaActual    = null;   // punto abierto en la mini-tarjeta
+var _boundsIniciales  = null;   // límites del track para restablecer la vista
+var _mapaListo        = false;  // true tras cargarTrack + fitBounds
 
 
-// ── Inicializa el mapa con la capa base satélite ──────
+// ── Inicializa el mapa (bloqueado: sin interacción de usuario) ──
 function inicializarMapaRuta() {
     var mapa = L.map('mapa-detalle', {
-        zoomControl: false,
+        zoomControl:        false,
         attributionControl: false,
-        edgeScale: false
+        dragging:           false,
+        scrollWheelZoom:    false,
+        doubleClickZoom:    false,
+        boxZoom:            false,
+        keyboard:           false,
+        touchZoom:          false,
+        tap:                false,
+        inertia:            false
     }).setView([43.2513, -3.4607], 14);
 
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: '© Esri'
-    }).addTo(mapa);
+    L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        { attribution: '© Esri' }
+    ).addTo(mapa);
 
     // Escala cartográfica discreta
     L.control.scale({ position: 'bottomleft', metric: true, imperial: false, maxWidth: 80 }).addTo(mapa);
@@ -34,78 +44,158 @@ function inicializarMapaRuta() {
 // ── Crea el control de elevación ──────────────────────
 function crearElevacion(divId) {
     return L.control.elevation({
-        theme: "custom-theme",
-        collapsed: false,
-        detached: true,
+        theme:        'custom-theme',
+        collapsed:    false,
+        detached:     true,
         elevationDiv: divId,
-        autohide: false,
+        autohide:     false,
         followMarker: true,
-        height: 120,
-        time: false,
-        distance: false,
-        elevation: false,
-        speed: false,
-        slope: false,
-        legend: false,
-        ruler: false,
-        closeBtn: false,
-        waypoints: false,
-        wptIcons: false,
-        polyline: false,
+        height:       120,
+        time:         false,
+        distance:     false,
+        elevation:    false,
+        speed:        false,
+        slope:        false,
+        legend:       false,
+        ruler:        false,
+        closeBtn:     false,
+        waypoints:    false,
+        wptIcons:     false,
+        polyline:     false
     });
 }
 
 
-// ── Carga el track GPX y ajusta el mapa a sus límites ─
+// ── Carga GPX, ajusta la vista y emite ruta:ready ─────
 function cargarTrack(mapa, gpxFile, padValue, usarMaxBounds) {
-    if (padValue === undefined) padValue = 1;
+    if (padValue === undefined)      padValue = 1;
     if (usarMaxBounds === undefined) usarMaxBounds = true;
 
     return new L.GPX(gpxFile, {
         async: true,
         polyline_options: {
-            color: '#f5ead8',
-            weight: 4.5,
-            opacity: 0.88,
+            color:     '#f5ead8',
+            weight:    4.5,
+            opacity:   0.88,
             className: 'mi-track'
         },
         marker_options: {
             startIconUrl: null,
-            endIconUrl: null,
-            shadowUrl: null
+            endIconUrl:   null,
+            shadowUrl:    null
         }
     }).on('loaded', function(e) {
         var bounds = e.target.getBounds();
         mapa.fitBounds(bounds, { paddingTopLeft: [0, 0], paddingBottomRight: [0, 0] });
         if (usarMaxBounds) mapa.setMaxBounds(bounds.pad(padValue));
         mapa.options.minZoom = mapa.getZoom();
+        _boundsIniciales = bounds;
+        _mapaListo       = true;
+        mapa.fire('ruta:ready');
     }).addTo(mapa);
 }
 
 
-// ── Icono numerado para puntos de interés ─────────────
+// ── Algoritmo de clustering (union-find) ──────────────
+// Agrupa POIs cuya distancia en pantalla sea menor que umbralPx.
+function _calcularClusters(mapa, puntos, umbralPx) {
+    var n = puntos.length;
+    var parent = [];
+    for (var i = 0; i < n; i++) parent[i] = i;
+
+    function find(x) {
+        while (parent[x] !== x) { parent[x] = parent[parent[x]]; x = parent[x]; }
+        return x;
+    }
+    function union(a, b) { parent[find(a)] = find(b); }
+
+    var pts = puntos.map(function(p) {
+        return mapa.latLngToLayerPoint(L.latLng(p.coords));
+    });
+
+    for (var i = 0; i < n; i++) {
+        for (var j = i + 1; j < n; j++) {
+            var dx = pts[i].x - pts[j].x;
+            var dy = pts[i].y - pts[j].y;
+            if (Math.sqrt(dx * dx + dy * dy) < umbralPx) union(i, j);
+        }
+    }
+
+    var groups = {};
+    for (var k = 0; k < n; k++) {
+        var root = find(k);
+        if (!groups[root]) groups[root] = [];
+        groups[root].push(k);
+    }
+
+    return Object.values(groups);
+}
+
+
+// ── Iconos de marcador ────────────────────────────────
+
 function crearIconoPOI(numStr) {
     return L.divIcon({
-        className: 'poi-marcador',
-        html: '<div class="poi-pin">' + numStr + '</div>',
-        iconSize: [30, 30],
-        iconAnchor: [15, 15],
+        className:     'poi-marcador',
+        html:          '<div class="poi-pin">' + numStr + '</div>',
+        iconSize:      [30, 30],
+        iconAnchor:    [15, 15],
         tooltipAnchor: [0, -18]
     });
 }
 
-// Icono antiguo (backward-compat con rutas que no usan ficha)
+function crearIconoCluster(count) {
+    return L.divIcon({
+        className:  'poi-cluster',
+        html:       '<div class="poi-cluster-pin">' + count + '</div>',
+        iconSize:   [38, 38],
+        iconAnchor: [19, 19]
+    });
+}
+
+// Backward-compat: rutas antiguas sin ficha
 var iconoMarker = L.divIcon({
-    className: 'marker-personalizado',
-    html: '<div class="marker-pin"></div>',
-    iconSize: [20, 20],
+    className:  'marker-personalizado',
+    html:       '<div class="marker-pin"></div>',
+    iconSize:   [20, 20],
     iconAnchor: [10, 10]
 });
 
 
-// ── Activa visualmente un marcador (y la card de lista) ──
+// ── Vuelo con compensación por mini-tarjeta ───────────
+// Desplaza el centro del mapa para que el POI quede en el
+// área libre, fuera de la tarjeta superpuesta.
+function _volarAPunto(coords) {
+    if (!_mapaRuta) return;
+    var zoom = Math.max(_mapaRuta.getZoom(), 15);
+    var cont = _mapaRuta.getContainer();
+    var W = cont.offsetWidth;
+    var H = cont.offsetHeight;
+    var isMobile = window.innerWidth <= 768;
+
+    // Posición destino del POI en píxeles dentro del contenedor
+    var targetX = isMobile
+        ? W / 2                     // centrado horizontalmente
+        : 310 + (W - 310) / 2;     // centro del área libre (derecha de la tarjeta)
+    var targetY = isMobile
+        ? H * 0.36                  // tercio superior (sobre el bottom-sheet)
+        : H * 0.44;                 // ligeramente sobre el centro
+
+    // newCenter = punto proyectado + offset para llevarlo a (targetX, targetY)
+    var pt = _mapaRuta.project(L.latLng(coords), zoom);
+    var newCenter = _mapaRuta.unproject(
+        L.point(pt.x + (W / 2 - targetX), pt.y + (H / 2 - targetY)),
+        zoom
+    );
+
+    _mapaRuta.flyTo(newCenter, zoom, { animate: true, duration: 0.6 });
+}
+
+
+// ── Activa visualmente marcador y card de lista ────────
 function _activarMarcador(idx) {
     _poiMarcadores.forEach(function(m, i) {
+        if (!m) return; // POI en cluster — sin marcador individual
         var el = m.getElement();
         if (el) el.classList.toggle('poi-activo', i === idx);
     });
@@ -141,9 +231,8 @@ function crearTarjetaPrevia() {
         }
     });
 
-    // Cierra con Escape
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') cerrarTarjetaPrevia();
+        if (e.key === 'Escape') { cerrarTarjetaPrevia(); cerrarClusterPopover(); }
     });
 }
 
@@ -172,7 +261,6 @@ function abrirTarjetaPrevia(punto) {
     desc.textContent = punto.descripcion || '';
     desc.style.display = punto.descripcion ? '-webkit-box' : 'none';
 
-    // Mostrar/ocultar botón según si hay ficha completa
     var btn = document.getElementById('tarjeta-btn');
     var tieneInfo = punto.historia || punto.informacionPractica || punto.enlaceOficial || punto.streetview;
     btn.style.display = tieneInfo ? 'inline-block' : 'none';
@@ -184,44 +272,157 @@ function cerrarTarjetaPrevia() {
     var panel = document.getElementById('tarjeta-previa');
     if (panel) panel.classList.remove('visible');
     _tarjetaActual = null;
-    _activarMarcador(-1);  // desactiva todos
+    _activarMarcador(-1);
+    // Restablecer vista inicial del track
+    if (_mapaRuta && _boundsIniciales) {
+        _mapaRuta.fitBounds(_boundsIniciales, { animate: true });
+    }
 }
 
 
-// ── Crea marcadores numerados + abre mini-tarjeta ─────
-function crearMarcadoresConFicha(mapa, puntosInteres) {
-    _poiMarcadores = [];
-    puntosInteres.forEach(function(punto, i) {
-        var num    = String(i + 1).padStart(2, '0');
-        var marker = L.marker(punto.coords, { icon: crearIconoPOI(num) }).addTo(mapa);
+// ── Cluster popover ────────────────────────────────────
 
-        // Tooltip discreto con el nombre
-        marker.bindTooltip(punto.nombre, {
-            permanent: false,
-            direction: 'top',
-            className: 'poi-tooltip',
-            offset: [0, -18]
-        });
+function crearClusterPopover() {
+    if (document.getElementById('cluster-popover')) return;
+    var div = document.createElement('div');
+    div.id = 'cluster-popover';
+    div.innerHTML = '<ul id="cluster-lista"></ul>';
+    document.body.appendChild(div);
 
-        marker.on('click', function() {
-            _activarMarcador(i);
-            mapa.flyTo(punto.coords, Math.max(mapa.getZoom(), 15), {
-                animate: true,
-                duration: 0.5
-            });
-            abrirTarjetaPrevia(punto);
-        });
-
-        _poiMarcadores.push(marker);
+    document.addEventListener('click', function(e) {
+        var pop = document.getElementById('cluster-popover');
+        if (pop && pop.classList.contains('visible') && !pop.contains(e.target)) {
+            cerrarClusterPopover();
+        }
     });
+}
+
+function abrirClusterPopover(items, latLng) {
+    crearClusterPopover();
+    var pop   = document.getElementById('cluster-popover');
+    var lista = document.getElementById('cluster-lista');
+    lista.innerHTML = '';
+
+    items.forEach(function(item) {
+        var li  = document.createElement('li');
+        li.className = 'cluster-item';
+        var num = String(item.idx + 1).padStart(2, '0');
+        li.innerHTML =
+            '<span class="cluster-item-num">' + num + '</span>' +
+            '<span class="cluster-item-nombre">' + item.punto.nombre + '</span>';
+        li.addEventListener('click', function() {
+            cerrarClusterPopover();
+            _activarMarcador(item.idx);
+            _volarAPunto(item.punto.coords);
+            abrirTarjetaPrevia(item.punto);
+        });
+        lista.appendChild(li);
+    });
+
+    // Posicionar encima del marcador
+    if (_mapaRuta) {
+        var mapEl = document.getElementById('mapa-detalle');
+        if (mapEl) {
+            var rect = mapEl.getBoundingClientRect();
+            var pt   = _mapaRuta.latLngToContainerPoint(latLng);
+            pop.style.left = (rect.left + pt.x) + 'px';
+            pop.style.top  = (rect.top  + pt.y) + 'px';
+        }
+    }
+
+    pop.classList.add('visible');
+}
+
+function cerrarClusterPopover() {
+    var pop = document.getElementById('cluster-popover');
+    if (pop) pop.classList.remove('visible');
+}
+
+
+// ── Crea marcadores numerados con clustering ──────────
+function crearMarcadoresConFicha(mapa, puntosInteres) {
+    if (!puntosInteres || !puntosInteres.length) return;
+
+    function _doCrear() {
+        _poiMarcadores = new Array(puntosInteres.length);
+        for (var x = 0; x < puntosInteres.length; x++) _poiMarcadores[x] = null;
+
+        var grupos = _calcularClusters(mapa, puntosInteres, 34);
+
+        grupos.forEach(function(grupo) {
+            if (grupo.length === 1) {
+                var i     = grupo[0];
+                var punto = puntosInteres[i];
+                var num   = String(i + 1).padStart(2, '0');
+                var marker = L.marker(punto.coords, { icon: crearIconoPOI(num) }).addTo(mapa);
+
+                marker.bindTooltip(punto.nombre, {
+                    permanent:  false,
+                    direction:  'top',
+                    className:  'poi-tooltip',
+                    offset:     [0, -18]
+                });
+
+                (function(idx, p) {
+                    marker.on('click', function(e) {
+                        L.DomEvent.stopPropagation(e);
+                        _activarMarcador(idx);
+                        _volarAPunto(p.coords);
+                        abrirTarjetaPrevia(p);
+                    });
+                })(i, punto);
+
+                _poiMarcadores[i] = marker;
+
+            } else {
+                // Cluster: centroide de posiciones en capa
+                var layerPts = grupo.map(function(i) {
+                    return mapa.latLngToLayerPoint(L.latLng(puntosInteres[i].coords));
+                });
+                var cx = layerPts.reduce(function(s, p) { return s + p.x; }, 0) / layerPts.length;
+                var cy = layerPts.reduce(function(s, p) { return s + p.y; }, 0) / layerPts.length;
+                var center = mapa.layerPointToLatLng(L.point(cx, cy));
+
+                var clusterMarker = L.marker(center, { icon: crearIconoCluster(grupo.length) }).addTo(mapa);
+
+                (function(grp, ctr) {
+                    clusterMarker.on('click', function(e) {
+                        L.DomEvent.stopPropagation(e);
+                        abrirClusterPopover(
+                            grp.map(function(i) { return { idx: i, punto: puntosInteres[i] }; }),
+                            ctr
+                        );
+                    });
+                })(grupo, center);
+            }
+        });
+
+        // Cerrar tarjeta/popover al pulsar en el fondo del mapa
+        mapa.on('click', function() {
+            cerrarTarjetaPrevia();
+            cerrarClusterPopover();
+        });
+    }
+
+    if (_mapaListo) {
+        _doCrear();
+    } else {
+        mapa.once('ruta:ready', _doCrear);
+    }
 }
 
 
 // ── Lightbox estándar (backward-compat) ───────────────
+
 function crearLightbox() {
     var lightbox = document.createElement('div');
     lightbox.id = 'lightbox';
-    lightbox.innerHTML = '<div id="lightbox-contenido"><span id="lightbox-cerrar">✕</span><img id="lightbox-img"><p id="lightbox-titulo"></p></div>';
+    lightbox.innerHTML =
+        '<div id="lightbox-contenido">' +
+            '<span id="lightbox-cerrar">✕</span>' +
+            '<img id="lightbox-img">' +
+            '<p id="lightbox-titulo"></p>' +
+        '</div>';
     document.body.appendChild(lightbox);
     document.getElementById('lightbox-cerrar').addEventListener('click', function() {
         lightbox.style.display = 'none';
@@ -231,7 +432,13 @@ function crearLightbox() {
 function crearLightboxConStreetView() {
     var lightbox = document.createElement('div');
     lightbox.id = 'lightbox';
-    lightbox.innerHTML = '<div id="lightbox-contenido"><span id="lightbox-cerrar">✕</span><img id="lightbox-img"><iframe id="lightbox-iframe" style="display:none;width:100%;height:300px;border:0;" allowfullscreen="" loading="lazy"></iframe><p id="lightbox-titulo"></p></div>';
+    lightbox.innerHTML =
+        '<div id="lightbox-contenido">' +
+            '<span id="lightbox-cerrar">✕</span>' +
+            '<img id="lightbox-img">' +
+            '<iframe id="lightbox-iframe" style="display:none;width:100%;height:300px;border:0;" allowfullscreen="" loading="lazy"></iframe>' +
+            '<p id="lightbox-titulo"></p>' +
+        '</div>';
     document.body.appendChild(lightbox);
     document.getElementById('lightbox-cerrar').addEventListener('click', function() {
         lightbox.style.display = 'none';
@@ -243,11 +450,11 @@ function crearMarcadores(mapa, puntosInteres) {
     puntosInteres.forEach(function(punto) {
         var marker = L.marker(punto.coords, { icon: iconoMarker }).addTo(mapa);
         marker.on('mouseover', function() {
-            var contenido = '<b>' + punto.nombre + '</b>';
-            if (punto.foto) contenido += '<br><img src="' + punto.foto + '" style="width:150px; margin-top:5px; border-radius:4px;">';
-            this.bindPopup(contenido, { closeButton: false, maxWidth: 200, autoPan: false }).openPopup();
+            var c = '<b>' + punto.nombre + '</b>';
+            if (punto.foto) c += '<br><img src="' + punto.foto + '" style="width:150px;margin-top:5px;border-radius:4px;">';
+            this.bindPopup(c, { closeButton: false, maxWidth: 200, autoPan: false }).openPopup();
         });
-        marker.on('mouseout', function() { this.closePopup(); });
+        marker.on('mouseout',  function() { this.closePopup(); });
         marker.on('click', function() {
             document.getElementById('lightbox-img').src = punto.foto;
             document.getElementById('lightbox-titulo').textContent = punto.nombre;
@@ -260,11 +467,11 @@ function crearMarcadoresConStreetView(mapa, puntosInteres) {
     puntosInteres.forEach(function(punto) {
         var marker = L.marker(punto.coords, { icon: iconoMarker }).addTo(mapa);
         marker.on('mouseover', function() {
-            var contenido = '<b>' + punto.nombre + '</b>';
-            if (punto.foto) contenido += '<br><img src="' + punto.foto + '" style="width:150px; margin-top:5px; border-radius:4px;">';
-            this.bindPopup(contenido, { closeButton: false, maxWidth: 200, autoPan: false }).openPopup();
+            var c = '<b>' + punto.nombre + '</b>';
+            if (punto.foto) c += '<br><img src="' + punto.foto + '" style="width:150px;margin-top:5px;border-radius:4px;">';
+            this.bindPopup(c, { closeButton: false, maxWidth: 200, autoPan: false }).openPopup();
         });
-        marker.on('mouseout', function() { this.closePopup(); });
+        marker.on('mouseout',  function() { this.closePopup(); });
         marker.on('click', function() {
             var iframe = document.getElementById('lightbox-iframe');
             var img    = document.getElementById('lightbox-img');
@@ -280,7 +487,7 @@ function crearMarcadoresConStreetView(mapa, puntosInteres) {
 }
 
 function abrirLightboxFoto(foto, nombre) {
-    var img = document.getElementById('lightbox-img');
+    var img    = document.getElementById('lightbox-img');
     var iframe = document.getElementById('lightbox-iframe');
     var titulo = document.getElementById('lightbox-titulo');
     if (img)    { img.src = foto; img.style.display = 'block'; }
@@ -306,7 +513,7 @@ function abrirLightboxSV(foto, nombre, svUrl) {
 
 
 // ── Renderiza tarjetas de puntos de interés ───────────
-// Conectada bidireccionalmente con el mapa
+// Conectada bidireccionalmente con el mapa.
 function renderizarPuntosInteres(puntos) {
     var grid    = document.querySelector('.ruta-puntos-grid');
     var seccion = document.querySelector('.ruta-puntos');
@@ -316,11 +523,13 @@ function renderizarPuntosInteres(puntos) {
         return;
     }
     _poiCardsLista = [];
+
     puntos.forEach(function(p, i) {
         var num = String(i + 1).padStart(2, '0');
         var fotoHTML = p.foto
             ? '<img src="' + p.foto + '" alt="' + p.nombre + '" loading="lazy">'
             : '<span class="punto-card-foto-placeholder">' + (p.streetview ? '360°' : '·') + '</span>';
+
         var card = document.createElement('div');
         card.className = 'punto-card';
         card.innerHTML =
@@ -328,23 +537,18 @@ function renderizarPuntosInteres(puntos) {
             '<div class="punto-card-cuerpo">' +
                 '<span class="punto-num">' + num + '</span>' +
                 '<span class="punto-nombre">' + p.nombre + '</span>' +
+                (p.descripcion ? '<span class="punto-desc">' + p.descripcion + '</span>' : '') +
             '</div>';
 
         if (p.foto || p.streetview || p.descripcion) {
             card.style.cursor = 'pointer';
             card.addEventListener('click', function() {
-                // Activar marcador y centrar mapa
                 _activarMarcador(i);
-                if (_mapaRuta && p.coords) {
-                    _mapaRuta.flyTo(p.coords, Math.max(_mapaRuta.getZoom(), 15), {
-                        animate: true,
-                        duration: 0.5
-                    });
-                    // Scroll suave hasta el mapa
+                if (_mapaRuta && _mapaListo && p.coords) {
+                    _volarAPunto(p.coords);
                     var mapaEl = document.getElementById('mapa-detalle');
                     if (mapaEl) mapaEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
-                // Abrir mini tarjeta
                 if (document.getElementById('tarjeta-previa')) {
                     abrirTarjetaPrevia(p);
                 } else if (document.getElementById('ficha-overlay')) {
@@ -356,6 +560,7 @@ function renderizarPuntosInteres(puntos) {
                 }
             });
         }
+
         _poiCardsLista.push(card);
         grid.appendChild(card);
     });
@@ -365,7 +570,6 @@ function renderizarPuntosInteres(puntos) {
 // ── Ficha completa de punto de interés ───────────────
 
 function crearFichaPunto() {
-    // Crea también la mini tarjeta previa
     crearTarjetaPrevia();
 
     var overlay = document.createElement('div');
