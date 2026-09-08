@@ -54,7 +54,7 @@ var puntosInteres = [
         enlaceOficial: null,
         secreto: {
             titulo: "UN PEQUEÑO SECRETO DEL CAMINO",
-            texto: "Si miras bien entre la vegetación cerca del mural, encontrarás algo inesperado…",
+            texto: "Entre los cientos de mensajes que cubren el mural, encima de la madera, hay dos pequeñas casitas construidas con musgo y ramas. ¿Te has fijado bien?",
             fotos: ["fotos/vega/casagnomo1.png", "fotos/vega/casagnomo2.png"]
         }
     },
