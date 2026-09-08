@@ -11,6 +11,8 @@ var _poiCardsLista    = [];     // elementos DOM de .punto-card en orden
 var _tarjetaActual    = null;   // punto abierto en la mini-tarjeta
 var _boundsIniciales  = null;   // límites del track para restablecer la vista
 var _mapaListo        = false;  // true tras cargarTrack + fitBounds
+var _clusterExpandido = [];     // marcadores individuales al expandir cluster
+var _clusterOriginal  = null;   // { grupo, marker } del cluster actualmente expandido
 
 
 // ── Inicializa el mapa (bloqueado: sin interacción de usuario) ──
@@ -232,7 +234,7 @@ function crearTarjetaPrevia() {
     });
 
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') { cerrarTarjetaPrevia(); cerrarClusterPopover(); }
+        if (e.key === 'Escape') { cerrarTarjetaPrevia(); }
     });
 }
 
@@ -273,6 +275,7 @@ function cerrarTarjetaPrevia() {
     if (panel) panel.classList.remove('visible');
     _tarjetaActual = null;
     _activarMarcador(-1);
+    colapsarCluster(); // re-contraer cluster expandido si lo hay
     // Restablecer vista inicial del track
     if (_mapaRuta && _boundsIniciales) {
         _mapaRuta.fitBounds(_boundsIniciales, { animate: true });
@@ -280,64 +283,60 @@ function cerrarTarjetaPrevia() {
 }
 
 
-// ── Cluster popover ────────────────────────────────────
+// ── Cluster: expandir/contraer ────────────────────────
+// Al pulsar el cluster se hace zoom sobre esos puntos y
+// se muestran los marcadores individuales separados.
 
-function crearClusterPopover() {
-    if (document.getElementById('cluster-popover')) return;
-    var div = document.createElement('div');
-    div.id = 'cluster-popover';
-    div.innerHTML = '<ul id="cluster-lista"></ul>';
-    document.body.appendChild(div);
+function expandirCluster(grupo, puntosInteres, clusterMarker) {
+    if (!_mapaRuta) return;
+    // Retirar el marcador agrupado
+    _mapaRuta.removeLayer(clusterMarker);
+    _clusterOriginal = { grupo: grupo, marker: clusterMarker };
 
-    document.addEventListener('click', function(e) {
-        var pop = document.getElementById('cluster-popover');
-        if (!pop || !pop.classList.contains('visible')) return;
-        if (pop.contains(e.target)) return;
-        // Ignore clicks that originated on a cluster marker (they open the popover)
-        if (e.target && e.target.closest && e.target.closest('.poi-cluster')) return;
-        cerrarClusterPopover();
-    });
-}
-
-function abrirClusterPopover(items, latLng) {
-    crearClusterPopover();
-    var pop   = document.getElementById('cluster-popover');
-    var lista = document.getElementById('cluster-lista');
-    lista.innerHTML = '';
-
-    items.forEach(function(item) {
-        var li  = document.createElement('li');
-        li.className = 'cluster-item';
-        var num = String(item.idx + 1).padStart(2, '0');
-        li.innerHTML =
-            '<span class="cluster-item-num">' + num + '</span>' +
-            '<span class="cluster-item-nombre">' + item.punto.nombre + '</span>';
-        li.addEventListener('click', function() {
-            cerrarClusterPopover();
-            _activarMarcador(item.idx);
-            _volarAPunto(item.punto.coords);
-            abrirTarjetaPrevia(item.punto);
+    // Añadir marcadores individuales para cada POI del grupo
+    _clusterExpandido = [];
+    grupo.forEach(function(i) {
+        var punto = puntosInteres[i];
+        var num   = String(i + 1).padStart(2, '0');
+        var m = L.marker(punto.coords, { icon: crearIconoPOI(num) }).addTo(_mapaRuta);
+        m.bindTooltip(punto.nombre, {
+            permanent:  false,
+            direction:  'top',
+            className:  'poi-tooltip',
+            offset:     [0, -18]
         });
-        lista.appendChild(li);
+        (function(idx, p) {
+            m.on('click', function(e) {
+                L.DomEvent.stopPropagation(e);
+                _activarMarcador(idx);
+                _volarAPunto(p.coords);
+                abrirTarjetaPrevia(p);
+            });
+        })(i, punto);
+        _poiMarcadores[i] = m;
+        _clusterExpandido.push(m);
     });
 
-    // Posicionar encima del marcador
-    if (_mapaRuta) {
-        var mapEl = document.getElementById('mapa-detalle');
-        if (mapEl) {
-            var rect = mapEl.getBoundingClientRect();
-            var pt   = _mapaRuta.latLngToContainerPoint(latLng);
-            pop.style.left = (rect.left + pt.x) + 'px';
-            pop.style.top  = (rect.top  + pt.y) + 'px';
-        }
-    }
-
-    pop.classList.add('visible');
+    // Ajustar la vista para que se vean todos los puntos del cluster
+    var latLngs = grupo.map(function(i) {
+        return L.latLng(puntosInteres[i].coords);
+    });
+    _mapaRuta.fitBounds(L.latLngBounds(latLngs), {
+        padding:  [60, 60],
+        animate:  true,
+        maxZoom:  17
+    });
 }
 
-function cerrarClusterPopover() {
-    var pop = document.getElementById('cluster-popover');
-    if (pop) pop.classList.remove('visible');
+function colapsarCluster() {
+    if (!_clusterOriginal || !_mapaRuta) return;
+    // Quitar los marcadores individuales del cluster expandido
+    _clusterExpandido.forEach(function(m) { _mapaRuta.removeLayer(m); });
+    _clusterOriginal.grupo.forEach(function(i) { _poiMarcadores[i] = null; });
+    // Restaurar el marcador agrupado
+    _clusterOriginal.marker.addTo(_mapaRuta);
+    _clusterExpandido = [];
+    _clusterOriginal  = null;
 }
 
 
@@ -387,22 +386,18 @@ function crearMarcadoresConFicha(mapa, puntosInteres) {
 
                 var clusterMarker = L.marker(center, { icon: crearIconoCluster(grupo.length) }).addTo(mapa);
 
-                (function(grp, ctr) {
-                    clusterMarker.on('click', function(e) {
+                (function(grp, cm) {
+                    cm.on('click', function(e) {
                         L.DomEvent.stopPropagation(e);
-                        abrirClusterPopover(
-                            grp.map(function(i) { return { idx: i, punto: puntosInteres[i] }; }),
-                            ctr
-                        );
+                        expandirCluster(grp, puntosInteres, cm);
                     });
-                })(grupo, center);
+                })(grupo, clusterMarker);
             }
         });
 
-        // Cerrar tarjeta/popover al pulsar en el fondo del mapa
+        // Cerrar tarjeta al pulsar en el fondo del mapa
         mapa.on('click', function() {
             cerrarTarjetaPrevia();
-            cerrarClusterPopover();
         });
     }
 
