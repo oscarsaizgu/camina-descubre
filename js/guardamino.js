@@ -17,7 +17,7 @@ var puntosInteres = [
     {
         coords: [43.26138646986801, -3.455310394447993],
         nombre: "Monumento a La Batalla de Ramales",
-        foto: "fotos/piedra.jpg",
+        foto: "fotos/guardamino/piedra.jpg",
         categoria: "Monumento histórico",
         descripcion: "Monumento que conmemora la Batalla de Ramales, librada el 5 de mayo de 1839 durante la Primera Guerra Carlista. La victoria del general Espartero sobre las fuerzas carlistas fue tan decisiva que el municipio añadió 'de la Victoria' a su nombre.",
         historia: "El 5 de mayo de 1839, las tropas liberales del general Baldomero Espartero asaltaron las posiciones carlistas en la peña de Los Cuerpos de Guardamino. La batalla fue un punto de inflexión en la Primera Guerra Carlista, y el municipio fue rebautizado como 'Ramales de la Victoria' en honor al triunfo. La Piedra Carlista, una roca natural que servía de parapeto defensivo, es el principal vestigio material de la batalla.",
@@ -27,7 +27,7 @@ var puntosInteres = [
     {
         coords: [43.2620532187991, -3.4450485940378512],
         nombre: "Iglesia de Nuestra Señora, Parroquia de San Pedro",
-        foto: "fotos/iglesia.jpg",
+        foto: "fotos/guardamino/iglesia.jpg",
         categoria: "Patrimonio religioso",
         descripcion: "Iglesia parroquial de Ramales de la Victoria, dedicada a San Pedro. Elemento central del núcleo histórico del municipio, con una arquitectura que refleja las distintas etapas constructivas de la arquitectura religiosa cantábrica.",
         historia: null,
@@ -37,7 +37,7 @@ var puntosInteres = [
     {
         coords: [43.256952100060936, -3.4629698197607337],
         nombre: "Bolera Domingo Muguira",
-        foto: "fotos/bolera.jpg",
+        foto: "fotos/guardamino/bolera.jpg",
         categoria: "Deporte tradicional",
         descripcion: "Bolera de pasabolo, el deporte autóctono de la comarca del Asón. En el pasabolo se lanzan bolas de piedra o madera contra unos bolos alineados en un tablón o una losa. La bolera está dedicada a Domingo Muguira, figura del pasabolo ramaliego.",
         historia: "El pasabolo es el deporte tradicional por excelencia del valle del Asón. Su práctica se remonta a siglos atrás como forma de ocio y competición entre vecinos, y sigue siendo un referente de identidad cultural en la comarca. Existen dos modalidades principales: pasabolo tablón y pasabolo losa.",
@@ -47,7 +47,7 @@ var puntosInteres = [
     {
         coords: [43.25867491569154, -3.450799765317839],
         nombre: "Camino secundario",
-        foto: "fotos/secundario.jpg",
+        foto: "fotos/guardamino/secundario.jpg",
         categoria: "Sendero",
         descripcion: "Tramo de camino rural que conecta el barrio de La Casa con las zonas altas de Guardamino, ofreciendo vistas sobre el pueblo de Ramales y los macizos del Pico San Vicente y la Sierra del Hornijo.",
         historia: null,

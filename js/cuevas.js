@@ -74,7 +74,7 @@ var puntosInteres = [
     {
         coords: [43.243676959842375, -3.4515943412797148],
         nombre: "Mirador Pared del Eco",
-        foto: null,
+        foto: "fotos/cuevas/mirador.jpg",
         streetview: "https://www.google.com/maps/embed?pb=!4v1786105827670!6m8!1m7!1sCAoSFkNJSE0wb2dLRUlDQWdJRHlqZUhfQ2c.!2m2!1d43.24362767947232!2d-3.451567598630545!3f102.16397789636218!4f0!5f0.7820865974627469",
         categoria: "Formación geológica · Mirador",
         descripcion: "Imponente pared de roca caliza que cierra el valle del río Calera. Recibe su nombre por el eco que producen los sonidos al rebotar en su vertical superficie. Es también una conocida zona de escalada deportiva con rutas de distintos niveles.",
