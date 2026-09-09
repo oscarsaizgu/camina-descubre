@@ -2684,6 +2684,8 @@ body.pagina-ruta main {
     justify-content: center;
     flex-shrink: 0;
     z-index: 1;
+    font-size: 0.65rem;
+
 }
 
 .poi-card-num {
