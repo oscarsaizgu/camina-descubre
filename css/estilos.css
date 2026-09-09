@@ -2450,7 +2450,7 @@ body.pagina-ruta main {
 /* Contenedor: altura = 20px zona título + 91px gráfico */
 .pagina-ruta .ruta-mapa-bloque #elevacion {
     position: relative;
-    height: 111px;
+    height: 120px;
     padding-top: 20px;
 }
 /* Etiqueta "PERFIL DEL RECORRIDO" — zona propia encima del gráfico */
@@ -2487,7 +2487,7 @@ body.pagina-ruta main {
 .pagina-ruta #grafico-elevacion path.area,
 .pagina-ruta #grafico-elevacion-b path.area {
     fill: rgba(245, 234, 216, 0.38) !important;
-    stroke: rgba(245, 234, 216, 0.85) !important;
+    stroke: rgba(245, 234, 216, 0.7) !important;
     stroke-width: 1.8 !important;
 }
 .pagina-ruta #grafico-elevacion .grid line,
