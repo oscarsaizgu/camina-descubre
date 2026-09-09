@@ -597,8 +597,7 @@ function renderizarPuntosInteres(puntos) {
         card.className = 'punto-card poi-card' + (p.foto ? '' : ' poi-card--sin-foto');
         card.innerHTML =
             '<div class="poi-card-header">' +
-                '<div class="poi-card-dot"></div>' +
-                '<span class="poi-card-num">' + num + '</span>' +
+                '<div class="poi-card-dot">' + num + '</div>' +
             '</div>' +
             '<div class="poi-card-body">' +
                 fotoHTML +

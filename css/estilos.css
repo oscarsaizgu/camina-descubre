@@ -2687,7 +2687,7 @@ body.pagina-ruta main {
 }
 
 .poi-card-num {
-    font-size: 0.65rem;
+    font-size: 0.55rem;
     font-weight: 700;
     color: var(--verde);
     letter-spacing: 0.04em;
