@@ -1724,6 +1724,8 @@ body.pagina-ruta main {
     font-style: italic;
     color: rgba(245,234,216,0.38);
     line-height: 1.2;
+    display: block;
+    margin-top: -0.1rem;
 }
 
 /* ── Lista compacta de especies ── */
@@ -1829,6 +1831,7 @@ body.pagina-ruta main {
 .ruta-entorno-especie-back {
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+    text-align: center;
 }
 .ruta-entorno-especie-back {
     position: absolute;
