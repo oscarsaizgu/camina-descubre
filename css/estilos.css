@@ -725,7 +725,8 @@ main {
     width: 100%;
     height: 91px;
 }
-#grafico-elevacion {
+#grafico-elevacion,
+#grafico-elevacion-b {
     height: auto;
     width: 100%;
 }
@@ -780,6 +781,11 @@ main {
 #selector-variante button.variante-activa {
     background: var(--verde);
     color: var(--crema);
+}
+.pagina-ruta #selector-variante button {
+    letter-spacing: 0.06em;
+    font-size: 0.72rem;
+    text-transform: uppercase;
 }
 
 
@@ -1408,7 +1414,7 @@ body.pagina-ruta main {
 /* ── Información útil ── */
 .ruta-info {
     background-color: var(--verde);
-    padding: 3rem 2rem 3.5rem;
+    padding: 0rem 2rem 0rem;
 }
 .ruta-info-cabecera {
     text-align: center;
@@ -1459,7 +1465,7 @@ body.pagina-ruta main {
     background-color: var(--verde);
     border-top: 1px solid rgba(245,234,216,0.08);
     text-align: center;
-    padding: 4.5rem 2rem 5rem;
+    padding: 1rem 2rem 1rem;
 }
 .ruta-cta-pregunta {
     font-family: 'Lovelo', sans-serif;
@@ -1499,10 +1505,11 @@ body.pagina-ruta main {
     .ruta-puntos-grid { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
     .ruta-puntos { padding: 2rem 1rem 2.5rem; }
     .ruta-descripcion { padding: 2.5rem 1.2rem 3rem; }
-    .ruta-info { padding: 2.5rem 1.2rem 3rem; }
+    .ruta-info { padding: 0rem 1.2rem 0rem; }
     .ruta-info-grid { gap: 1.2rem 1.8rem; }
     .ruta-servicio img { width: 38px; height: 38px; }
-    .ruta-cta { padding: 3rem 1.5rem 4rem; }
+    /* CAMBIO C: reducir espacio entre info y CTA en móvil */
+    .ruta-cta { padding: 1rem 1.5rem 1rem; }
 }
 
 
@@ -1515,7 +1522,7 @@ body.pagina-ruta main {
 .ruta-entorno {
     background-color: var(--verde);
     color: var(--crema);
-    padding: 0 0 5rem;
+    padding: 0 0 0rem;
 }
 
 /* ── Cabecera de sección ── */
@@ -1765,6 +1772,8 @@ body.pagina-ruta main {
     .ruta-entorno-bloque { padding: 2.5rem 1.2rem 0; }
     .ruta-entorno-especies { grid-template-columns: repeat(3, 1fr); gap: 0.9rem; }
     .ruta-entorno-header { padding: 3rem 1.5rem 2.5rem; }
+    /* CAMBIO B: reducir el espacio excesivo al final de la sección entorno en móvil */
+    .ruta-entorno { padding: 0 0 0rem; }
 }
 @media (max-width: 400px) {
     .ruta-entorno-especies { grid-template-columns: repeat(2, 1fr); }
@@ -1850,6 +1859,40 @@ body.pagina-ruta main {
     color: rgba(245,234,216,0.18);
     text-align: center;
     margin-top: 0.5rem;
+}
+
+/* CAMBIO A: Flip cards en móvil horizontal — sin recorte, sin scroll interno */
+@media (max-width: 900px) and (orientation: landscape) {
+    /* Desactivar perspectiva y rotación 3D */
+    .ruta-entorno-especie { perspective: none; }
+    .ruta-entorno-especie-inner {
+        transform-style: flat;
+    }
+    /* Eliminar la rotación en ambos estados (el JS sigue aplicando .girada) */
+    .ruta-entorno-especie-inner,
+    .ruta-entorno-especie.girada .ruta-entorno-especie-inner {
+        transform: none !important;
+    }
+    /* Cara delantera: ocultar cuando la tarjeta está girada */
+    .ruta-entorno-especie.girada .ruta-entorno-especie-front {
+        display: none;
+    }
+    /* Cara trasera: fluir con el contenido (no absolute) para que no haya recorte */
+    .ruta-entorno-especie-back {
+        position: relative;
+        inset: auto;
+        transform: none;
+        overflow-y: visible;
+        height: auto;
+        max-height: none;
+        /* quitar backface-visibility que ya no aplica */
+        backface-visibility: visible;
+        -webkit-backface-visibility: visible;
+    }
+    /* Cara trasera: ocultar cuando la tarjeta NO está girada */
+    .ruta-entorno-especie:not(.girada) .ruta-entorno-especie-back {
+        display: none;
+    }
 }
 
 
@@ -2073,7 +2116,7 @@ body.pagina-ruta main {
 
 /* ── Track: halo sutil sobre la ortofoto ── */
 .pagina-ruta .mi-track {
-    filter: drop-shadow(0 0 4px rgba(20, 42, 28, 0.72));
+    filter: drop-shadow(0 0 3px rgba(20, 42, 28, 0.92)) drop-shadow(0 0 9px rgba(20, 42, 28, 0.45));
 }
 
 /* ── Escala cartográfica discreta ── */
@@ -2089,6 +2132,36 @@ body.pagina-ruta main {
     color: rgba(245, 234, 216, 0.75);
     border-top: none;
     padding: 0 3px;
+}
+
+/* ── Controles de zoom discretos ── */
+.pagina-ruta .leaflet-control-zoom {
+    border: none !important;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.35) !important;
+}
+.pagina-ruta .leaflet-control-zoom a {
+    background: rgba(18, 36, 22, 0.76) !important;
+    color: rgba(245, 234, 216, 0.82) !important;
+    border-color: rgba(245, 234, 216, 0.07) !important;
+    font-weight: 400;
+    width: 26px !important;
+    height: 26px !important;
+    line-height: 26px !important;
+}
+.pagina-ruta .leaflet-control-zoom a:hover {
+    background: rgba(30, 56, 36, 0.92) !important;
+    color: #f5ead8 !important;
+}
+
+/* ── Atribución discreta ── */
+.pagina-ruta .leaflet-control-attribution {
+    background: rgba(18, 36, 22, 0.50) !important;
+    color: rgba(245, 234, 216, 0.45) !important;
+    font-size: 0.52rem !important;
+    letter-spacing: 0.02em;
+}
+.pagina-ruta .leaflet-control-attribution a {
+    color: rgba(245, 234, 216, 0.6) !important;
 }
 
 /* ── Marcadores numerados ── */
@@ -2109,7 +2182,7 @@ body.pagina-ruta main {
     font-weight: 700;
     color: #2d4a35;
     letter-spacing: 0.03em;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 0 1.5px rgba(45, 74, 53, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.38), 0 0 0 1.5px rgba(45, 74, 53, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.18);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
     user-select: none;
@@ -2117,7 +2190,7 @@ body.pagina-ruta main {
 .poi-marcador:hover .poi-pin,
 .poi-marcador.poi-activo .poi-pin {
     transform: scale(1.25);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 0 2.5px rgba(245, 234, 216, 0.35);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 0 2.5px rgba(245, 234, 216, 0.55), inset 0 0 0 1px rgba(255, 255, 255, 0.22);
 }
 
 /* ── Tooltip discreto ── */
@@ -2389,29 +2462,40 @@ body.pagina-ruta main {
 }
 /* Fondo del plugin transparente para que se vea el verde de #elevacion */
 .pagina-ruta #grafico-elevacion .leaflet-control-elevation,
+.pagina-ruta #grafico-elevacion-b .leaflet-control-elevation,
 .pagina-ruta #grafico-elevacion .elevation-control,
+.pagina-ruta #grafico-elevacion-b .elevation-control,
 .pagina-ruta #grafico-elevacion .elevation-detached,
-.pagina-ruta #grafico-elevacion .background {
+.pagina-ruta #grafico-elevacion-b .elevation-detached,
+.pagina-ruta #grafico-elevacion .background,
+.pagina-ruta #grafico-elevacion-b .background {
     background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
 }
 /* Colores del SVG de elevación: crema sobre verde */
 .pagina-ruta #grafico-elevacion .area,
-.pagina-ruta #grafico-elevacion path.area {
+.pagina-ruta #grafico-elevacion-b .area,
+.pagina-ruta #grafico-elevacion path.area,
+.pagina-ruta #grafico-elevacion-b path.area {
     fill: rgba(245, 234, 216, 0.38) !important;
     stroke: rgba(245, 234, 216, 0.85) !important;
     stroke-width: 1.8 !important;
 }
-.pagina-ruta #grafico-elevacion .grid line {
+.pagina-ruta #grafico-elevacion .grid line,
+.pagina-ruta #grafico-elevacion-b .grid line {
     stroke: rgba(245, 234, 216, 0.08) !important;
 }
 .pagina-ruta #grafico-elevacion .axis line,
-.pagina-ruta #grafico-elevacion .axis path {
+.pagina-ruta #grafico-elevacion-b .axis line,
+.pagina-ruta #grafico-elevacion .axis path,
+.pagina-ruta #grafico-elevacion-b .axis path {
     stroke: rgba(245, 234, 216, 0.12) !important;
 }
 .pagina-ruta #grafico-elevacion .axis text,
-.pagina-ruta #grafico-elevacion .y.axis text {
+.pagina-ruta #grafico-elevacion-b .axis text,
+.pagina-ruta #grafico-elevacion .y.axis text,
+.pagina-ruta #grafico-elevacion-b .y.axis text {
     fill: rgba(245, 234, 216, 0.72) !important;
     font-family: 'CanvaSans', sans-serif !important;
     font-size: 8px !important;
@@ -2419,7 +2503,8 @@ body.pagina-ruta main {
     letter-spacing: 0.06em !important;
     stroke: none !important;
 }
-.pagina-ruta #grafico-elevacion .x.axis text {
+.pagina-ruta #grafico-elevacion .x.axis text,
+.pagina-ruta #grafico-elevacion-b .x.axis text {
     fill: rgba(245, 234, 216, 0.82) !important;
     font-family: 'CanvaSans', sans-serif !important;
     font-size: 8px !important;
@@ -2427,10 +2512,13 @@ body.pagina-ruta main {
 }
 /* Cursor de seguimiento */
 .pagina-ruta #grafico-elevacion .elevation-polyline,
-.pagina-ruta #grafico-elevacion .height-focus {
+.pagina-ruta #grafico-elevacion-b .elevation-polyline,
+.pagina-ruta #grafico-elevacion .height-focus,
+.pagina-ruta #grafico-elevacion-b .height-focus {
     stroke: rgba(245, 234, 216, 0.7) !important;
 }
-.pagina-ruta #grafico-elevacion .height-focus-label text {
+.pagina-ruta #grafico-elevacion .height-focus-label text,
+.pagina-ruta #grafico-elevacion-b .height-focus-label text {
     fill: rgba(245, 234, 216, 0.85) !important;
 }
 
@@ -2835,7 +2923,8 @@ body.pagina-ruta main {
 }
 
 /* Eje Y del perfil de elevación: el SVG no debe recortar sus propias etiquetas */
-.pagina-ruta #grafico-elevacion svg {
+.pagina-ruta #grafico-elevacion svg,
+.pagina-ruta #grafico-elevacion-b svg {
     overflow: visible;
 }
 

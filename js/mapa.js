@@ -7,7 +7,7 @@
 var mapa = L.map('mapa', {
     zoomControl: false,
     attributionControl: false
-}).setView([43.255, -3.466], 13);
+}).setView([43.265, -3.462], 13.3);
 
 // Capa base IGN España — mapa oficial, sin API key
 L.tileLayer('https://www.ign.es/wmts/ign-base?request=getTile&service=WMTS&VERSION=1.0.0&Layer=IGNBaseTodo&Style=default&Format=image/png&TILEMATRIXSET=GoogleMapsCompatible&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}', {

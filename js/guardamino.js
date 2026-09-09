@@ -88,8 +88,8 @@ function activarVariante(v) {
     document.getElementById('btn-variante-a').classList.toggle('variante-activa', v === 'a');
     document.getElementById('btn-variante-b').classList.toggle('variante-activa', v === 'b');
 
-    if (trackA) trackA.setStyle({ dashArray: v === 'a' ? null : '8, 8', weight: v === 'a' ? 4 : 2 });
-    if (trackB) trackB.setStyle({ dashArray: v === 'b' ? null : '8, 8', weight: v === 'b' ? 4 : 2 });
+    if (trackA) trackA.setStyle({ dashArray: null, weight: v === 'a' ? 4 : 2, opacity: v === 'a' ? 0.88 : 0.22 });
+    if (trackB) trackB.setStyle({ dashArray: null, weight: v === 'b' ? 4 : 2, opacity: v === 'b' ? 0.88 : 0.22 });
 }
 
 trackA = new L.GPX('data/guardamino.gpx', {
@@ -98,16 +98,21 @@ trackA = new L.GPX('data/guardamino.gpx', {
     marker_options: { startIconUrl: null, endIconUrl: null, shadowUrl: null }
 }).on('loaded', function(e) {
     var bounds = e.target.getBounds();
+    _boundsIniciales = bounds;
     mapa.fitBounds(bounds);
     mapa.setMaxBounds(bounds.pad(1));
-    mapa.options.minZoom = mapa.getZoom();
+    mapa.once('moveend', function() {
+        mapa.options.minZoom = mapa.getZoom();
+        _mapaListo = true;
+        mapa.fire('ruta:ready');
+    });
     e.target.on('click', function() { activarVariante('a'); });
     e.target.eachLayer(function(layer) { layer.on('click', function() { activarVariante('a'); }); });
 }).addTo(mapa);
 
 trackB = new L.GPX('data/guardaminob.gpx', {
     async: true,
-    polyline_options: { color: '#fce8c6', weight: 2, opacity: 0.9, dashArray: '8, 8', className: 'mi-track' },
+    polyline_options: { color: '#fce8c6', weight: 6, opacity: 0.22, className: 'mi-track' },
     marker_options: { startIconUrl: null, endIconUrl: null, shadowUrl: null }
 }).on('loaded', function(e) {
     e.target.on('click', function() { activarVariante('b'); });

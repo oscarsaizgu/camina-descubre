@@ -28,30 +28,35 @@
 <div class="ruta-datos-inner">
 <div class="ruta-dato">
 <img alt="" src="iconos/distancia.svg"/>
-<span class="ruta-dato-val">7 km</span>
+<span class="ruta-dato-val" id="dato-distancia">7 km</span>
 <span class="ruta-dato-lab">Distancia</span>
 </div>
 <div class="ruta-dato">
 <img alt="" src="iconos/reloj.svg"/>
-<span class="ruta-dato-val">1h 30min</span>
+<span class="ruta-dato-val" id="dato-duracion">1h 30min</span>
 <span class="ruta-dato-lab">Duración</span>
 </div>
 <div class="ruta-dato">
 <img alt="" src="iconos/altitud.svg"/>
-<span class="ruta-dato-val">58m</span>
+<span class="ruta-dato-val" id="dato-desnivel">58m</span>
 <span class="ruta-dato-lab">Desnivel</span>
 </div>
 <div class="ruta-dato">
 <img alt="" src="iconos/circular.svg"/>
-<span class="ruta-dato-val">Circular</span>
+<span class="ruta-dato-val" id="dato-tipo">Circular</span>
 <span class="ruta-dato-lab">Tipo</span>
 </div>
 </div>
 </section>
 <section class="ruta-mapa-bloque">
+<div id="selector-variante">
+<button class="variante-activa" id="btn-variante-a" onclick="activarVariante('a')">Ruta principal</button>
+<button id="btn-variante-b" onclick="activarVariante('b')">Ruta alternativa</button>
+</div>
 <div id="mapa-detalle"></div>
 <div id="elevacion">
 <div id="grafico-elevacion"></div>
+<div id="grafico-elevacion-b" style="display:none;"></div>
 </div>
 
 </section>
@@ -75,7 +80,7 @@
 <div class="ruta-descripcion-texto">
 <p>Empezando la ruta en el Ayuntamiento, llegando a la Plaza Duques de la Victoria, por detrás de la iglesia cogemos la calle Manuel Marure que nos llevará a Entrepuentes, zona donde se unen el río Asón y su principal afluente, el río Gándara. Aquí encontraremos un antiguo puente medieval, un molino (ahora propiedad privada) y la presa Don Cecilio.</p>
 <p>Siguiendo la carretera atravesaremos una zona ajardinada y área recreativa que nos lleva al Bº Vegacorredor. Una vez aquí subimos por la carretera de la izquierda en dirección al Bº Helguero, el cual atravesaremos y donde podremos visitar la Fuente Iseña, manantial que abastece Ramales.</p>
-<p>Siguiendo el camino regresaremos hasta el Humilladero Ánima de Iseña y desde aquí, volveremos por el mismo recorrido hasta la plaza.</p>
+<p id="texto-descripcion"></p>
 </div>
 </div>
 </section>

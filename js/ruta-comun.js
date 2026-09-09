@@ -15,6 +15,7 @@ var _clusterExpandido = [];     // marcadores individuales al expandir cluster
 var _clusterOriginal  = null;   // { grupo, marker } del cluster actualmente expandido
 var _fichaSource      = null;   // 'section' | null — contexto de apertura de la ficha
 var _fichaScrollY     = 0;      // scrollY guardado al abrir ficha desde la sección
+var _vistaAntesDeVolar = null;  // { center, zoom } guardado antes de volar a un POI
 
 
 // ── Inicializa el mapa (bloqueado: sin interacción de usuario) ──
@@ -172,6 +173,8 @@ var iconoMarker = L.divIcon({
 // área libre, fuera de la tarjeta superpuesta.
 function _volarAPunto(coords) {
     if (!_mapaRuta) return;
+    // Guardar la vista actual antes de volar (para poder restaurarla al cerrar)
+    _vistaAntesDeVolar = { center: _mapaRuta.getCenter(), zoom: _mapaRuta.getZoom() };
     var zoom = Math.max(_mapaRuta.getZoom(), 15);
     var cont = _mapaRuta.getContainer();
     var W = cont.offsetWidth;
@@ -742,8 +745,13 @@ function cerrarFichaPunto() {
         window.scrollTo(0, _fichaScrollY);
     } else {
         document.body.style.overflow = '';
+        // Restaurar la vista del mapa a como estaba antes de volar al POI
+        if (_mapaRuta && _vistaAntesDeVolar) {
+            _mapaRuta.flyTo(_vistaAntesDeVolar.center, _vistaAntesDeVolar.zoom, { animate: true, duration: 0.5 });
+        }
     }
     _fichaSource = null;
+    _vistaAntesDeVolar = null;
 }
 
 function abrirFichaPunto(punto, source) {
