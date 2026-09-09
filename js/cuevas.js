@@ -85,17 +85,7 @@ var puntosInteres = [
 ];
 
 // ====================================================
-// A partir de aquí no hay que tocar nada
+// Inicialización — no editar
 // ====================================================
 
-var mapa = inicializarMapaRuta();
-
-var elevacion = crearElevacion('#grafico-elevacion');
-elevacion.addTo(mapa);
-elevacion.load(GPX);
-
-cargarTrack(mapa, GPX, 1, false);
-
-crearFichaPunto();
-crearMarcadoresConFicha(mapa, puntosInteres);
-renderizarPuntosInteres(puntosInteres);
+inicializarRuta({ gpx: GPX, pad: 1, maxBounds: false });

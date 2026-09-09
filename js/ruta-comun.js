@@ -910,3 +910,31 @@ document.addEventListener('DOMContentLoaded', function () {
         crearFlecha(el, nextId);
     });
 })();
+
+
+// ── Inicialización estándar de ruta ───────────────────────────────────────────
+// Usada por todos los archivos de ruta excepto guardamino.js (variante A/B).
+//
+// Opciones (todas opcionales):
+//   gpx        {string}  — ruta al archivo GPX                   (obligatorio)
+//   pad        {number}  — margen para restringir el arrastre     (defecto: 0.1)
+//   maxBounds  {boolean} — limitar el arrastre del mapa al track  (defecto: true)
+//
+// Los datos de la ruta (GPX y puntosInteres) se definen en cada archivo de ruta.
+// Esta función se encarga únicamente de la inicialización común.
+function inicializarRuta(opciones) {
+    var pad       = (opciones.pad       !== undefined) ? opciones.pad       : 0.1;
+    var maxBounds = (opciones.maxBounds !== undefined) ? opciones.maxBounds : true;
+
+    var mapa = inicializarMapaRuta();
+
+    var elevacion = crearElevacion('#grafico-elevacion');
+    elevacion.addTo(mapa);
+    elevacion.load(opciones.gpx);
+
+    cargarTrack(mapa, opciones.gpx, pad, maxBounds);
+
+    crearFichaPunto();
+    crearMarcadoresConFicha(mapa, puntosInteres);
+    renderizarPuntosInteres(puntosInteres);
+}
