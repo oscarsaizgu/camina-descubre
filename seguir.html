@@ -57,6 +57,39 @@
         #btn-pausar { background: #f5ead8; color: #2d4a35; }
         #btn-parar { background: #7a1a1a; color: #f5ead8; }
 
+        #btn-volver {
+            display: none;
+            position: fixed;
+            bottom: 6rem; left: 50%;
+            transform: translateX(-50%);
+            background: rgba(45, 74, 53, 0.92);
+            color: #f5ead8;
+            font-family: 'CanvaSans', sans-serif;
+            font-size: 0.85rem;
+            padding: 0.55rem 1.2rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 1000;
+            white-space: nowrap;
+        }
+
+        #aviso-gps {
+            display: none;
+            position: fixed;
+            top: 5.5rem; left: 50%;
+            transform: translateX(-50%);
+            background: rgba(122, 26, 26, 0.92);
+            color: #f5ead8;
+            font-family: 'CanvaSans', sans-serif;
+            font-size: 0.82rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            z-index: 1001;
+            text-align: center;
+            max-width: 90vw;
+        }
+
         .leaflet-overlay-pane path {
             display: block !important;
             stroke: #fce8c6 !important;
@@ -122,6 +155,10 @@
             <span class="panel-label">km/h</span>
         </div>
     </div>
+
+    <div id="aviso-gps"></div>
+
+    <button id="btn-volver" onclick="volverAPosicion()">📍 Volver a mi posición</button>
 
     <div id="botones">
         <button id="btn-pausar" onclick="pausar()">⏸ Pausar</button>
