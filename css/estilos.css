@@ -2801,14 +2801,14 @@ body.pagina-ruta main {
 }
 
 /* Secciones claras: ajustar color */
-.ruta-descripcion .seccion-flecha,
+#mapa-general .seccion-flecha,
 .ruta-entorno .seccion-flecha,
 .ruta-info .seccion-flecha {
     border-color: rgba(45,74,53,0.3);
     color: var(--verde);
 }
 
-.ruta-descripcion .seccion-flecha:hover,
+#mapa-general .seccion-flecha:hover,
 .ruta-entorno .seccion-flecha:hover,
 .ruta-info .seccion-flecha:hover {
     background: rgba(45,74,53,0.08);
