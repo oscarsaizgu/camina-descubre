@@ -6,7 +6,8 @@
 
 var mapa = L.map('mapa', {
     zoomControl: false,
-    attributionControl: false
+    attributionControl: false,
+    scrollWheelZoom: false,
 }).setView([43.265, -3.462], 13.3);
 
 // Capa base IGN España — mapa oficial, sin API key
