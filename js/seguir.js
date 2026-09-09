@@ -196,7 +196,7 @@ watchId = navigator.geolocation.watchPosition(
 // ─── ARRASTRAR MAPA ────────────────────────────────────
 mapa.on('dragstart', function() {
     siguiendoUsuario = false;
-    document.getElementById('btn-volver').style.display = 'block';
+    document.getElementById('btn-volver').classList.add('visible');
     document.getElementById('btn-centrar').classList.remove('activo');
     var tog = document.getElementById('toggle-seguir');
     if (tog) { tog.textContent = 'OFF'; tog.classList.remove('on'); }
@@ -206,41 +206,40 @@ mapa.on('dragstart', function() {
 
 function pausar() {
     pausado = !pausado;
-    var activo  = document.getElementById('estado-activo');
-    var pausado_ = document.getElementById('estado-pausado');
 
-    if (!pausado) {
-        // Reanudar
+    var banner   = document.getElementById('pausa-banner');
+    var iconoEl  = document.getElementById('icon-pausar');
+    var textoEl  = document.getElementById('txt-pausar');
+
+    if (pausado) {
+        // ── PAUSAR ──
+        if (banner)  banner.classList.add('visible');
+        if (textoEl) textoEl.textContent = 'Reanudar';
+        if (iconoEl) iconoEl.innerHTML =
+            '<path d="M1 1.5L11 7.5L1 13.5V1.5Z" fill="currentColor"/>';
+        // Cambiar viewBox del icono a triángulo play
+        if (iconoEl) { iconoEl.setAttribute('viewBox','0 0 12 15'); iconoEl.setAttribute('width','12'); iconoEl.setAttribute('height','15'); }
+    } else {
+        // ── REANUDAR ──
         saltarPrimerPuntoTrasReanudar = true;
         historialVelocidad = [];
         document.getElementById('velocidad').textContent = '—';
-        activo.style.display  = '';
-        pausado_.classList.remove('visible');
-        document.getElementById('btn-pausar').innerHTML =
-            '<svg width="14" height="16" viewBox="0 0 14 16" fill="none"><rect x="0" y="0" width="4" height="16" rx="2" fill="currentColor"/><rect x="10" y="0" width="4" height="16" rx="2" fill="currentColor"/></svg>Pausar';
-    } else {
-        // Pausar
-        var elTiempo = document.getElementById('tiempo');
-        var elPT     = document.getElementById('pausa-tiempo');
-        if (elPT && elTiempo) elPT.textContent = elTiempo.textContent;
-        activo.style.display = 'none';
-        pausado_.classList.add('visible');
+        if (banner)  banner.classList.remove('visible');
+        if (textoEl) textoEl.textContent = 'Pausar';
+        if (iconoEl) {
+            iconoEl.setAttribute('viewBox','0 0 14 16');
+            iconoEl.setAttribute('width','14');
+            iconoEl.setAttribute('height','16');
+            iconoEl.innerHTML =
+                '<rect x="0" y="0" width="4" height="16" rx="2" fill="currentColor"/>' +
+                '<rect x="10" y="0" width="4" height="16" rx="2" fill="currentColor"/>';
+        }
     }
-}
-
-function cerrarPausa() {
-    // Ver mapa sin reanudar
-    document.getElementById('estado-pausado').classList.remove('visible');
-    document.getElementById('estado-activo').style.display = '';
-    // Cambia btn-pausar a "Reanudar" mientras sigue pausado
-    document.getElementById('btn-pausar').innerHTML =
-        '<svg width="12" height="15" viewBox="0 0 12 15" fill="none"><path d="M1 1.5L11 7.5L1 13.5V1.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Reanudar';
-    document.getElementById('btn-pausar').onclick = pausar;
 }
 
 function volverAPosicion() {
     siguiendoUsuario = true;
-    document.getElementById('btn-volver').style.display = 'none';
+    document.getElementById('btn-volver').classList.remove('visible');
     document.getElementById('btn-centrar').classList.add('activo');
     var tog = document.getElementById('toggle-seguir');
     if (tog) { tog.textContent = 'ON'; tog.classList.add('on'); }
@@ -311,7 +310,8 @@ function toggleSeguirPosicion() {
     var btn = document.getElementById('toggle-seguir');
     btn.textContent = siguiendoUsuario ? 'ON' : 'OFF';
     btn.classList.toggle('on', siguiendoUsuario);
-    document.getElementById('btn-volver').style.display = siguiendoUsuario ? 'none' : 'block';
+    var bv = document.getElementById('btn-volver');
+    if (siguiendoUsuario) bv.classList.remove('visible'); else bv.classList.add('visible');
     document.getElementById('btn-centrar').classList.toggle('activo', siguiendoUsuario);
     if (siguiendoUsuario && marcador) mapa.panTo(marcador.getLatLng());
 }
@@ -401,9 +401,8 @@ function activarBrujula() {
 }
 
 // ─── ARRANQUE ──────────────────────────────────────────
-window.addEventListener('load', function() {
-    iniciarUI();
-    activarBrujula();
-    // Centrar btn activo al inicio
-    document.getElementById('btn-centrar').classList.add('activo');
-});
+// El script está al final del body, el DOM ya está listo.
+// No esperamos al evento 'load' para evitar el parpadeo de "Cargando…".
+iniciarUI();
+activarBrujula();
+document.getElementById('btn-centrar').classList.add('activo');

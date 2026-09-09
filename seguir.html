@@ -1,1091 +1,718 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Seguir ruta — Camina y Descubre</title>
-    <link rel="stylesheet" href="css/estilos.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
-    <style>
-        /* ================================================
-           SEGUIR RUTA — diseño visual
-           Identidad: verde #2d4a35 · crema #f5ead8
-           Tipografía: Lovelo (valores) · CanvaSans (texto)
-        ================================================ */
-
-        *, *::before, *::after { box-sizing: border-box; }
-
-        body {
-            margin: 0; padding: 0;
-            background: #2d4a35;
-            overscroll-behavior: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* -- MAPA ---------------------------------------- */
-        #mapa-seguir {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-        }
-
-        /* -- TRACK GPX ----------------------------------- */
-        .leaflet-overlay-pane path {
-            display: block !important;
-            stroke: #fce8c6 !important;
-            fill: none !important;
-        }
-
-        /* -- CABECERA ------------------------------------ */
-        #seguir-cabecera {
-            position: fixed;
-            top: env(safe-area-inset-top, 0.5rem);
-            left: 50%;
-            transform: translateX(-50%);
-            margin-top: 0.65rem;
-            z-index: 500;
-            background: rgba(45, 74, 53, 0.88);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(245, 234, 216, 0.12);
-            border-radius: 30px;
-            padding: 0.4rem 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.55rem;
-            pointer-events: none;
-            white-space: nowrap;
-        }
-
-        .cab-marca {
-            font-family: 'Lovelo', sans-serif;
-            font-size: 0.62rem;
-            color: rgba(245, 234, 216, 0.4);
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-        }
-
-        .cab-sep {
-            width: 1px;
-            height: 11px;
-            background: rgba(245, 234, 216, 0.18);
-            flex-shrink: 0;
-        }
-
-        #cab-nombre-ruta {
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.72rem;
-            color: #f5ead8;
-            letter-spacing: 0.04em;
-            max-width: 52vw;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* -- BRÚJULA ------------------------------------- */
-        #brujula-widget {
-            position: fixed;
-            top: calc(env(safe-area-inset-top, 0) + 3.8rem);
-            left: 1rem;
-            z-index: 500;
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            background: rgba(45, 74, 53, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(245, 234, 216, 0.14);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.3s;
-        }
-
-        #brujula-widget.oculta {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .brujula-inner {
-            position: relative;
-            width: 34px;
-            height: 34px;
-        }
-
-        #brujula-aguja {
-            position: absolute;
-            top: 0; left: 50%;
-            width: 2px;
-            height: 100%;
-            margin-left: -1px;
-            transform-origin: 1px 50%;
-            transform: rotate(0deg);
-        }
-
-        .aguja-norte {
-            position: absolute;
-            top: 0; left: 0;
-            width: 2px;
-            height: 50%;
-            background: #d46060;
-            border-radius: 1px 1px 0 0;
-        }
-
-        .aguja-sur {
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 2px;
-            height: 50%;
-            background: rgba(245, 234, 216, 0.3);
-            border-radius: 0 0 1px 1px;
-        }
-
-        .brujula-n {
-            position: absolute;
-            top: -1px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: 'Lovelo', sans-serif;
-            font-size: 0.48rem;
-            color: rgba(245, 234, 216, 0.7);
-            letter-spacing: 0.05em;
-            pointer-events: none;
-            line-height: 1;
-        }
-
-        .brujula-centro {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 4px; height: 4px;
-            background: #f5ead8;
-            border-radius: 50%;
-        }
-
-        /* -- CONTROLES DEL MAPA -------------------------- */
-        #controles-mapa {
-            position: fixed;
-            top: calc(env(safe-area-inset-top, 0) + 3.8rem);
-            right: 1rem;
-            z-index: 500;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .ctrl-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: rgba(45, 74, 53, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(245, 234, 216, 0.14);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: #f5ead8;
-            transition: background 0.2s;
-            padding: 0;
-        }
-
-        .ctrl-btn:active { background: rgba(45, 74, 53, 0.99); }
-        .ctrl-btn svg { width: 17px; height: 17px; }
-
-        /* Centrar: se activa visualmente cuando no se sigue */
-        #btn-centrar.no-siguiendo {
-            background: rgba(245, 234, 216, 0.18);
-        }
-
-        /* -- BTN VOLVER (floante, aparece al arrastrar) -- */
-        #btn-volver {
-            display: none;
-            position: fixed;
-            bottom: calc(12.5rem + env(safe-area-inset-bottom, 0));
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 600;
-            background: rgba(45, 74, 53, 0.92);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            color: #f5ead8;
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.76rem;
-            letter-spacing: 0.06em;
-            padding: 0.45rem 1.1rem;
-            border: 1px solid rgba(245, 234, 216, 0.18);
-            border-radius: 20px;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        /* -- TARJETA INFERIOR ---------------------------- */
-        #tarjeta-seguir {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            z-index: 700;
-            background: #f5ead8;
-            border-radius: 20px 20px 0 0;
-            padding: 1.1rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom, 0));
-            box-shadow: 0 -6px 36px rgba(0, 0, 0, 0.2);
-            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Handle */
-        #tarjeta-seguir::before {
-            content: '';
-            display: block;
-            width: 34px; height: 3px;
-            background: rgba(45, 74, 53, 0.15);
-            border-radius: 2px;
-            margin: 0 auto 1rem;
-        }
-
-        /* Stats */
-        .stats-fila {
-            display: grid;
-            grid-template-columns: 1fr 1px 1fr 1px 1fr;
-            align-items: center;
-            margin-bottom: 1.1rem;
-        }
-
-        .stat-bloque {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.08rem;
-        }
-
-        .stat-valor {
-            font-family: 'Lovelo', sans-serif;
-            font-size: 1.3rem;
-            color: #2d4a35;
-            line-height: 1;
-        }
-
-        .stat-etiqueta {
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.56rem;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: rgba(45, 74, 53, 0.42);
-        }
-
-        .stat-div {
-            width: 1px;
-            height: 26px;
-            background: rgba(45, 74, 53, 0.1);
-        }
-
-        /* Botones acción */
-        .acciones-fila {
-            display: flex;
-            gap: 0.55rem;
-            align-items: center;
-        }
-
-        #btn-pausar {
-            flex: 1;
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.84rem;
-            letter-spacing: 0.04em;
-            background: #2d4a35;
-            color: #f5ead8;
-            border: none;
-            border-radius: 12px;
-            padding: 0.78rem 0.5rem;
-            cursor: pointer;
-            transition: opacity 0.18s;
-        }
-
-        #btn-parar {
-            flex: 1;
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.84rem;
-            letter-spacing: 0.04em;
-            background: transparent;
-            color: #2d4a35;
-            border: 1.5px solid rgba(45, 74, 53, 0.22);
-            border-radius: 12px;
-            padding: 0.78rem 0.5rem;
-            cursor: pointer;
-            transition: opacity 0.18s;
-        }
-
-        #btn-opciones {
-            flex: 0 0 44px;
-            width: 44px; height: 44px;
-            background: transparent;
-            border: 1.5px solid rgba(45, 74, 53, 0.18);
-            border-radius: 12px;
-            color: #2d4a35;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-        }
-
-        #btn-opciones svg { width: 17px; height: 17px; }
-        #btn-pausar:active, #btn-parar:active, #btn-opciones:active { opacity: 0.65; }
-
-        /* -- OVERLAY PAUSA ------------------------------- */
-        #pausa-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 800;
-            background: rgba(45, 74, 53, 0.94);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-
-        #pausa-overlay.visible {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .pausa-contenido {
-            text-align: center;
-            color: #f5ead8;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .pausa-etiqueta {
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.6rem;
-            letter-spacing: 0.32em;
-            text-transform: uppercase;
-            color: rgba(245, 234, 216, 0.45);
-            margin-bottom: 0.7rem;
-        }
-
-        .pausa-tiempo {
-            font-family: 'Lovelo', sans-serif;
-            font-size: 4rem;
-            line-height: 1;
-            margin-bottom: 2.5rem;
-        }
-
-        .pausa-acciones {
-            display: flex;
-            gap: 0.7rem;
-            margin-bottom: 1.2rem;
-        }
-
-        #btn-reanudar {
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.88rem;
-            background: #f5ead8;
-            color: #2d4a35;
-            border: none;
-            border-radius: 12px;
-            padding: 0.8rem 1.8rem;
-            cursor: pointer;
-            transition: opacity 0.18s;
-        }
-
-        #btn-ver-mapa {
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.88rem;
-            background: transparent;
-            color: #f5ead8;
-            border: 1.5px solid rgba(245, 234, 216, 0.28);
-            border-radius: 12px;
-            padding: 0.8rem 1.5rem;
-            cursor: pointer;
-            transition: opacity 0.18s;
-        }
-
-        #btn-reanudar:active, #btn-ver-mapa:active { opacity: 0.65; }
-
-        .pausa-terminar {
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.76rem;
-            color: rgba(245, 234, 216, 0.35);
-            background: none;
-            border: none;
-            cursor: pointer;
-            text-decoration: underline;
-            text-underline-offset: 2px;
-            padding: 0.4rem;
-        }
-
-        /* -- MODAL FIN DE RUTA --------------------------- */
-        #modal-fin {
-            position: fixed;
-            inset: 0;
-            z-index: 900;
-            background: rgba(0, 0, 0, 0.45);
-            display: flex;
-            align-items: flex-end;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.35s;
-        }
-
-        #modal-fin.visible {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .fin-hoja {
-            background: #f5ead8;
-            width: 100%;
-            border-radius: 24px 24px 0 0;
-            padding: 2rem 2rem calc(2.5rem + env(safe-area-inset-bottom, 0));
-            text-align: center;
-            transform: translateY(100%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        #modal-fin.visible .fin-hoja {
-            transform: translateY(0);
-        }
-
-        .fin-check {
-            width: 50px; height: 50px;
-            border-radius: 50%;
-            background: #2d4a35;
-            margin: 0 auto 1.4rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .fin-check svg { width: 22px; height: 22px; }
-
-        .fin-sup {
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.58rem;
-            letter-spacing: 0.32em;
-            text-transform: uppercase;
-            color: rgba(45, 74, 53, 0.38);
-            margin-bottom: 0.35rem;
-        }
-
-        .fin-titulo {
-            font-family: 'Lovelo', sans-serif;
-            font-size: 1.35rem;
-            color: #2d4a35;
-            letter-spacing: 0.02em;
-            margin-bottom: 1.8rem;
-        }
-
-        .fin-stats {
-            display: grid;
-            grid-template-columns: 1fr 1px 1fr 1px 1fr;
-            align-items: center;
-            margin-bottom: 1.8rem;
-            padding: 1.2rem 0;
-            border-top: 1px solid rgba(45, 74, 53, 0.1);
-            border-bottom: 1px solid rgba(45, 74, 53, 0.1);
-        }
-
-        .fin-stat {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.12rem;
-        }
-
-        .fin-stat-valor {
-            font-family: 'Lovelo', sans-serif;
-            font-size: 1.15rem;
-            color: #2d4a35;
-        }
-
-        .fin-stat-label {
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.55rem;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: rgba(45, 74, 53, 0.42);
-        }
-
-        #btn-confirmar-fin {
-            display: block;
-            width: 100%;
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.9rem;
-            letter-spacing: 0.04em;
-            background: #2d4a35;
-            color: #f5ead8;
-            border: none;
-            border-radius: 12px;
-            padding: 0.88rem;
-            cursor: pointer;
-            margin-bottom: 0.65rem;
-            transition: opacity 0.18s;
-        }
-
-        #btn-cancelar-fin {
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.76rem;
-            color: rgba(45, 74, 53, 0.4);
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.4rem;
-        }
-
-        #btn-confirmar-fin:active { opacity: 0.7; }
-
-        /* -- MODALES (Opciones · Capas) ------------------ */
-        .modal-hoja-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 850;
-            background: rgba(0, 0, 0, 0.38);
-            display: flex;
-            align-items: flex-end;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-
-        .modal-hoja-overlay.visible {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .modal-hoja {
-            background: #f5ead8;
-            width: 100%;
-            border-radius: 20px 20px 0 0;
-            padding: 0.5rem 1.5rem calc(2rem + env(safe-area-inset-bottom, 0));
-            transform: translateY(100%);
-            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .modal-hoja-overlay.visible .modal-hoja {
-            transform: translateY(0);
-        }
-
-        /* Handle */
-        .modal-hoja::before {
-            content: '';
-            display: block;
-            width: 34px; height: 3px;
-            background: rgba(45, 74, 53, 0.15);
-            border-radius: 2px;
-            margin: 0.9rem auto 1.2rem;
-        }
-
-        .modal-hoja-titulo {
-            font-family: 'Lovelo', sans-serif;
-            font-size: 0.82rem;
-            color: #2d4a35;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            text-align: center;
-            margin-bottom: 1.2rem;
-        }
-
-        .opcion-fila {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.85rem 0;
-            border-bottom: 1px solid rgba(45, 74, 53, 0.08);
-        }
-
-        .opcion-nombre {
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.9rem;
-            color: #2d4a35;
-        }
-
-        .toggle-btn {
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.68rem;
-            letter-spacing: 0.1em;
-            padding: 0.28rem 0.72rem;
-            border-radius: 20px;
-            border: 1.5px solid rgba(45, 74, 53, 0.22);
-            background: transparent;
-            color: rgba(45, 74, 53, 0.5);
-            cursor: pointer;
-            min-width: 44px;
-            text-align: center;
-            transition: background 0.2s, color 0.2s;
-        }
-
-        .toggle-btn.on {
-            background: #2d4a35;
-            color: #f5ead8;
-            border-color: #2d4a35;
-        }
-
-        .btn-cerrar-modal {
-            display: block;
-            width: 100%;
-            margin-top: 1.1rem;
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.8rem;
-            color: rgba(45, 74, 53, 0.45);
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.5rem;
-            text-align: center;
-        }
-
-        /* Capas */
-        .capa-fila {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.85rem 0;
-            border-bottom: 1px solid rgba(45, 74, 53, 0.08);
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.9rem;
-            color: #2d4a35;
-        }
-
-        .capa-check {
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-
-        .capa-fila.capa-activa .capa-check { opacity: 1; }
-
-        /* -- AVISO GPS ----------------------------------- */
-        #aviso-gps {
-            position: fixed;
-            inset: 0;
-            z-index: 950;
-            background: rgba(45, 74, 53, 0.96);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2rem;
-            color: #f5ead8;
-        }
-
-        #aviso-gps.visible { display: flex; }
-
-        .gps-icono-wrap { margin-bottom: 1.6rem; }
-
-        .gps-titulo {
-            font-family: 'Lovelo', sans-serif;
-            font-size: 1.15rem;
-            letter-spacing: 0.04em;
-            margin-bottom: 0.8rem;
-        }
-
-        .gps-texto {
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.88rem;
-            line-height: 1.6;
-            color: rgba(245, 234, 216, 0.65);
-            max-width: 300px;
-            margin: 0 auto 2rem;
-        }
-
-        #btn-reintentar-gps {
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.88rem;
-            background: #f5ead8;
-            color: #2d4a35;
-            border: none;
-            border-radius: 12px;
-            padding: 0.8rem 2rem;
-            cursor: pointer;
-            margin-bottom: 0.75rem;
-            display: block;
-            width: 100%;
-            max-width: 280px;
-        }
-
-        #btn-ignorar-gps {
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.76rem;
-            color: rgba(245, 234, 216, 0.38);
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.4rem;
-            text-decoration: underline;
-            text-underline-offset: 2px;
-        }
-
-        /* -- MODAL BRÚJULA (permisos iOS) ---------------- */
-        #modal-brujula {
-            position: fixed;
-            inset: 0;
-            z-index: 1000;
-            background: rgba(0, 0, 0, 0.6);
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .brujula-dialog {
-            background: #f5ead8;
-            border-radius: 20px;
-            padding: 2rem;
-            max-width: 290px;
-            width: calc(100% - 2rem);
-            text-align: center;
-        }
-
-        .brujula-dialog-icono {
-            width: 50px; height: 50px;
-            border-radius: 50%;
-            background: #2d4a35;
-            margin: 0 auto 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .brujula-dialog-icono svg { width: 24px; height: 24px; }
-
-        .brujula-dialog h3 {
-            font-family: 'Lovelo', sans-serif;
-            font-size: 0.95rem;
-            color: #2d4a35;
-            margin: 0 0 0.75rem;
-        }
-
-        .brujula-dialog p {
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.84rem;
-            line-height: 1.55;
-            color: rgba(45, 74, 53, 0.65);
-            margin: 0 0 1.4rem;
-        }
-
-        .brujula-dialog-activar {
-            display: block;
-            width: 100%;
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.88rem;
-            background: #2d4a35;
-            color: #f5ead8;
-            border: none;
-            border-radius: 12px;
-            padding: 0.8rem;
-            cursor: pointer;
-            margin-bottom: 0.5rem;
-        }
-
-        .brujula-dialog-skip {
-            font-family: 'CanvaSans', sans-serif;
-            font-size: 0.8rem;
-            color: rgba(45, 74, 53, 0.42);
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.4rem;
-        }
-
-        /* -- ANIMACIONES --------------------------------- */
-        @media (prefers-reduced-motion: reduce) {
-            #tarjeta-seguir,
-            #pausa-overlay,
-            #modal-fin, .fin-hoja,
-            .modal-hoja-overlay, .modal-hoja,
-            #brujula-widget { transition: none !important; }
-        }
-
-        /* -- RESPONSIVE: landscape móvil ----------------- */
-        @media (orientation: landscape) and (max-height: 520px) {
-            #tarjeta-seguir {
-                top: 0; bottom: 0;
-                right: 0; left: auto;
-                width: 230px;
-                border-radius: 20px 0 0 20px;
-                padding: 1rem 1.2rem calc(1rem + env(safe-area-inset-bottom, 0));
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-            }
-
-            #tarjeta-seguir::before { display: none; }
-
-            .stats-fila {
-                grid-template-columns: 1fr;
-                grid-template-rows: auto auto auto;
-                gap: 0.15rem;
-                margin-bottom: 0.8rem;
-            }
-
-            .stat-div { display: none; }
-            .stat-valor { font-size: 1.1rem; }
-
-            #btn-volver {
-                bottom: auto;
-                top: 50%;
-                transform: translateY(-50%);
-                right: calc(240px);
-                left: auto;
-            }
-
-            #controles-mapa {
-                top: 0.5rem;
-                right: calc(240px + 0.6rem);
-            }
-
-            #brujula-widget {
-                top: 0.5rem;
-                left: 0.5rem;
-            }
-        }
-
-        /* -- RESPONSIVE: tablet / escritorio ------------- */
-        @media (min-width: 768px) {
-            #tarjeta-seguir {
-                width: 320px;
-                right: 1.5rem;
-                left: auto;
-                bottom: 1.5rem;
-                border-radius: 20px;
-                padding: 1.4rem;
-                box-shadow: 0 4px 32px rgba(0, 0, 0, 0.22);
-            }
-
-            #tarjeta-seguir::before { display: none; }
-
-            #controles-mapa {
-                right: calc(320px + 3rem);
-            }
-
-            #btn-volver {
-                right: calc(320px + 3rem);
-                left: auto;
-                bottom: calc(1.5rem + 4rem);
-                transform: none;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            #seguir-cabecera {
-                left: 1.5rem;
-                top: 1.2rem;
-                transform: none;
-                margin-top: 0;
-            }
-
-            #tarjeta-seguir { width: 340px; right: 2rem; bottom: 2rem; }
-
-            #controles-mapa {
-                right: calc(340px + 3.5rem);
-                top: 1.2rem;
-            }
-
-            #brujula-widget { top: 1.2rem; left: 1.5rem; }
-
-            #btn-volver {
-                right: calc(340px + 3.5rem);
-                bottom: calc(2rem + 5rem);
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Seguir ruta – Camina y Descubre</title>
+
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+
+<!-- Estilos globales del proyecto (fuentes, variables, .mi-track) -->
+<link rel="stylesheet" href="css/estilos.css">
+
+<style>
+/* ─── RESET ─────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;background:#1a2a1e;}
+
+/* ─── MAPA (capa base) ────────────────────────── */
+#mapa-seguir{
+  position:fixed;inset:0;z-index:0;
+}
+
+/* ─── CABECERA ───────────────────────────────── */
+#cab{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  padding:12px 16px 10px;
+  padding-top:calc(12px + env(safe-area-inset-top));
+  background:rgba(26,42,26,0.82);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(245,234,216,0.08);
+}
+#cab-texto{flex:1;}
+#cab-marca{
+  font-family:'Lovelo',sans-serif;
+  font-size:0.92rem;letter-spacing:0.04em;
+  color:#f5ead8;line-height:1.2;
+}
+#cab-ruta{
+  font-family:'CanvaSans',sans-serif;
+  font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(245,234,216,0.5);margin-top:1px;
+}
+#cab-menu{
+  width:38px;height:38px;border-radius:50%;
+  background:rgba(245,234,216,0.08);border:1px solid rgba(245,234,216,0.12);
+  color:#f5ead8;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:background .18s;
+}
+#cab-menu:hover{background:rgba(245,234,216,0.16);}
+
+/* ─── BRÚJULA ─────────────────────────────────── */
+#brujula-widget{
+  position:fixed;z-index:400;
+  left:14px;
+  top:calc(68px + env(safe-area-inset-top) + 14px);
+  width:52px;height:52px;border-radius:50%;
+  background:rgba(14,22,14,0.72);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  border:1px solid rgba(245,234,216,0.14);
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .3s;
+}
+#brujula-widget.oculta{opacity:0;pointer-events:none;}
+.bruj-inner{
+  position:relative;width:36px;height:36px;border-radius:50%;
+}
+/* anillo exterior */
+.bruj-inner::after{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  border:1px solid rgba(245,234,216,0.18);
+}
+/* letra N */
+.bruj-n{
+  position:absolute;top:1px;left:50%;transform:translateX(-50%);
+  font-family:'CanvaSans',sans-serif;font-size:0.48rem;font-weight:700;
+  letter-spacing:0;color:rgba(245,234,216,0.5);line-height:1;
+  pointer-events:none;z-index:2;
+}
+/* aguja */
+#brujula-aguja{
+  position:absolute;top:50%;left:50%;
+  width:3px;height:30px;
+  margin-left:-1.5px;margin-top:-15px;
+  transform-origin:50% 50%;
+}
+.aguja-n{
+  position:absolute;top:0;left:0;right:0;height:50%;
+  background:linear-gradient(to bottom,#e05050,#c03030);
+  border-radius:2px 2px 0 0;
+}
+.aguja-s{
+  position:absolute;bottom:0;left:0;right:0;height:50%;
+  background:rgba(245,234,216,0.35);
+  border-radius:0 0 2px 2px;
+}
+/* punto central */
+.bruj-centro{
+  position:absolute;top:50%;left:50%;
+  width:5px;height:5px;border-radius:50%;
+  background:#f5ead8;
+  transform:translate(-50%,-50%);
+  z-index:3;box-shadow:0 0 0 1px rgba(0,0,0,0.4);
+}
+
+/* ─── CONTROLES MAPA ─────────────────────────── */
+#controles-mapa{
+  position:fixed;z-index:400;
+  right:14px;
+  top:calc(68px + env(safe-area-inset-top) + 14px);
+  display:flex;flex-direction:column;gap:9px;
+}
+.ctrl-btn{
+  width:44px;height:44px;border-radius:50%;
+  background:rgba(14,22,14,0.72);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  border:1px solid rgba(245,234,216,0.14);
+  color:#f5ead8;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .18s,border-color .18s;
+}
+.ctrl-btn:hover{background:rgba(45,74,53,0.8);}
+.ctrl-btn.activo{background:rgba(45,74,53,0.9);border-color:rgba(245,234,216,0.35);}
+.ctrl-btn svg{display:block;}
+
+/* botón volver a mi posición (aparece al arrastrar) */
+#btn-volver{
+  position:fixed;z-index:450;
+  right:14px;
+  top:calc(68px + env(safe-area-inset-top) + 14px + 44px + 9px + 44px + 9px);
+  display:none;
+  width:44px;height:44px;border-radius:50%;
+  background:rgba(45,74,53,0.92);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  border:1.5px solid rgba(245,234,216,0.5);
+  color:#f5ead8;cursor:pointer;
+  align-items:center;justify-content:center;
+  box-shadow:0 2px 12px rgba(0,0,0,0.4);
+}
+#btn-volver.visible{display:flex;}
+
+/* ─── MARCADOR USUARIO ───────────────────────── */
+/* Estilos inyectados via JS iconoUsuario */
+
+/* ─── TARJETA INFERIOR ───────────────────────── */
+#tarjeta{
+  position:fixed;bottom:0;left:10px;right:10px;z-index:500;
+  background:#f5ead8;
+  border-radius:20px 20px 0 0;
+  box-shadow:0 -6px 40px rgba(0,0,0,0.22),0 -1px 0 rgba(0,0,0,0.04);
+  padding-bottom:calc(20px + env(safe-area-inset-bottom));
+  transition:transform .3s cubic-bezier(.32,.72,0,1);
+}
+#tarjeta::before{
+  content:'';display:block;
+  width:38px;height:4px;border-radius:2px;
+  background:rgba(45,74,53,0.18);
+  margin:12px auto 0;
+}
+
+/* ─── ESTADO ACTIVO ──────────────────────────── */
+#estado-activo{padding:14px 20px 0;}
+
+/* Siguiente POI */
+#sig-poi-bloque{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 0 12px;
+  border-bottom:1px solid rgba(45,74,53,0.1);
+  min-height:48px;
+}
+#sig-poi-num{
+  flex-shrink:0;
+  width:28px;height:28px;border-radius:50%;
+  border:1.5px solid #2d4a35;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Lovelo',sans-serif;font-size:0.7rem;color:#2d4a35;
+}
+#sig-poi-info{flex:1;}
+#sig-poi-nombre{
+  font-family:'CanvaSans',sans-serif;font-size:0.82rem;
+  font-weight:600;color:#2d4a35;line-height:1.2;
+}
+#sig-poi-dist{
+  font-family:'CanvaSans',sans-serif;font-size:0.68rem;
+  color:rgba(45,74,53,0.5);margin-top:2px;
+}
+#sig-poi-flecha{
+  flex-shrink:0;color:rgba(45,74,53,0.35);
+}
+#sig-poi-placeholder{
+  font-family:'CanvaSans',sans-serif;font-size:0.75rem;
+  color:rgba(45,74,53,0.45);letter-spacing:0.06em;
+}
+
+/* Stats */
+.stats-fila{
+  display:flex;align-items:center;
+  padding:14px 4px 0;
+}
+.stat{flex:1;text-align:center;}
+.stat-valor{
+  display:block;
+  font-family:'Lovelo',sans-serif;font-size:1.4rem;
+  color:#2d4a35;line-height:1;
+}
+.stat-etiqueta{
+  display:block;margin-top:3px;
+  font-family:'CanvaSans',sans-serif;
+  font-size:0.53rem;letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(45,74,53,0.4);
+}
+.stat-sep{width:1px;height:28px;background:rgba(45,74,53,0.13);flex-shrink:0;}
+
+/* Acciones */
+.acciones-fila{
+  display:grid;
+  grid-template-columns:1fr 1fr 48px;
+  gap:10px;
+  padding:14px 0 0;
+}
+.btn-accion{
+  border:none;border-radius:12px;padding:13px 10px;
+  font-family:'CanvaSans',sans-serif;font-size:0.8rem;font-weight:600;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;
+  transition:opacity .15s,transform .1s;
+  letter-spacing:0.02em;
+}
+.btn-accion:active{opacity:.82;transform:scale(.97);}
+#btn-pausar{background:#2d4a35;color:#f5ead8;}
+#btn-parar{background:#4a2020;color:#f5ead8;}
+#btn-opciones-card{
+  background:rgba(45,74,53,0.08);
+  border:1.5px solid rgba(45,74,53,0.18);
+  color:#2d4a35;border-radius:12px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background .15s;
+}
+#btn-opciones-card:hover{background:rgba(45,74,53,0.14);}
+
+/* ─── BANNER PAUSA (dentro de tarjeta) ──────── */
+#pausa-banner{
+  display:none;
+  align-items:center;justify-content:center;gap:8px;
+  background:rgba(45,74,53,0.09);
+  border-radius:10px;padding:9px 14px;
+  margin:12px 0 4px;
+}
+#pausa-banner.visible{display:flex;}
+.pausa-banner-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:#2d4a35;flex-shrink:0;
+  animation:parpadeo 1.4s ease-in-out infinite;
+}
+@keyframes parpadeo{0%,100%{opacity:.25;}50%{opacity:1;}}
+.pausa-banner-txt{
+  font-family:'CanvaSans',sans-serif;
+  font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(45,74,53,0.6);
+}
+
+/* ─── AVISO GPS ──────────────────────────────── */
+#aviso-gps{
+  display:none;
+  position:fixed;inset:0;z-index:700;
+  background:rgba(26,42,26,0.93);
+  flex-direction:column;align-items:center;justify-content:center;
+  padding:40px 32px;text-align:center;
+}
+#aviso-gps.visible{display:flex;}
+.gps-icono{color:rgba(245,234,216,0.4);margin-bottom:20px;}
+.gps-titulo{
+  font-family:'Lovelo',sans-serif;font-size:1.2rem;
+  color:#f5ead8;margin-bottom:8px;
+}
+.gps-texto{
+  font-family:'CanvaSans',sans-serif;font-size:0.82rem;
+  color:rgba(245,234,216,0.55);line-height:1.55;max-width:260px;
+}
+#gps-texto-contenido{color:rgba(245,234,216,0.55);}
+.gps-acciones{display:flex;flex-direction:column;gap:10px;margin-top:28px;width:100%;max-width:220px;}
+.btn-gps{
+  border-radius:12px;padding:12px;
+  font-family:'CanvaSans',sans-serif;font-size:0.82rem;font-weight:600;
+  cursor:pointer;border:none;
+}
+#btn-reintentar-gps{background:#f5ead8;color:#2d4a35;}
+#btn-ignorar-gps{
+  background:rgba(245,234,216,0.1);color:rgba(245,234,216,0.6);
+  border:1px solid rgba(245,234,216,0.15);
+}
+
+/* ─── MODAL FIN DE RUTA ──────────────────────── */
+#modal-fin{
+  display:none;
+  position:fixed;inset:0;z-index:700;
+  background:rgba(10,18,10,0.6);
+  align-items:flex-end;
+}
+#modal-fin.visible{display:flex;}
+.fin-hoja{
+  width:100%;
+  background:#f5ead8;
+  border-radius:24px 24px 0 0;
+  padding:28px 28px calc(32px + env(safe-area-inset-bottom));
+  text-align:center;
+  transform:translateY(0);
+  animation:slideUp .32s cubic-bezier(.32,.72,0,1);
+}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.fin-icono{
+  width:56px;height:56px;border-radius:50%;
+  background:#2d4a35;
+  display:inline-flex;align-items:center;justify-content:center;
+  margin-bottom:16px;
+}
+.fin-sup{
+  font-family:'CanvaSans',sans-serif;
+  font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(45,74,53,0.45);margin-bottom:4px;
+}
+.fin-titulo{
+  font-family:'Lovelo',sans-serif;font-size:1.15rem;
+  color:#2d4a35;margin-bottom:24px;
+}
+.fin-stats-grid{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:4px;
+  background:rgba(45,74,53,0.07);
+  border-radius:14px;padding:16px 8px;
+  margin-bottom:24px;
+}
+.fin-stat-bloque{text-align:center;}
+.fin-stat-val{
+  display:block;font-family:'Lovelo',sans-serif;font-size:1.1rem;
+  color:#2d4a35;line-height:1;
+}
+.fin-stat-lab{
+  display:block;margin-top:3px;
+  font-family:'CanvaSans',sans-serif;font-size:0.52rem;
+  letter-spacing:0.14em;text-transform:uppercase;color:rgba(45,74,53,0.4);
+}
+#btn-confirmar-fin{
+  display:block;width:100%;padding:14px;
+  background:#2d4a35;color:#f5ead8;
+  border:none;border-radius:13px;
+  font-family:'CanvaSans',sans-serif;font-size:0.88rem;font-weight:600;
+  cursor:pointer;margin-bottom:10px;
+}
+#btn-cancelar-fin{
+  background:none;border:none;cursor:pointer;
+  font-family:'CanvaSans',sans-serif;font-size:0.78rem;
+  color:rgba(45,74,53,0.45);text-decoration:underline;text-underline-offset:3px;
+}
+
+/* ─── MODAL OPCIONES ─────────────────────────── */
+#modal-opciones{
+  display:none;
+  position:fixed;inset:0;z-index:700;
+  background:rgba(10,18,10,0.5);
+  align-items:flex-end;
+}
+#modal-opciones.visible{display:flex;}
+.opciones-hoja{
+  width:100%;background:#f5ead8;
+  border-radius:24px 24px 0 0;
+  padding:24px 24px calc(28px + env(safe-area-inset-bottom));
+  animation:slideUp .28s cubic-bezier(.32,.72,0,1);
+}
+.opciones-titulo{
+  font-family:'Lovelo',sans-serif;font-size:1rem;
+  color:#2d4a35;margin-bottom:20px;
+}
+.op-fila{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 0;
+  border-bottom:1px solid rgba(45,74,53,0.1);
+}
+.op-label{
+  font-family:'CanvaSans',sans-serif;font-size:0.85rem;color:#2d4a35;
+}
+.toggle-btn{
+  padding:5px 14px;border-radius:20px;
+  font-family:'CanvaSans',sans-serif;font-size:0.72rem;font-weight:600;
+  border:1.5px solid rgba(45,74,53,0.25);
+  background:rgba(45,74,53,0.07);color:rgba(45,74,53,0.5);cursor:pointer;
+  transition:background .18s,color .18s;
+}
+.toggle-btn.on{
+  background:#2d4a35;color:#f5ead8;border-color:transparent;
+}
+#btn-cerrar-opciones{
+  display:block;width:100%;margin-top:20px;
+  padding:13px;border-radius:12px;
+  background:#2d4a35;color:#f5ead8;
+  border:none;cursor:pointer;
+  font-family:'CanvaSans',sans-serif;font-size:0.85rem;font-weight:600;
+}
+
+/* ─── MODAL BRÚJULA iOS ──────────────────────── */
+#modal-brujula{
+  display:none;
+  position:fixed;inset:0;z-index:800;
+  background:rgba(10,18,10,0.7);
+  align-items:center;justify-content:center;
+  padding:24px;
+}
+.bruj-dialog{
+  background:#f5ead8;border-radius:20px;
+  padding:32px 24px;text-align:center;width:100%;max-width:320px;
+}
+.bruj-dialog-icono{
+  width:56px;height:56px;border-radius:50%;
+  background:#2d4a35;margin:0 auto 16px;
+  display:flex;align-items:center;justify-content:center;
+}
+.bruj-dialog-titulo{
+  font-family:'Lovelo',sans-serif;font-size:1.05rem;
+  color:#2d4a35;margin-bottom:8px;
+}
+.bruj-dialog-texto{
+  font-family:'CanvaSans',sans-serif;font-size:0.8rem;
+  color:rgba(45,74,53,0.6);line-height:1.55;margin-bottom:24px;
+}
+.bruj-dialog-activar{
+  display:block;width:100%;padding:13px;
+  background:#2d4a35;color:#f5ead8;border:none;border-radius:12px;
+  font-family:'CanvaSans',sans-serif;font-size:0.85rem;font-weight:600;
+  cursor:pointer;margin-bottom:10px;
+}
+.bruj-dialog-skip{
+  background:none;border:none;cursor:pointer;
+  font-family:'CanvaSans',sans-serif;font-size:0.78rem;
+  color:rgba(45,74,53,0.45);
+}
+
+/* ─── RESPONSIVO: LANDSCAPE MÓVIL ───────────────── */
+@media (orientation:landscape) and (max-height:520px){
+  #tarjeta{
+    left:auto;right:0;bottom:0;top:0;width:240px;
+    border-radius:0;
+    box-shadow:-4px 0 32px rgba(0,0,0,0.18);
+    overflow-y:auto;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  #tarjeta::before{display:none;}
+  #estado-activo{padding:16px 16px 0;}
+  .stat-valor{font-size:1.15rem;}
+  #controles-mapa,#brujula-widget{
+    top:calc(60px + env(safe-area-inset-top) + 8px);
+  }
+}
+
+/* ─── RESPONSIVO: TABLET / ESCRITORIO ───────────── */
+@media (min-width:768px){
+  #tarjeta{
+    left:auto;right:24px;bottom:24px;
+    width:300px;
+    border-radius:20px;
+    box-shadow:0 8px 48px rgba(0,0,0,0.22);
+  }
+  #tarjeta::before{display:none;}
+  #btn-volver{top:auto;bottom:calc(24px + 300px + 10px);}
+}
+@media (min-width:1024px){
+  #cab{padding-left:28px;padding-right:28px;}
+  #tarjeta{width:340px;right:32px;bottom:32px;}
+  #brujula-widget{left:20px;}
+  #controles-mapa{right:20px;}
+}
+
+/* ─── REDUCCIÓN DE MOVIMIENTO ──────────────────── */
+@media (prefers-reduced-motion:reduce){
+  #tarjeta,.fin-hoja,.opciones-hoja{transition:none;animation:none;}
+  .ctrl-btn,.btn-accion{transition:none;}
+}
+</style>
 </head>
 <body>
 
-    <!-- MAPA -->
-    <div id="mapa-seguir"></div>
+<!-- ═══ MAPA ═══ -->
+<div id="mapa-seguir"></div>
 
-    <!-- CABECERA -->
-    <div id="seguir-cabecera" role="banner" aria-label="Camina y Descubre">
-        <span class="cab-marca">C&amp;D</span>
-        <div class="cab-sep"></div>
-        <span id="cab-nombre-ruta">Cargando…</span>
+<!-- ═══ CABECERA ═══ -->
+<header id="cab">
+  <div id="cab-texto">
+    <div id="cab-marca">Camina y Descubre</div>
+    <div id="cab-ruta">Cargando…</div>
+  </div>
+  <button id="cab-menu" onclick="abrirOpciones()" aria-label="Opciones">
+    <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
+      <line x1="0" y1="1" x2="18" y2="1" stroke="#f5ead8" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="0" y1="7" x2="18" y2="7" stroke="#f5ead8" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="0" y1="13" x2="18" y2="13" stroke="#f5ead8" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>
+  </button>
+</header>
+
+<!-- ═══ BRÚJULA ═══ -->
+<div id="brujula-widget" aria-hidden="true">
+  <div class="bruj-inner">
+    <span class="bruj-n">N</span>
+    <div id="brujula-aguja">
+      <div class="aguja-n"></div>
+      <div class="aguja-s"></div>
+    </div>
+    <div class="bruj-centro"></div>
+  </div>
+</div>
+
+<!-- ═══ CONTROLES MAPA ═══ -->
+<div id="controles-mapa">
+  <button class="ctrl-btn" id="btn-capas" onclick="abrirCapas()" aria-label="Capas del mapa">
+    <svg width="20" height="16" viewBox="0 0 20 16" fill="none">
+      <path d="M10 1L19 6L10 11L1 6L10 1Z" stroke="#f5ead8" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M1 10L10 15L19 10" stroke="#f5ead8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <button class="ctrl-btn" id="btn-centrar" onclick="volverAPosicion()" aria-label="Centrar en mi posición">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <circle cx="10" cy="10" r="3" stroke="#f5ead8" stroke-width="1.5"/>
+      <line x1="10" y1="1" x2="10" y2="5" stroke="#f5ead8" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="10" y1="15" x2="10" y2="19" stroke="#f5ead8" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="1" y1="10" x2="5" y2="10" stroke="#f5ead8" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="15" y1="10" x2="19" y2="10" stroke="#f5ead8" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </button>
+</div>
+
+<!-- Botón volver a posición (aparece al arrastrar mapa) -->
+<button id="btn-volver" onclick="volverAPosicion()" aria-label="Volver a mi posición">
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+    <circle cx="9" cy="9" r="3.5" fill="#f5ead8"/>
+    <circle cx="9" cy="9" r="7" stroke="#f5ead8" stroke-width="1.5" stroke-dasharray="2.5 2.5"/>
+    <line x1="9" y1="1" x2="9" y2="3" stroke="#f5ead8" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="9" y1="15" x2="9" y2="17" stroke="#f5ead8" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="1" y1="9" x2="3" y2="9" stroke="#f5ead8" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="15" y1="9" x2="17" y2="9" stroke="#f5ead8" stroke-width="1.5" stroke-linecap="round"/>
+  </svg>
+</button>
+
+<!-- ═══ TARJETA INFERIOR ═══ -->
+<div id="tarjeta">
+
+  <!-- ESTADO ACTIVO -->
+  <div id="estado-activo">
+
+    <!-- Banner de pausa (visible cuando está pausado) -->
+    <div id="pausa-banner">
+      <div class="pausa-banner-dot"></div>
+      <span class="pausa-banner-txt">Ruta en pausa</span>
     </div>
 
-    <!-- BRÚJULA -->
-    <div id="brujula-widget" role="img" aria-label="Brújula">
-        <div class="brujula-inner">
-            <div id="brujula-aguja">
-                <div class="aguja-norte"></div>
-                <div class="aguja-sur"></div>
-            </div>
-            <span class="brujula-n">N</span>
-            <div class="brujula-centro"></div>
-        </div>
+    <!-- Siguiente POI -->
+    <div id="sig-poi-bloque">
+      <div id="sig-poi-num"></div>
+      <div id="sig-poi-info">
+        <div id="sig-poi-nombre"></div>
+        <div id="sig-poi-dist"></div>
+      </div>
+      <div id="sig-poi-flecha">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span id="sig-poi-placeholder"></span>
     </div>
 
-    <!-- CONTROLES DEL MAPA -->
-    <div id="controles-mapa" role="group" aria-label="Controles del mapa">
-        <button class="ctrl-btn" id="btn-capas" onclick="abrirCapas()" aria-label="Capas del mapa">
-            <!-- Ícono: capas -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-                <polyline points="2 17 12 22 22 17"/>
-                <polyline points="2 12 12 17 22 12"/>
-            </svg>
-        </button>
-        <button class="ctrl-btn" id="btn-centrar" onclick="volverAPosicion()" aria-label="Centrar en mi posición">
-            <!-- Ícono: posición -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="3"/>
-                <path d="M12 1v4M12 19v4M1 12h4M19 12h4"/>
-            </svg>
-        </button>
+    <!-- Estadísticas -->
+    <div class="stats-fila">
+      <div class="stat">
+        <span class="stat-valor" id="tiempo">00:00</span>
+        <span class="stat-etiqueta">Tiempo</span>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="stat">
+        <span class="stat-valor" id="distancia">0,00</span>
+        <span class="stat-etiqueta">km</span>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="stat">
+        <span class="stat-valor" id="velocidad">—</span>
+        <span class="stat-etiqueta">km/h</span>
+      </div>
     </div>
 
-    <!-- BTN VOLVER (aparece cuando el usuario arrastra el mapa) -->
-    <button id="btn-volver" onclick="volverAPosicion()">
-        Mi posición
-    </button>
-
-    <!-- TARJETA INFERIOR -->
-    <div id="tarjeta-seguir" role="complementary" aria-label="Estado de la ruta">
-        <div class="stats-fila">
-            <div class="stat-bloque">
-                <span class="stat-valor" id="tiempo">00:00</span>
-                <span class="stat-etiqueta">Tiempo</span>
-            </div>
-            <div class="stat-div"></div>
-            <div class="stat-bloque">
-                <span class="stat-valor" id="distancia">0.00</span>
-                <span class="stat-etiqueta">km</span>
-            </div>
-            <div class="stat-div"></div>
-            <div class="stat-bloque">
-                <span class="stat-valor" id="velocidad">—</span>
-                <span class="stat-etiqueta">km/h</span>
-            </div>
-        </div>
-        <div class="acciones-fila">
-            <button id="btn-pausar" onclick="pausar()">Pausar</button>
-            <button id="btn-parar" onclick="mostrarFinRuta()">Terminar</button>
-            <button id="btn-opciones" onclick="abrirOpciones()" aria-label="Opciones">
-                <!-- Ícono: tres puntos verticales -->
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <circle cx="12" cy="5" r="1.5"/>
-                    <circle cx="12" cy="12" r="1.5"/>
-                    <circle cx="12" cy="19" r="1.5"/>
-                </svg>
-            </button>
-        </div>
+    <!-- Acciones -->
+    <div class="acciones-fila">
+      <button id="btn-pausar" class="btn-accion" onclick="pausar()">
+        <svg id="icon-pausar" width="14" height="16" viewBox="0 0 14 16" fill="none">
+          <rect x="0" y="0" width="4" height="16" rx="2" fill="currentColor"/>
+          <rect x="10" y="0" width="4" height="16" rx="2" fill="currentColor"/>
+        </svg>
+        <span id="txt-pausar">Pausar</span>
+      </button>
+      <button id="btn-parar" class="btn-accion" onclick="mostrarFinRuta()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <rect x="0" y="0" width="14" height="14" rx="2" fill="currentColor"/>
+        </svg>
+        Terminar
+      </button>
+      <button id="btn-opciones-card" onclick="abrirOpciones()" aria-label="Más opciones">
+        <svg width="4" height="16" viewBox="0 0 4 16" fill="none">
+          <circle cx="2" cy="2" r="2" fill="#2d4a35"/>
+          <circle cx="2" cy="8" r="2" fill="#2d4a35"/>
+          <circle cx="2" cy="14" r="2" fill="#2d4a35"/>
+        </svg>
+      </button>
     </div>
 
-    <!-- OVERLAY PAUSA -->
-    <div id="pausa-overlay" role="dialog" aria-label="Ruta en pausa">
-        <div class="pausa-contenido">
-            <p class="pausa-etiqueta">Ruta en pausa</p>
-            <p class="pausa-tiempo" id="pausa-tiempo">00:00</p>
-            <div class="pausa-acciones">
-                <button id="btn-reanudar" onclick="pausar()">Reanudar</button>
-                <button id="btn-ver-mapa" onclick="cerrarPausa()">Ver mapa</button>
-            </div>
-            <button class="pausa-terminar" onclick="mostrarFinRuta()">Terminar ruta</button>
-        </div>
-    </div>
+  </div><!-- /estado-activo -->
 
-    <!-- MODAL FIN DE RUTA -->
-    <div id="modal-fin" role="dialog" aria-label="Ruta completada">
-        <div class="fin-hoja">
-            <div class="fin-check">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#f5ead8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"/>
-                </svg>
-            </div>
-            <p class="fin-sup">Ruta completada</p>
-            <h2 class="fin-titulo" id="fin-nombre-ruta">—</h2>
-            <div class="fin-stats">
-                <div class="fin-stat">
-                    <span class="fin-stat-valor" id="fin-tiempo">—</span>
-                    <span class="fin-stat-label">Tiempo</span>
-                </div>
-                <div class="stat-div"></div>
-                <div class="fin-stat">
-                    <span class="fin-stat-valor" id="fin-distancia">—</span>
-                    <span class="fin-stat-label">Distancia</span>
-                </div>
-                <div class="stat-div"></div>
-                <div class="fin-stat">
-                    <span class="fin-stat-valor" id="fin-velocidad">—</span>
-                    <span class="fin-stat-label">Media</span>
-                </div>
-            </div>
-            <button id="btn-confirmar-fin" onclick="confirmarFin()">Volver al inicio</button>
-            <button id="btn-cancelar-fin" onclick="cerrarFinRuta()">Seguir en la ruta</button>
-        </div>
-    </div>
+</div><!-- /tarjeta -->
 
-    <!-- MODAL OPCIONES -->
-    <div id="modal-opciones" class="modal-hoja-overlay" role="dialog" aria-label="Opciones">
-        <div class="modal-hoja">
-            <h3 class="modal-hoja-titulo">Opciones</h3>
-            <div class="opcion-fila">
-                <span class="opcion-nombre">Seguir mi posición</span>
-                <button class="toggle-btn on" id="toggle-seguir" onclick="toggleSeguirPosicion()">ON</button>
-            </div>
-            <div class="opcion-fila">
-                <span class="opcion-nombre">Brújula</span>
-                <button class="toggle-btn on" id="toggle-brujula-opt" onclick="toggleBrujulaWidget()">ON</button>
-            </div>
-            <button class="btn-cerrar-modal" onclick="cerrarOpciones()">Cerrar</button>
-        </div>
-    </div>
+<!-- ═══ AVISO GPS ═══ -->
+<div id="aviso-gps">
+  <div class="gps-icono">
+    <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+      <circle cx="26" cy="26" r="10" stroke="rgba(245,234,216,0.4)" stroke-width="2"/>
+      <line x1="26" y1="4" x2="26" y2="12" stroke="rgba(245,234,216,0.4)" stroke-width="2" stroke-linecap="round"/>
+      <line x1="26" y1="40" x2="26" y2="48" stroke="rgba(245,234,216,0.4)" stroke-width="2" stroke-linecap="round"/>
+      <line x1="4" y1="26" x2="12" y2="26" stroke="rgba(245,234,216,0.4)" stroke-width="2" stroke-linecap="round"/>
+      <line x1="40" y1="26" x2="48" y2="26" stroke="rgba(245,234,216,0.4)" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <p class="gps-titulo">Sin señal GPS</p>
+  <p class="gps-texto"><span id="gps-texto-contenido">Buscando señal…</span></p>
+  <div class="gps-acciones">
+    <button id="btn-reintentar-gps" class="btn-gps" onclick="reiniciarGPS()">Reintentar</button>
+    <button id="btn-ignorar-gps" class="btn-gps" onclick="ignorarGPS()">Seguir sin GPS</button>
+  </div>
+</div>
 
-    <!-- MODAL CAPAS -->
-    <div id="modal-capas" class="modal-hoja-overlay" role="dialog" aria-label="Capas del mapa">
-        <div class="modal-hoja">
-            <h3 class="modal-hoja-titulo">Capas del mapa</h3>
-            <div class="capa-fila capa-activa">
-                <span>Ortofoto (Esri)</span>
-                <svg class="capa-check" viewBox="0 0 20 20" width="15" fill="none" stroke="#2d4a35" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="4 10 8 14 16 6"/>
-                </svg>
-            </div>
-            <button class="btn-cerrar-modal" onclick="cerrarCapas()">Cerrar</button>
-        </div>
+<!-- ═══ MODAL FIN DE RUTA ═══ -->
+<div id="modal-fin">
+  <div class="fin-hoja">
+    <div class="fin-icono">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M4 12L9.5 17.5L20 7" stroke="#f5ead8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </div>
-
-    <!-- AVISO GPS -->
-    <div id="aviso-gps" role="alert">
-        <div class="gps-icono-wrap">
-            <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-                <circle cx="28" cy="28" r="26.5" stroke="rgba(245,234,216,0.18)" stroke-width="1.5"/>
-                <circle cx="28" cy="28" r="5" fill="rgba(245,234,216,0.5)"/>
-                <line x1="28" y1="6" x2="28" y2="15" stroke="rgba(245,234,216,0.35)" stroke-width="1.5" stroke-linecap="round"/>
-                <line x1="28" y1="41" x2="28" y2="50" stroke="rgba(245,234,216,0.35)" stroke-width="1.5" stroke-linecap="round"/>
-                <line x1="6" y1="28" x2="15" y2="28" stroke="rgba(245,234,216,0.35)" stroke-width="1.5" stroke-linecap="round"/>
-                <line x1="41" y1="28" x2="50" y2="28" stroke="rgba(245,234,216,0.35)" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-        </div>
-        <p class="gps-titulo">Sin señal GPS</p>
-        <p class="gps-texto" id="gps-texto-contenido">No se ha podido obtener tu posición. Comprueba que tienes el GPS activado y estás en un lugar con buena cobertura.</p>
-        <button id="btn-reintentar-gps" onclick="reiniciarGPS()">Reintentar</button>
-        <button id="btn-ignorar-gps" onclick="ignorarGPS()">Seguir sin GPS</button>
+    <p class="fin-sup">Ruta completada</p>
+    <h2 class="fin-titulo" id="fin-nombre-ruta">—</h2>
+    <div class="fin-stats-grid">
+      <div class="fin-stat-bloque">
+        <span class="fin-stat-val" id="fin-tiempo">—</span>
+        <span class="fin-stat-lab">Tiempo</span>
+      </div>
+      <div class="fin-stat-bloque">
+        <span class="fin-stat-val" id="fin-distancia">—</span>
+        <span class="fin-stat-lab">Distancia</span>
+      </div>
+      <div class="fin-stat-bloque">
+        <span class="fin-stat-val" id="fin-velocidad">—</span>
+        <span class="fin-stat-lab">Velocidad</span>
+      </div>
     </div>
+    <button id="btn-confirmar-fin" onclick="confirmarFin()">Volver al inicio</button>
+    <button id="btn-cancelar-fin" onclick="cerrarFinRuta()">Seguir en la ruta</button>
+  </div>
+</div>
 
-    <!-- MODAL BRÚJULA (permisos iOS) -->
-    <div id="modal-brujula">
-        <div class="brujula-dialog">
-            <div class="brujula-dialog-icono">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#f5ead8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polygon points="12 2 13.5 8 12 7 10.5 8" fill="#d46060" stroke="none"/>
-                    <polygon points="12 22 13.5 16 12 17 10.5 16" fill="rgba(245,234,216,0.35)" stroke="none"/>
-                </svg>
-            </div>
-            <h3>Activar brújula</h3>
-            <p>Para mostrar hacia dónde estás mirando en el mapa, la app necesita acceder al giroscopio.<br><br><strong style="color:#2d4a35;">No se comparte ningún dato.</strong></p>
-            <button class="brujula-dialog-activar" onclick="pedirPermisoBrujula()">Activar brújula</button>
-            <button class="brujula-dialog-skip" onclick="document.getElementById('modal-brujula').style.display='none'">Ahora no</button>
-        </div>
+<!-- ═══ MODAL OPCIONES ═══ -->
+<div id="modal-opciones">
+  <div class="opciones-hoja">
+    <h3 class="opciones-titulo">Opciones</h3>
+    <div class="op-fila">
+      <span class="op-label">Seguir mi posición</span>
+      <button class="toggle-btn on" id="toggle-seguir" onclick="toggleSeguirPosicion()">ON</button>
     </div>
+    <div class="op-fila">
+      <span class="op-label">Brújula</span>
+      <button class="toggle-btn on" id="toggle-brujula-opt" onclick="toggleBrujulaWidget()">ON</button>
+    </div>
+    <button id="btn-cerrar-opciones" onclick="cerrarOpciones()">Cerrar</button>
+  </div>
+</div>
 
-    <script src="js/seguir.js"></script>
+<!-- ═══ MODAL CAPAS ═══ -->
+<div id="modal-capas" style="display:none;position:fixed;inset:0;z-index:700;background:rgba(10,18,10,0.5);align-items:flex-end;">
+  <div class="opciones-hoja">
+    <h3 class="opciones-titulo">Capas del mapa</h3>
+    <div class="op-fila">
+      <span class="op-label">Ortofoto</span>
+      <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
+        <path d="M1 7L6.5 12.5L17 2" stroke="#2d4a35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <button id="btn-cerrar-capas" onclick="cerrarCapas()" style="display:block;width:100%;margin-top:20px;padding:13px;border-radius:12px;background:#2d4a35;color:#f5ead8;border:none;cursor:pointer;font-family:'CanvaSans',sans-serif;font-size:0.85rem;font-weight:600;">Cerrar</button>
+  </div>
+</div>
+
+<!-- ═══ MODAL BRÚJULA iOS ═══ -->
+<div id="modal-brujula">
+  <div class="bruj-dialog">
+    <div class="bruj-dialog-icono">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="9" stroke="#f5ead8" stroke-width="1.8"/>
+        <path d="M12 3V7M12 17V21M3 12H7M17 12H21" stroke="#f5ead8" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M12 8L14 12L12 10L10 12L12 8Z" fill="#e05050"/>
+        <path d="M12 16L10 12L12 14L14 12L12 16Z" fill="rgba(245,234,216,0.4)"/>
+      </svg>
+    </div>
+    <h3 class="bruj-dialog-titulo">Activar brújula</h3>
+    <p class="bruj-dialog-texto">Para mostrar la dirección necesitamos acceder al sensor de orientación.<br>No se comparte ningún dato.</p>
+    <button class="bruj-dialog-activar" onclick="pedirPermisoBrujula()">Activar brújula</button>
+    <button class="bruj-dialog-skip" onclick="document.getElementById('modal-brujula').style.display='none'">Ahora no</button>
+  </div>
+</div>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script src="js/seguir.js"></script>
+
 </body>
 </html>
