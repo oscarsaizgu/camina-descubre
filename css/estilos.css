@@ -1465,7 +1465,7 @@ body.pagina-ruta main {
     background-color: var(--verde);
     border-top: 1px solid rgba(245,234,216,0.08);
     text-align: center;
-    padding: 1rem 2rem 1rem;
+    padding: 4.5rem 2rem 5rem;
 }
 .ruta-cta-pregunta {
     font-family: 'Lovelo', sans-serif;
@@ -1508,8 +1508,8 @@ body.pagina-ruta main {
     .ruta-info { padding: 0rem 1.2rem 0rem; }
     .ruta-info-grid { gap: 1.2rem 1.8rem; }
     .ruta-servicio img { width: 38px; height: 38px; }
-    /* CAMBIO C: reducir espacio entre info y CTA en móvil */
-    .ruta-cta { padding: 1rem 1.5rem 1rem; }
+    /* CAMBIO C */
+    .ruta-cta { padding: 2rem 1.5rem 3rem; }
 }
 
 
@@ -1522,7 +1522,7 @@ body.pagina-ruta main {
 .ruta-entorno {
     background-color: var(--verde);
     color: var(--crema);
-    padding: 0 0 0rem;
+    padding: 0 0 2.5rem;
 }
 
 /* ── Cabecera de sección ── */
@@ -1772,8 +1772,8 @@ body.pagina-ruta main {
     .ruta-entorno-bloque { padding: 2.5rem 1.2rem 0; }
     .ruta-entorno-especies { grid-template-columns: repeat(3, 1fr); gap: 0.9rem; }
     .ruta-entorno-header { padding: 3rem 1.5rem 2.5rem; }
-    /* CAMBIO B: reducir el espacio excesivo al final de la sección entorno en móvil */
-    .ruta-entorno { padding: 0 0 0rem; }
+    /* CAMBIO B */
+    .ruta-entorno { padding: 0 0 1.5rem; }
 }
 @media (max-width: 400px) {
     .ruta-entorno-especies { grid-template-columns: repeat(2, 1fr); }
@@ -1861,23 +1861,28 @@ body.pagina-ruta main {
     margin-top: 0.5rem;
 }
 
-/* CAMBIO A: Flip cards en móvil horizontal — sin recorte, sin scroll interno */
+/* ── Flip cards en móvil horizontal: sin 3D, sin recorte ── */
+/* CAMBIO D — texto descripción cara trasera: compacto en portrait móvil */
+@media (max-width: 600px) and (orientation: portrait) {
+    .ruta-entorno-especie-desc {
+        font-size: 0.64rem;
+        line-height: 1.45;
+    }
+}
+
+/* CAMBIO A — flip cards landscape: sin rotación 3D, sin recorte */
 @media (max-width: 900px) and (orientation: landscape) {
-    /* Desactivar perspectiva y rotación 3D */
     .ruta-entorno-especie { perspective: none; }
     .ruta-entorno-especie-inner {
         transform-style: flat;
     }
-    /* Eliminar la rotación en ambos estados (el JS sigue aplicando .girada) */
     .ruta-entorno-especie-inner,
     .ruta-entorno-especie.girada .ruta-entorno-especie-inner {
         transform: none !important;
     }
-    /* Cara delantera: ocultar cuando la tarjeta está girada */
     .ruta-entorno-especie.girada .ruta-entorno-especie-front {
         display: none;
     }
-    /* Cara trasera: fluir con el contenido (no absolute) para que no haya recorte */
     .ruta-entorno-especie-back {
         position: relative;
         inset: auto;
@@ -1885,11 +1890,9 @@ body.pagina-ruta main {
         overflow-y: visible;
         height: auto;
         max-height: none;
-        /* quitar backface-visibility que ya no aplica */
         backface-visibility: visible;
         -webkit-backface-visibility: visible;
     }
-    /* Cara trasera: ocultar cuando la tarjeta NO está girada */
     .ruta-entorno-especie:not(.girada) .ruta-entorno-especie-back {
         display: none;
     }
@@ -2113,6 +2116,11 @@ body.pagina-ruta main {
 /* ═════════════════════════════════════════════════════
    MAPA INTERACTIVO — track, marcadores POI, mini-tarjeta
    ═════════════════════════════════════════════════════ */
+
+/* ── Ortofoto: saturación reducida para look más sobrio ── */
+.pagina-ruta .leaflet-tile-pane {
+    filter: saturate(0.72) contrast(0.90);
+}
 
 /* ── Track: halo sutil sobre la ortofoto ── */
 .pagina-ruta .mi-track {
