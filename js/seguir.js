@@ -1,17 +1,28 @@
 // ======================================================
-// seguir.js — GPS tracking + brújula opcional
+// seguir.js — GPS tracking + brújula + UI Camina y Descubre
 // ======================================================
 
 var params  = new URLSearchParams(window.location.search);
 var rutaId  = params.get('ruta') || 'cuevas';
 
-// --- Mapa ---
+// Nombres legibles de cada ruta
+var nombreRutas = {
+    'cuevas':     'Ruta de las Cuevas',
+    'pondra':     'Pondra y Riancho',
+    'guardamino': 'Alto de Guardamino',
+    'coto':       'Coto del Asón',
+    'cubillas':   'Fuente Cubillas'
+};
+var nombreRuta = nombreRutas[rutaId] || (rutaId.charAt(0).toUpperCase() + rutaId.slice(1));
+
+// ─── MAPA ─────────────────────────────────────────────
 var mapa = L.map('mapa-seguir', {
     zoomControl: false,
     attributionControl: false
 }).setView([43.2513, -3.4607], 15);
 
 mapa.invalidateSize();
+
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     attribution: '© Esri'
 }).addTo(mapa);
@@ -24,35 +35,60 @@ new L.GPX('data/' + rutaId + '.gpx', {
     mapa.fitBounds(e.target.getBounds());
 }).addTo(mapa);
 
-// --- Marcador de usuario (flecha oculta hasta tener orientación) ---
+// ─── MARCADOR DE USUARIO ───────────────────────────────
 var iconoUsuario = L.divIcon({
     className: '',
     html: '<div id="icono-usuario" style="width:24px;height:24px;position:relative;transform-origin:12px 12px;">' +
-              '<div style="position:absolute;top:4px;left:4px;width:16px;height:16px;background:#4fc3f7;border:3px solid white;border-radius:50%;box-shadow:0 0 8px rgba(79,195,247,0.8);"></div>' +
-              '<div id="flecha-usuario" style="position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:10px solid #4fc3f7;display:none;"></div>' +
+              '<div style="position:absolute;inset:0;border-radius:50%;background:rgba(79,195,247,0.2);"></div>' +
+              '<div style="position:absolute;top:4px;left:4px;width:16px;height:16px;background:#4fc3f7;border:2.5px solid white;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.4);"></div>' +
+              '<div id="flecha-usuario" style="position:absolute;top:-5px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:9px solid white;display:none;"></div>' +
           '</div>',
     iconSize: [24, 24],
     iconAnchor: [12, 12]
 });
 var marcador = null;
 
-// --- Estado general ---
-var pausado                    = false;
-var iniciado                   = false;
-var segundos                   = 0;
-var distanciaTotal             = 0;    // km
-var posicionAnterior           = null;
+// ─── ESTADO ────────────────────────────────────────────
+var pausado                       = false;
+var iniciado                      = false;
+var segundos                      = 0;
+var distanciaTotal                = 0;
+var posicionAnterior              = null;
 var saltarPrimerPuntoTrasReanudar = false;
-var intervaloTiempo            = null;
-var watchId                    = null;
-var siguiendoUsuario           = true;
-var historialVelocidad         = [];   // últimas N lecturas para suavizar
+var intervaloTiempo               = null;
+var watchId                       = null;
+var siguiendoUsuario              = true;
+var historialVelocidad            = [];
 
-// Límites para filtrar ruido GPS
-var MAX_PRECISION_M  = 50;   // ignorar si la precisión es peor que esto
-var MAX_SALTO_KM     = 0.3;  // ignorar si salta más de 300m de golpe (teleportación)
+var MAX_PRECISION_M = 50;
+var MAX_SALTO_KM    = 0.3;
 
-// --- Cronómetro ---
+// ─── INICIO ────────────────────────────────────────────
+function iniciarUI() {
+    // Nombres en cabecera y modal fin
+    var elCab = document.getElementById('cab-ruta');
+    var elFin = document.getElementById('fin-nombre-ruta');
+    if (elCab) elCab.textContent = nombreRuta;
+    if (elFin) elFin.textContent = nombreRuta;
+
+    // Bloque POI: sin datos en este contexto, mostrar mensaje neutro
+    var num    = document.getElementById('sig-poi-num');
+    var nombre = document.getElementById('sig-poi-nombre');
+    var dist   = document.getElementById('sig-poi-dist');
+    var flecha = document.getElementById('sig-poi-flecha');
+    var ph     = document.getElementById('sig-poi-placeholder');
+
+    if (num)    num.style.display    = 'none';
+    if (nombre) nombre.style.display = 'none';
+    if (dist)   dist.style.display   = 'none';
+    if (flecha) flecha.style.display = 'none';
+    if (ph) {
+        ph.textContent   = 'Ruta activa';
+        ph.style.cssText = 'font-family:CanvaSans,sans-serif;font-size:0.75rem;letter-spacing:0.08em;color:rgba(45,74,53,0.45);';
+    }
+}
+
+// ─── CRONÓMETRO ────────────────────────────────────────
 function iniciarCronometro() {
     intervaloTiempo = setInterval(function() {
         if (!pausado) {
@@ -65,7 +101,7 @@ function iniciarCronometro() {
     }, 1000);
 }
 
-// --- Haversine (devuelve km) ---
+// ─── HAVERSINE ─────────────────────────────────────────
 function calcularDistancia(lat1, lon1, lat2, lon2) {
     var R    = 6371;
     var dLat = (lat2 - lat1) * Math.PI / 180;
@@ -76,94 +112,79 @@ function calcularDistancia(lat1, lon1, lat2, lon2) {
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-// --- Actualizar posición GPS ---
+// ─── GPS: ACTUALIZAR POSICIÓN ──────────────────────────
 function actualizarPosicion(pos) {
     var lat       = pos.coords.latitude;
     var lon       = pos.coords.longitude;
-    var precision = pos.coords.accuracy;  // metros
-    var velGPS    = pos.coords.speed;     // m/s o null
+    var precision = pos.coords.accuracy;
+    var velGPS    = pos.coords.speed;
 
-    // Ocultar aviso de error GPS si estaba visible
+    // Ocultar aviso GPS si estaba visible
     var aviso = document.getElementById('aviso-gps');
-    if (aviso) aviso.style.display = 'none';
+    if (aviso) aviso.classList.remove('visible');
 
-    // Primer arranque: centrar el mapa e iniciar cronómetro
+    // Arranque inicial
     if (!iniciado) {
         mapa.setView([lat, lon], 16);
         iniciarCronometro();
         iniciado = true;
     }
 
-    // Mover marcador (siempre, también en pausa)
+    // Mover marcador
     if (!marcador) {
         marcador = L.marker([lat, lon], { icon: iconoUsuario }).addTo(mapa);
     } else {
         marcador.setLatLng([lat, lon]);
     }
 
-    // Seguimiento automático del mapa
-    if (siguiendoUsuario) {
-        mapa.panTo([lat, lon]);
-    }
+    // Seguir posición en el mapa
+    if (siguiendoUsuario) mapa.panTo([lat, lon]);
 
-    // No acumular estadísticas mientras está pausado
+    // En pausa no acumular estadísticas
     if (pausado) return;
 
-    // Primer punto tras reanudar: actualizar referencia sin contar distancia
-    // (evita sumar el salto producido durante la pausa)
+    // Primer punto tras reanudar: no contar el salto
     if (saltarPrimerPuntoTrasReanudar) {
         posicionAnterior = { lat: lat, lon: lon };
         saltarPrimerPuntoTrasReanudar = false;
         return;
     }
 
-    // Calcular distancia con filtros
+    // Acumular distancia con filtros
     if (posicionAnterior && precision <= MAX_PRECISION_M) {
         var delta = calcularDistancia(posicionAnterior.lat, posicionAnterior.lon, lat, lon);
-
-        // Filtrar teleportaciones (salto absurdo)
         if (delta < MAX_SALTO_KM) {
-            // Determinar si hay movimiento real:
-            // - Si el GPS da velocidad: usar esa (más fiable que comparar posiciones)
-            // - Si no: comparar el desplazamiento con la propia precisión declarada
             var enMovimiento = (velGPS !== null && velGPS !== undefined)
-                ? velGPS > 0.3                       // > ~1 km/h
-                : (delta * 1000) > (precision * 0.5); // movimiento > mitad del error
-
-            if (enMovimiento) {
-                distanciaTotal += delta;
-            }
+                ? velGPS > 0.3
+                : (delta * 1000) > (precision * 0.5);
+            if (enMovimiento) distanciaTotal += delta;
         }
         posicionAnterior = { lat: lat, lon: lon };
     } else if (!posicionAnterior && precision <= MAX_PRECISION_M) {
         posicionAnterior = { lat: lat, lon: lon };
     }
 
-    // Velocidad: usar la del GPS cuando esté disponible (suele estar filtrada por el SO)
+    // Velocidad
     var velKmh = (velGPS !== null && velGPS !== undefined && velGPS >= 0)
-        ? velGPS * 3.6
-        : 0;
-
-    // Suavizar con media de las últimas 5 lecturas
+        ? velGPS * 3.6 : 0;
     historialVelocidad.push(velKmh);
     if (historialVelocidad.length > 5) historialVelocidad.shift();
     var velMedia = historialVelocidad.reduce(function(a, b) { return a + b; }, 0) / historialVelocidad.length;
 
-    document.getElementById('distancia').textContent = distanciaTotal.toFixed(2);
-    document.getElementById('velocidad').textContent = velMedia.toFixed(1);
+    document.getElementById('distancia').textContent = distanciaTotal.toFixed(2).replace('.', ',');
+    document.getElementById('velocidad').textContent = velMedia.toFixed(1).replace('.', ',');
 }
 
 function errorGPS(err) {
     var msgs = {
         1: 'Permiso de ubicación denegado. Actívalo en los ajustes del navegador.',
         2: 'No se puede obtener tu posición. Comprueba la señal GPS.',
-        3: 'Tiempo de espera GPS agotado. Buscando señal...'
+        3: 'Tiempo de espera agotado. Buscando señal…'
     };
+    var texto = document.getElementById('gps-texto-contenido');
+    if (texto) texto.textContent = msgs[err.code] || 'Error GPS. Comprueba tu señal.';
     var aviso = document.getElementById('aviso-gps');
-    if (aviso) {
-        aviso.textContent = msgs[err.code] || 'Error GPS. Comprueba tu señal.';
-        aviso.style.display = 'block';
-    }
+    if (aviso) aviso.classList.add('visible');
 }
 
 watchId = navigator.geolocation.watchPosition(
@@ -172,55 +193,144 @@ watchId = navigator.geolocation.watchPosition(
     { enableHighAccuracy: true, maximumAge: 3000, timeout: 15000 }
 );
 
-// --- Desactivar seguimiento si el usuario arrastra el mapa ---
+// ─── ARRASTRAR MAPA ────────────────────────────────────
 mapa.on('dragstart', function() {
     siguiendoUsuario = false;
     document.getElementById('btn-volver').style.display = 'block';
+    document.getElementById('btn-centrar').classList.remove('activo');
+    var tog = document.getElementById('toggle-seguir');
+    if (tog) { tog.textContent = 'OFF'; tog.classList.remove('on'); }
 });
 
-// ======================================================
-// CONTROLES
-// ======================================================
+// ─── CONTROLES PRINCIPALES ─────────────────────────────
 
 function pausar() {
     pausado = !pausado;
+    var activo  = document.getElementById('estado-activo');
+    var pausado_ = document.getElementById('estado-pausado');
+
     if (!pausado) {
-        // Al reanudar: ignorar primer punto para no contar el salto de la pausa
+        // Reanudar
         saltarPrimerPuntoTrasReanudar = true;
         historialVelocidad = [];
-        document.getElementById('velocidad').textContent = '0.0';
+        document.getElementById('velocidad').textContent = '—';
+        activo.style.display  = '';
+        pausado_.classList.remove('visible');
+        document.getElementById('btn-pausar').innerHTML =
+            '<svg width="14" height="16" viewBox="0 0 14 16" fill="none"><rect x="0" y="0" width="4" height="16" rx="2" fill="currentColor"/><rect x="10" y="0" width="4" height="16" rx="2" fill="currentColor"/></svg>Pausar';
+    } else {
+        // Pausar
+        var elTiempo = document.getElementById('tiempo');
+        var elPT     = document.getElementById('pausa-tiempo');
+        if (elPT && elTiempo) elPT.textContent = elTiempo.textContent;
+        activo.style.display = 'none';
+        pausado_.classList.add('visible');
     }
-    document.getElementById('btn-pausar').textContent = pausado ? '▶ Reanudar' : '⏸ Pausar';
+}
+
+function cerrarPausa() {
+    // Ver mapa sin reanudar
+    document.getElementById('estado-pausado').classList.remove('visible');
+    document.getElementById('estado-activo').style.display = '';
+    // Cambia btn-pausar a "Reanudar" mientras sigue pausado
+    document.getElementById('btn-pausar').innerHTML =
+        '<svg width="12" height="15" viewBox="0 0 12 15" fill="none"><path d="M1 1.5L11 7.5L1 13.5V1.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Reanudar';
+    document.getElementById('btn-pausar').onclick = pausar;
 }
 
 function volverAPosicion() {
     siguiendoUsuario = true;
     document.getElementById('btn-volver').style.display = 'none';
+    document.getElementById('btn-centrar').classList.add('activo');
+    var tog = document.getElementById('toggle-seguir');
+    if (tog) { tog.textContent = 'ON'; tog.classList.add('on'); }
     if (marcador) mapa.panTo(marcador.getLatLng());
 }
 
-function parar() {
-    if (confirm('¿Terminar la ruta?')) {
-        clearInterval(intervaloTiempo);
-        if (watchId !== null) {
-            navigator.geolocation.clearWatch(watchId);
-            watchId = null;
-        }
-        desactivarBrujula();
-        window.location.href = rutaId + '.html';
-    }
+// ─── FIN DE RUTA ───────────────────────────────────────
+function mostrarFinRuta() {
+    var elT = document.getElementById('tiempo');
+    document.getElementById('fin-tiempo').textContent = elT ? elT.textContent : '—';
+    document.getElementById('fin-distancia').textContent = distanciaTotal.toFixed(2).replace('.', ',') + ' km';
+    var velMedia = segundos > 0 ? (distanciaTotal / (segundos / 3600)) : 0;
+    document.getElementById('fin-velocidad').textContent = (velMedia > 0)
+        ? velMedia.toFixed(1).replace('.', ',') + ' km/h' : '—';
+    document.getElementById('modal-fin').classList.add('visible');
 }
 
-// ======================================================
-// BRÚJULA — completamente opcional
-// ======================================================
+function cerrarFinRuta() {
+    document.getElementById('modal-fin').classList.remove('visible');
+}
 
+function confirmarFin() {
+    clearInterval(intervaloTiempo);
+    if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+        watchId = null;
+    }
+    desactivarBrujula();
+    window.location.href = rutaId + '.html';
+}
+
+// ─── OPCIONES / CAPAS ──────────────────────────────────
+function abrirOpciones() {
+    document.getElementById('modal-opciones').classList.add('visible');
+}
+function cerrarOpciones() {
+    document.getElementById('modal-opciones').classList.remove('visible');
+}
+function abrirCapas() {
+    var el = document.getElementById('modal-capas');
+    if (el) el.style.display = 'flex';
+}
+function cerrarCapas() {
+    var el = document.getElementById('modal-capas');
+    if (el) el.style.display = 'none';
+}
+
+// ─── GPS: REINTENTAR / IGNORAR ─────────────────────────
+function reiniciarGPS() {
+    document.getElementById('aviso-gps').classList.remove('visible');
+    if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+        watchId = null;
+    }
+    watchId = navigator.geolocation.watchPosition(
+        actualizarPosicion, errorGPS,
+        { enableHighAccuracy: true, maximumAge: 3000, timeout: 15000 }
+    );
+}
+
+function ignorarGPS() {
+    document.getElementById('aviso-gps').classList.remove('visible');
+}
+
+// ─── TOGGLES ───────────────────────────────────────────
+function toggleSeguirPosicion() {
+    siguiendoUsuario = !siguiendoUsuario;
+    var btn = document.getElementById('toggle-seguir');
+    btn.textContent = siguiendoUsuario ? 'ON' : 'OFF';
+    btn.classList.toggle('on', siguiendoUsuario);
+    document.getElementById('btn-volver').style.display = siguiendoUsuario ? 'none' : 'block';
+    document.getElementById('btn-centrar').classList.toggle('activo', siguiendoUsuario);
+    if (siguiendoUsuario && marcador) mapa.panTo(marcador.getLatLng());
+}
+
+var brujulaWidgetVisible = true;
+function toggleBrujulaWidget() {
+    brujulaWidgetVisible = !brujulaWidgetVisible;
+    var btn = document.getElementById('toggle-brujula-opt');
+    btn.textContent = brujulaWidgetVisible ? 'ON' : 'OFF';
+    btn.classList.toggle('on', brujulaWidgetVisible);
+    document.getElementById('brujula-widget').classList.toggle('oculta', !brujulaWidgetVisible);
+}
+
+// ─── BRÚJULA ───────────────────────────────────────────
 var brujulaActiva      = false;
 var anguloSuavizado    = null;
-var recibiendoAbsoluto = false; // indica si ya recibimos eventos de orientación absoluta
+var recibiendoAbsoluto = false;
 
 function aplicarRotacion(angulo) {
-    // Suavizado exponencial con manejo correcto de wrap-around (p.ej. 359° → 1°)
     if (anguloSuavizado === null) {
         anguloSuavizado = angulo;
     } else {
@@ -230,32 +340,30 @@ function aplicarRotacion(angulo) {
         anguloSuavizado = (anguloSuavizado + diff * 0.3 + 360) % 360;
     }
 
+    // Marcador usuario
     var icono = document.getElementById('icono-usuario');
     if (icono) icono.style.transform = 'rotate(' + anguloSuavizado.toFixed(1) + 'deg)';
 
-    // Mostrar la flecha solo cuando hay datos reales de orientación
     var flecha = document.getElementById('flecha-usuario');
     if (flecha) flecha.style.display = 'block';
+
+    // Widget brújula (aguja apunta al Norte: rotación inversa al heading del dispositivo)
+    var aguja = document.getElementById('brujula-aguja');
+    if (aguja) aguja.style.transform = 'rotate(' + ((-anguloSuavizado + 360) % 360).toFixed(1) + 'deg)';
 }
 
-// deviceorientationabsolute: disponible en Chrome/Android, alpha = ángulo desde Norte magnético
 function manejarOrientacionAbsoluta(e) {
     recibiendoAbsoluto = true;
     if (e.alpha !== null && e.alpha !== undefined) {
-        // alpha crece en sentido antihorario → convertir a rumbo horario
         aplicarRotacion((360 - e.alpha + 360) % 360);
     }
 }
 
-// deviceorientation: fallback para iOS y Android sin absolute
 function manejarOrientacion(e) {
-    if (recibiendoAbsoluto) return; // preferir orientación absoluta si ya la tenemos
-
+    if (recibiendoAbsoluto) return;
     if (e.webkitCompassHeading !== undefined && e.webkitCompassHeading !== null) {
-        // iOS: webkitCompassHeading es ya un rumbo real (0=Norte, sentido horario)
         aplicarRotacion(e.webkitCompassHeading);
     } else if (e.alpha !== null && e.alpha !== undefined) {
-        // Android sin absolute o navegadores de escritorio: menos fiable
         aplicarRotacion((360 - e.alpha + 360) % 360);
     }
 }
@@ -274,33 +382,28 @@ function desactivarBrujula() {
     }
 }
 
-// Llamado desde el modal (botón "Activar brújula") en iOS
 function pedirPermisoBrujula() {
     document.getElementById('modal-brujula').style.display = 'none';
     DeviceOrientationEvent.requestPermission()
         .then(function(permiso) {
             if (permiso === 'granted') activarListeners();
-            // denied o error: continúa sin brújula, el GPS sigue funcionando
         })
-        .catch(function() {
-            // No se pudo pedir permiso: continúa sin brújula
-        });
+        .catch(function() { /* sin brújula, GPS sigue funcionando */ });
 }
 
 function activarBrujula() {
-    if (typeof DeviceOrientationEvent === 'undefined') {
-        // El navegador no soporta orientación: sin brújula, sin aviso, GPS normal
-        return;
-    }
+    if (typeof DeviceOrientationEvent === 'undefined') return;
     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-        // iOS 13+: requiere permiso explícito — mostrar modal
         document.getElementById('modal-brujula').style.display = 'flex';
     } else {
-        // Android / otros: sin permiso explícito, activar directamente
         activarListeners();
     }
 }
 
+// ─── ARRANQUE ──────────────────────────────────────────
 window.addEventListener('load', function() {
+    iniciarUI();
     activarBrujula();
+    // Centrar btn activo al inicio
+    document.getElementById('btn-centrar').classList.add('activo');
 });
