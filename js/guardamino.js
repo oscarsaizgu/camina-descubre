@@ -9,8 +9,8 @@ var datos = {
 };
 
 var descripciones = {
-    a: 'Comenzamos la ruta en la bolera de pasabolo "Domingo Muguira" y tomamos la calle del barrio La Casa en dirección al Bº Guardamino. Sin desviarnos de la carretera, a 2,5 km del inicio llegamos a un cruce que tomamos a la izquierda, en dirección a la ermita de Nuestra Señora de Guardamino. A 300 m de la ermita encontramos otro cruce, también a la izquierda, que nos lleva a la zona más alta de la ruta, desde donde se divisa el pueblo de Ramales y todo el macizo del Pico San Vicente y la Sierra del Hornijo. Siguiendo el camino llegamos al monumento a la batalla de Ramales, de la Primera Guerra Carlista. Desde aquí, continuamos por la carretera de la izquierda para volver, en 1 km, al punto de inicio.',
-    b: 'Comenzamos la ruta en el Ayuntamiento, nos dirigimos hacia la bolera de pasabolo "Domingo Muguira" y tomamos la calle del barrio La Casa en dirección al Bº Guardamino. Antes del taller Madreselva, subimos por el monte hasta llegar a la Piedra Carlista. Siguiendo el camino llegamos al monumento a la batalla de Ramales, de la Primera Guerra Carlista. Desde aquí, continuamos por la carretera de la izquierda para volver, en 1 km, al punto de inicio.'
+    a: 'Comenzamos la ruta en el Ayuntamiento, nos dirigimos hacia la bolera de pasabolo "Domingo Muguira" y tomamos la calle del barrio La Casa en dirección al Bº Guardamino. Sin desviarnos de la carretera, a 2,5 km del inicio llegamos a un cruce que tomamos a la izquierda, en dirección a la ermita de Nuestra Señora de Guardamino. A 300 m de la ermita encontramos otro cruce, también a la izquierda, que nos lleva a la zona más alta de la ruta, desde donde se divisa el pueblo de Ramales y todo el macizo del Pico San Vicente y la Sierra del Hornijo. Siguiendo el camino llegamos al monumento a la batalla de Ramales, de la Primera Guerra Carlista. Desde aquí, continuamos por la carretera de la izquierda para volver, en 1 km, al punto de inicio.',
+    b: 'Comenzamos la ruta en el Ayuntamiento, nos dirigimos hacia la bolera de pasabolo "Domingo Muguira" y tomamos la calle del barrio La Casa en dirección al Bº Guardamino. Antes del taller Madreselva, subimos por el monte a mano izquierda hasta llegar a la Piedra Carlista. Siguiendo el camino llegamos al monumento a la batalla de Ramales, de la Primera Guerra Carlista. Desde aquí, continuamos por la carretera de la izquierda para volver, en 1 km, al punto de inicio.'
 };
 
 var puntosInteres = [
@@ -86,6 +86,12 @@ function activarVariante(v) {
 
     document.getElementById('texto-descripcion').textContent = descripciones[v];
 
+    // Mostrar la foto solo en la ruta secundaria
+    var fotoVarianteB = document.getElementById('foto-variante-b');
+    if (fotoVarianteB) {
+        fotoVarianteB.style.display = v === 'b' ? 'block' : 'none';
+    }
+
     document.getElementById('btn-variante-a').classList.toggle('variante-activa', v === 'a');
     document.getElementById('btn-variante-b').classList.toggle('variante-activa', v === 'b');
 
@@ -124,4 +130,5 @@ crearFichaPunto();
 crearMarcadoresConFicha(mapa, puntosInteres);
 
 renderizarPuntosInteres(puntosInteres);
+activarVariante('a');
 } // fin if (!window.MODO_SEGUIR)

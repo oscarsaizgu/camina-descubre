@@ -8,7 +8,7 @@ var puntosInteres = [
     {
         coords: [43.27978204665902, -3.4445231521155373],
         nombre: "Refugio de pescadores del río Asón",
-        foto: "fotos/coto/coto.jpg",
+        foto: "fotos/coto/coto3.jpg",
         categoria: "Pesca fluvial",
         descripcion: "Pequeño refugio en la orilla del río Asón, en el tramo del coto de pesca de Ramales de la Victoria. El Asón es uno de los ríos salmoneros más valorados de Cantabria, con capturas de salmón atlántico y trucha común. Este refugio sirve de punto de descanso y resguardo para los pescadores que faenan en el coto.",
         historia: null,
