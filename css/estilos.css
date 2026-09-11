@@ -429,10 +429,11 @@ footer {
     background-color: var(--verde);
     border-top: 1px solid rgba(245, 234, 216, 0.12);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
-    padding: 1.8rem 2rem;
+    gap: 1.5rem;
+    padding: 1.8rem 2rem 1.6rem;
     position: relative;
 }
 .footer-logos {
@@ -445,14 +446,45 @@ footer img {
     width: auto;
     opacity: 0.9;
 }
+
+/* Crédito de autoría + enlaces legales (jerarquía secundaria) */
+.footer-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+}
+.footer-creditos {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+    color: var(--crema);
+    opacity: 0.45;
+    text-align: center;
+}
+.footer-legal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem 1.1rem;
+}
+.footer-legal a {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--crema) !important;
+    opacity: 0.42;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+.footer-legal a:hover { opacity: 0.8; }
 .footer-copy {
-    position: absolute;
-    right: 1rem;
-    bottom: 0.4rem;
     color: var(--crema);
     font-family: 'CanvaSans', sans-serif;
     font-size: 0.55rem;
-    opacity: 0.35;
+    opacity: 0.32;
+    text-align: center;
 }
 
 
@@ -1073,9 +1105,13 @@ main {
     }
 
     /* Footer */
-    footer { gap: 1.2rem; padding: 1.4rem 1rem; }
+    footer { gap: 1.1rem; padding: 1.4rem 1rem 1.3rem; }
     .footer-logos { gap: 1.2rem; }
     footer img { height: 36px; }
+    .footer-bottom { gap: 0.45rem; }
+    .footer-creditos { font-size: 0.58rem; }
+    .footer-legal { gap: 0.25rem 0.8rem; }
+    .footer-legal a { font-size: 0.58rem; }
     .footer-copy { font-size: 0.5rem; }
 }
 
@@ -3081,3 +3117,119 @@ body.pagina-ruta main {
 
 /* ── Scroll suave para las páginas de ruta ── */
 /* (también se activa vía JS en ruta-comun.js) */
+
+
+/* ═══════════════════════════════════════════════════════
+   TAMBIÉN PUEDES AYUDAR — enlace a Reporte Invasoras
+   Sección editorial en index.html, antes del footer.
+════════════════════════════════════════════════════════ */
+.invasoras-seccion {
+    background-color: var(--crema);
+    text-align: center;
+    padding: 4.5rem 2rem 5rem;
+    border-top: 1px solid rgba(45, 74, 53, 0.1);
+}
+.invasoras-contenido {
+    max-width: 540px;
+    margin: 0 auto;
+}
+.invasoras-texto {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.75;
+    color: var(--verde);
+    opacity: 0.75;
+    margin: 0 auto 2.1rem;
+}
+.invasoras-btn {
+    display: inline-block;
+    background-color: var(--verde);
+    color: var(--crema) !important;
+    font-family: 'Lovelo', sans-serif;
+    font-size: clamp(0.85rem, 2.5vw, 1rem);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.95rem 2.6rem;
+    border-radius: 30px;
+    transition: opacity 0.2s, transform 0.2s;
+}
+.invasoras-btn:hover { opacity: 0.88; transform: translateY(-2px); }
+.invasoras-referencia {
+    margin-top: 1.8rem;
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--verde);
+    opacity: 0.42;
+}
+.invasoras-referencia a {
+    color: inherit;
+    text-decoration: none;
+}
+.invasoras-referencia a:hover { opacity: 0.7; text-decoration: underline; }
+
+@media (max-width: 600px) {
+    .invasoras-seccion { padding: 3.2rem 1.5rem 3.6rem; }
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   PÁGINAS LEGALES — Aviso legal, Privacidad, Cookies, Accesibilidad
+   Body class: .pagina-legal — sobrias y textuales, misma identidad
+════════════════════════════════════════════════════════ */
+body.pagina-legal main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem 6rem;
+}
+.legal-actualizado {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--verde);
+    opacity: 0.4;
+    text-align: center;
+    margin-bottom: 2.6rem;
+}
+.legal-bloque { margin-bottom: 2.4rem; }
+.legal-bloque:last-child { margin-bottom: 0; }
+.legal-bloque h2 {
+    font-family: 'Lovelo', sans-serif;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: var(--verde);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.9rem;
+}
+.legal-bloque p,
+.legal-bloque li {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.75;
+    color: var(--verde);
+    opacity: 0.85;
+}
+.legal-bloque p + p { margin-top: 0.9rem; }
+.legal-bloque ul { margin: 0.7rem 0 0 1.2rem; }
+.legal-bloque li { margin-bottom: 0.45rem; }
+.legal-bloque a {
+    color: var(--verde);
+    opacity: 1;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.legal-bloque a:hover { opacity: 0.65; }
+.legal-datos {
+    background-color: var(--verde-suave);
+    border-radius: var(--radio);
+    padding: 1.2rem 1.4rem;
+    margin-top: 1rem;
+}
+.legal-datos p { margin: 0; opacity: 0.9; }
+.legal-datos p + p { margin-top: 0.3rem; }
+
+@media (max-width: 600px) {
+    body.pagina-legal main { padding: 2.6rem 1.2rem 4rem; }
+}
