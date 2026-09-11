@@ -50,7 +50,8 @@ var marcador = null;
 
 // ─── ESTADO ────────────────────────────────────────────
 var pausado                       = false;
-var iniciado                      = false;
+var rutaIniciada                  = false;  // true solo cuando el usuario pulsa INICIAR
+var gpsListo                      = false;  // true en el primer fix GPS (centra el mapa)
 var segundos                      = 0;
 var distanciaTotal                = 0;
 var posicionAnterior              = null;
@@ -63,6 +64,12 @@ var historialVelocidad            = [];
 var MAX_PRECISION_M = 50;
 var MAX_SALTO_KM    = 0.3;
 
+// ─── POIs ──────────────────────────────────────────────
+var poisRuta       = [];    // puntosInteres de la ruta activa
+var poisVisitados  = {};    // idx -> true
+var poisMarcadores = [];    // L.Marker[] de los POI en mapa
+var RADIO_VISITA   = 0.040; // km (40 m) — distancia para marcar POI como visitado
+
 // ─── INICIO ────────────────────────────────────────────
 function iniciarUI() {
     // Nombres en cabecera y modal fin
@@ -71,21 +78,189 @@ function iniciarUI() {
     if (elCab) elCab.textContent = nombreRuta;
     if (elFin) elFin.textContent = nombreRuta;
 
-    // Bloque POI: sin datos en este contexto, mostrar mensaje neutro
+    // Bloque POI: ocultar hasta que se cargue el JS de la ruta
     var num    = document.getElementById('sig-poi-num');
     var nombre = document.getElementById('sig-poi-nombre');
     var dist   = document.getElementById('sig-poi-dist');
     var flecha = document.getElementById('sig-poi-flecha');
     var ph     = document.getElementById('sig-poi-placeholder');
-
     if (num)    num.style.display    = 'none';
     if (nombre) nombre.style.display = 'none';
     if (dist)   dist.style.display   = 'none';
     if (flecha) flecha.style.display = 'none';
-    if (ph) {
-        ph.textContent   = 'Ruta activa';
-        ph.style.cssText = 'font-family:CanvaSans,sans-serif;font-size:0.75rem;letter-spacing:0.08em;color:rgba(45,74,53,0.45);';
+    if (ph)     { ph.textContent = ''; ph.style.display = 'none'; }
+}
+
+// ─── CARGA DINÁMICA DEL JS DE RUTA ─────────────────────
+function cargarPOIsRuta() {
+    var script   = document.createElement('script');
+    script.src   = 'js/' + rutaId + '.js';
+    script.onload = function() {
+        // puntosInteres queda expuesto como variable global en el script de ruta
+        if (typeof puntosInteres !== 'undefined' && puntosInteres.length > 0) {
+            poisRuta = puntosInteres;
+            pintarMarcadoresPOI(poisRuta);
+            actualizarSiguientePOIInicial();
+        }
+    };
+    document.head.appendChild(script);
+}
+
+// ─── MARCADORES POI EN MAPA ─────────────────────────────
+function pintarMarcadoresPOI(pois) {
+    for (var i = 0; i < pois.length; i++) {
+        (function(idx) {
+            var poi = pois[idx];
+            var num = String(idx + 1).padStart(2, '0');
+            var icon = L.divIcon({
+                className: '',
+                html: '<div class="poi-marcador" data-poi-idx="' + idx + '">' + num + '</div>',
+                iconSize:   [32, 32],
+                iconAnchor: [16, 16]
+            });
+            var m = L.marker([poi.coords[0], poi.coords[1]], { icon: icon })
+                .on('click', function() { abrirTarjetaPOI(idx); })
+                .addTo(mapa);
+            poisMarcadores.push(m);
+        })(i);
     }
+}
+
+// ─── TARJETA POI ────────────────────────────────────────
+function abrirTarjetaPOI(idx) {
+    var poi = poisRuta[idx];
+    if (!poi) return;
+
+    var card = document.getElementById('poi-card');
+    var foto = document.getElementById('poi-card-foto');
+    var num  = document.getElementById('poi-card-num');
+    var tit  = document.getElementById('poi-card-titulo');
+    var cat  = document.getElementById('poi-card-cat');
+    var desc = document.getElementById('poi-card-desc');
+    var sv   = document.getElementById('poi-card-sv');
+
+    num.textContent  = String(idx + 1).padStart(2, '0');
+    tit.textContent  = poi.nombre;
+    cat.textContent  = poi.categoria || '';
+    cat.style.display = (poi.categoria) ? 'block' : 'none';
+    desc.textContent = poi.descripcion || '';
+
+    if (poi.foto) {
+        foto.src = poi.foto;
+        foto.classList.remove('oculta');
+    } else {
+        foto.src = '';
+        foto.classList.add('oculta');
+    }
+
+    if (poi.streetview) {
+        sv.href = poi.streetview;
+        sv.classList.remove('oculto');
+    } else {
+        sv.removeAttribute('href');
+        sv.classList.add('oculto');
+    }
+
+    // Posicionar la card justo encima de la tarjeta inferior
+    var tarjetaH = document.getElementById('tarjeta').offsetHeight;
+    card.style.bottom = (tarjetaH + 8) + 'px';
+
+    card.classList.add('visible');
+}
+
+function cerrarTarjetaPOI() {
+    document.getElementById('poi-card').classList.remove('visible');
+}
+
+// ─── SIGUIENTE POI (bloque inferior tarjeta) ────────────
+function actualizarSiguientePOIInicial() {
+    if (!poisRuta || poisRuta.length === 0) return;
+    // Mostrar primer POI no visitado
+    var idx = -1;
+    for (var i = 0; i < poisRuta.length; i++) {
+        if (!poisVisitados[i]) { idx = i; break; }
+    }
+    if (idx === -1) { mostrarSigPOICompletado(); return; }
+    mostrarSigPOI(idx, null);
+}
+
+function mostrarSigPOI(idx, distKm) {
+    var poi    = poisRuta[idx];
+    var num    = document.getElementById('sig-poi-num');
+    var nombre = document.getElementById('sig-poi-nombre');
+    var dist   = document.getElementById('sig-poi-dist');
+    var flecha = document.getElementById('sig-poi-flecha');
+    var ph     = document.getElementById('sig-poi-placeholder');
+    var bloque = document.getElementById('sig-poi-bloque');
+
+    if (ph)     { ph.style.display = 'none'; }
+    if (num)    { num.style.display = 'flex';  num.textContent = String(idx + 1).padStart(2, '0'); }
+    if (nombre) { nombre.style.display = 'block'; nombre.textContent = poi.nombre; }
+    if (flecha) { flecha.style.display = 'block'; }
+    if (dist) {
+        if (distKm !== null && distKm !== undefined) {
+            var dm = Math.round(distKm * 1000);
+            dist.textContent  = dm < 1000 ? dm + ' m' : distKm.toFixed(1).replace('.', ',') + ' km';
+            dist.style.display = 'block';
+        } else {
+            dist.style.display = 'none';
+        }
+    }
+
+    // Hacer el bloque clickable para abrir la tarjeta de ese POI
+    if (bloque) {
+        bloque._poiIdx    = idx;
+        bloque.style.cursor = 'pointer';
+        bloque.onclick = function() { abrirTarjetaPOI(this._poiIdx); };
+    }
+}
+
+function mostrarSigPOICompletado() {
+    var num    = document.getElementById('sig-poi-num');
+    var nombre = document.getElementById('sig-poi-nombre');
+    var dist   = document.getElementById('sig-poi-dist');
+    var flecha = document.getElementById('sig-poi-flecha');
+    var ph     = document.getElementById('sig-poi-placeholder');
+    var bloque = document.getElementById('sig-poi-bloque');
+    if (num)    num.style.display    = 'none';
+    if (nombre) nombre.style.display = 'none';
+    if (dist)   dist.style.display   = 'none';
+    if (flecha) flecha.style.display = 'none';
+    if (ph)     { ph.textContent = 'Ruta completada'; ph.style.display = 'block'; }
+    if (bloque) { bloque.style.cursor = ''; bloque.onclick = null; }
+}
+
+// Llamada en cada actualización GPS para actualizar el "siguiente POI"
+function actualizarSiguientePOI(lat, lon) {
+    if (!poisRuta || poisRuta.length === 0) return;
+
+    var mejorIdx  = -1;
+    var mejorDist = Infinity;
+
+    for (var i = 0; i < poisRuta.length; i++) {
+        if (poisVisitados[i]) continue;
+        var d = calcularDistancia(lat, lon, poisRuta[i].coords[0], poisRuta[i].coords[1]);
+        if (d < mejorDist) { mejorDist = d; mejorIdx = i; }
+    }
+
+    if (mejorIdx === -1) { mostrarSigPOICompletado(); return; }
+
+    // ¿Hemos llegado a este POI?
+    if (mejorDist <= RADIO_VISITA) {
+        poisVisitados[mejorIdx] = true;
+        // Marcar el marcador como visitado
+        if (poisMarcadores[mejorIdx]) {
+            var el = poisMarcadores[mejorIdx].getElement();
+            if (el) {
+                var inner = el.querySelector('.poi-marcador');
+                if (inner) inner.classList.add('visitado');
+            }
+        }
+        actualizarSiguientePOI(lat, lon);
+        return;
+    }
+
+    mostrarSigPOI(mejorIdx, mejorDist);
 }
 
 // ─── CRONÓMETRO ────────────────────────────────────────
@@ -99,6 +274,27 @@ function iniciarCronometro() {
                 (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
         }
     }, 1000);
+}
+
+// ─── INICIAR RUTA (usuario pulsa INICIAR) ──────────────
+function iniciarRuta() {
+    rutaIniciada = true;
+    saltarPrimerPuntoTrasReanudar = true;  // no contar desplazamiento previo al inicio
+    iniciarCronometro();
+
+    var iconoEl = document.getElementById('icon-pausar');
+    var textoEl = document.getElementById('txt-pausar');
+    var btnEl   = document.getElementById('btn-pausar');
+    if (textoEl) textoEl.textContent = 'Pausar';
+    if (btnEl)   btnEl.setAttribute('onclick', 'pausar()');
+    if (iconoEl) {
+        iconoEl.setAttribute('viewBox', '0 0 14 16');
+        iconoEl.setAttribute('width',   '14');
+        iconoEl.setAttribute('height',  '16');
+        iconoEl.innerHTML =
+            '<rect x="0" y="0" width="4" height="16" rx="2" fill="currentColor"/>' +
+            '<rect x="10" y="0" width="4" height="16" rx="2" fill="currentColor"/>';
+    }
 }
 
 // ─── HAVERSINE ─────────────────────────────────────────
@@ -123,27 +319,26 @@ function actualizarPosicion(pos) {
     var aviso = document.getElementById('aviso-gps');
     if (aviso) aviso.classList.remove('visible');
 
-    // Arranque inicial
-    if (!iniciado) {
+    // Primer fix GPS: centrar el mapa (NO inicia la ruta)
+    if (!gpsListo) {
         mapa.setView([lat, lon], 16);
-        iniciarCronometro();
-        iniciado = true;
+        gpsListo = true;
     }
 
-    // Mover marcador
+    // Mover marcador (siempre, con o sin ruta iniciada)
     if (!marcador) {
         marcador = L.marker([lat, lon], { icon: iconoUsuario }).addTo(mapa);
     } else {
         marcador.setLatLng([lat, lon]);
     }
 
-    // Seguir posición en el mapa
+    // Seguir posición en el mapa (siempre)
     if (siguiendoUsuario) mapa.panTo([lat, lon]);
 
-    // En pausa no acumular estadísticas
-    if (pausado) return;
+    // Si la ruta no ha sido iniciada por el usuario o está en pausa, no acumular estadísticas
+    if (!rutaIniciada || pausado) return;
 
-    // Primer punto tras reanudar: no contar el salto
+    // Primer punto tras iniciar/reanudar: no contar el salto
     if (saltarPrimerPuntoTrasReanudar) {
         posicionAnterior = { lat: lat, lon: lon };
         saltarPrimerPuntoTrasReanudar = false;
@@ -173,6 +368,9 @@ function actualizarPosicion(pos) {
 
     document.getElementById('distancia').textContent = distanciaTotal.toFixed(2).replace('.', ',');
     document.getElementById('velocidad').textContent = velMedia.toFixed(1).replace('.', ',');
+
+    // Actualizar siguiente POI
+    actualizarSiguientePOI(lat, lon);
 }
 
 function errorGPS(err) {
@@ -196,7 +394,6 @@ watchId = navigator.geolocation.watchPosition(
 // ─── ARRASTRAR MAPA ────────────────────────────────────
 mapa.on('dragstart', function() {
     siguiendoUsuario = false;
-    document.getElementById('btn-volver').classList.add('visible');
     document.getElementById('btn-centrar').classList.remove('activo');
     var tog = document.getElementById('toggle-seguir');
     if (tog) { tog.textContent = 'OFF'; tog.classList.remove('on'); }
@@ -239,7 +436,6 @@ function pausar() {
 
 function volverAPosicion() {
     siguiendoUsuario = true;
-    document.getElementById('btn-volver').classList.remove('visible');
     document.getElementById('btn-centrar').classList.add('activo');
     var tog = document.getElementById('toggle-seguir');
     if (tog) { tog.textContent = 'ON'; tog.classList.add('on'); }
@@ -310,8 +506,6 @@ function toggleSeguirPosicion() {
     var btn = document.getElementById('toggle-seguir');
     btn.textContent = siguiendoUsuario ? 'ON' : 'OFF';
     btn.classList.toggle('on', siguiendoUsuario);
-    var bv = document.getElementById('btn-volver');
-    if (siguiendoUsuario) bv.classList.remove('visible'); else bv.classList.add('visible');
     document.getElementById('btn-centrar').classList.toggle('activo', siguiendoUsuario);
     if (siguiendoUsuario && marcador) mapa.panTo(marcador.getLatLng());
 }
@@ -406,3 +600,4 @@ function activarBrujula() {
 iniciarUI();
 activarBrujula();
 document.getElementById('btn-centrar').classList.add('activo');
+cargarPOIsRuta();

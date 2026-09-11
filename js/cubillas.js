@@ -61,4 +61,6 @@ var puntosInteres = [
 // Inicialización — no editar
 // ====================================================
 
-inicializarRuta({ gpx: GPX, pad: 1 });
+if (!window.MODO_SEGUIR) {
+    inicializarRuta({ gpx: GPX, pad: 1 });
+}

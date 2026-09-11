@@ -60,6 +60,7 @@ var puntosInteres = [
 // A partir de aquí no hay que tocar nada
 // ====================================================
 
+if (!window.MODO_SEGUIR) {
 var mapa = inicializarMapaRuta();
 
 // Elevación variante A
@@ -123,3 +124,4 @@ crearFichaPunto();
 crearMarcadoresConFicha(mapa, puntosInteres);
 
 renderizarPuntosInteres(puntosInteres);
+} // fin if (!window.MODO_SEGUIR)
