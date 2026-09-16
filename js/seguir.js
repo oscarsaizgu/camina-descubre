@@ -15,6 +15,17 @@ var nombreRutas = {
 };
 var nombreRuta = nombreRutas[rutaId] || (rutaId.charAt(0).toUpperCase() + rutaId.slice(1));
 
+// Slug de analítica (coherente con los eventos ruta_ver / ruta_seguir)
+var slugsRutasGA = {
+    cuevas:     'cuevas',
+    vega:       'vegacorredor',
+    guardamino: 'guardamino',
+    cubillas:   'cubillas',
+    coto:       'coto-cuende',
+    pondra:     'riancho-pondra'
+};
+var rutaSlugGA = slugsRutasGA[rutaId] || rutaId;
+
 // ─── MAPA ─────────────────────────────────────────────
 var mapa = L.map('mapa-seguir', {
     zoomControl: false,
@@ -282,6 +293,10 @@ function iniciarRuta() {
     saltarPrimerPuntoTrasReanudar = true;  // no contar desplazamiento previo al inicio
     iniciarCronometro();
 
+    if (typeof window.enviarEventoGA === 'function') {
+        window.enviarEventoGA('seguir_ruta_iniciar', { ruta: rutaSlugGA });
+    }
+
     var iconoEl = document.getElementById('icon-pausar');
     var textoEl = document.getElementById('txt-pausar');
     var btnEl   = document.getElementById('btn-pausar');
@@ -410,6 +425,9 @@ function pausar() {
 
     if (pausado) {
         // ── PAUSAR ──
+        if (typeof window.enviarEventoGA === 'function') {
+            window.enviarEventoGA('seguir_ruta_pausa', { ruta: rutaSlugGA });
+        }
         if (banner)  banner.classList.add('visible');
         if (textoEl) textoEl.textContent = 'Reanudar';
         if (iconoEl) iconoEl.innerHTML =
@@ -464,6 +482,9 @@ function confirmarFin() {
         watchId = null;
     }
     desactivarBrujula();
+    if (typeof window.enviarEventoGA === 'function') {
+        window.enviarEventoGA('seguir_ruta_finalizar', { ruta: rutaSlugGA });
+    }
     window.location.href = rutaId + '.html';
 }
 

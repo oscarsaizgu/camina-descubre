@@ -756,6 +756,16 @@ function cerrarFichaPunto() {
 function abrirFichaPunto(punto, source) {
     var overlay = document.getElementById('ficha-overlay');
     if (!overlay) return;
+
+    if (typeof window.enviarEventoGA === 'function' && _cydRutaInfo) {
+        var _idxPoi = (typeof puntosInteres !== 'undefined') ? puntosInteres.indexOf(punto) : -1;
+        window.enviarEventoGA('poi_interaccion', {
+            ruta: _cydRutaInfo.ruta,
+            poi: punto && punto.nombre,
+            numero_poi: _idxPoi > -1 ? String(_idxPoi + 1).padStart(2, '0') : ''
+        });
+    }
+
     _fichaSource = source || null;
     if (_fichaSource === 'section') {
         _fichaScrollY = window.scrollY;
@@ -945,3 +955,41 @@ function inicializarRuta(opciones) {
     crearMarcadoresConFicha(mapa, puntosInteres);
     renderizarPuntosInteres(puntosInteres);
 }
+
+
+// ── Analítica: vista de ruta + clic en "Seguir la ruta" ───────────
+// Común a las 6 páginas de ruta — evita repetir el evento en cada
+// archivo. Deduce la ruta a partir del enlace "seguir.html?ruta=..."
+// que ya existe en la sección .ruta-cta de cada página.
+var _cydRutaInfo = null; // { ruta, numero_ruta } de la página actual, para poi_interaccion
+
+(function () {
+    var MAPA_RUTAS = {
+        cuevas:     { ruta: 'cuevas',         numero_ruta: '01' },
+        vega:       { ruta: 'vegacorredor',   numero_ruta: '02' },
+        guardamino: { ruta: 'guardamino',     numero_ruta: '03' },
+        cubillas:   { ruta: 'cubillas',       numero_ruta: '04' },
+        coto:       { ruta: 'coto-cuende',    numero_ruta: '05' },
+        pondra:     { ruta: 'riancho-pondra', numero_ruta: '06' }
+    };
+
+    var btnSeguir = document.querySelector('.ruta-cta-btn');
+    if (!btnSeguir || !btnSeguir.getAttribute('href')) return;
+
+    var query  = btnSeguir.getAttribute('href').split('?')[1] || '';
+    var rutaId = new URLSearchParams(query).get('ruta');
+    var datos  = MAPA_RUTAS[rutaId];
+    if (!datos) return;
+
+    _cydRutaInfo = datos;
+
+    if (typeof window.enviarEventoGA === 'function') {
+        window.enviarEventoGA('ruta_ver', datos);
+    }
+
+    btnSeguir.addEventListener('click', function () {
+        if (typeof window.enviarEventoGA === 'function') {
+            window.enviarEventoGA('ruta_seguir', datos);
+        }
+    });
+})();
