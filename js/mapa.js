@@ -69,6 +69,18 @@ var rutas = [
         dificultad: 'Fácil'
     },
     {
+        id: 'pondra',
+        gpx: 'data/pondra.gpx',
+        color: '#b5651d',
+        dashArray: null,
+        numero: '06',
+        nombre: 'Paseo de Riancho-Pondra',
+        distancia: '3,5 km',
+        duracion: '1h',
+        dificultad: 'Fácil'
+    },
+    
+    // Ruta 05 (Coto Cuende) está comentada para que no aparezca en el mapa principal.{
         id: 'coto',
         gpx: 'data/coto.gpx',
         color: '#6b4c9a',
@@ -79,17 +91,6 @@ var rutas = [
         duracion: '15 min',
         dificultad: 'Fácil'
     },
-    {
-        id: 'pondra',
-        gpx: 'data/pondra.gpx',
-        color: '#b5651d',
-        dashArray: null,
-        numero: '06',
-        nombre: 'Paseo de Riancho-Pondra',
-        distancia: '3,5 km',
-        duracion: '1h',
-        dificultad: 'Fácil'
-    }
     // Rutas comentadas (no activas):
     // { id: 'dama', gpx: 'data/dama.gpx', color: '#b5651d', dashArray: null, numero: '', nombre: 'Ruta de Dama Roja', distancia: '9,14 km', duracion: '2h', dificultad: 'Moderada' },
 ];
