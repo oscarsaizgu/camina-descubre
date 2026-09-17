@@ -80,17 +80,7 @@ var rutas = [
         dificultad: 'Fácil'
     },
     
-    // Ruta 05 (Coto Cuende) está comentada para que no aparezca en el mapa principal.{
-        id: 'coto',
-        gpx: 'data/coto.gpx',
-        color: '#6b4c9a',
-        dashArray: null,
-        numero: '05',
-        nombre: 'Paseo de Coto Cuende',
-        distancia: '1,26 km',
-        duracion: '15 min',
-        dificultad: 'Fácil'
-    },
+    // Ruta 05 (Coto Cuende) está comentada para que no aparezca en el mapa principal.{id: 'coto',gpx: 'data/coto.gpx', color: '#6b4c9a', dashArray: null, numero: '05', nombre: 'Paseo de Coto Cuende', distancia: '1,26 km', duracion: '15 min', dificultad: 'Fácil'},
     // Rutas comentadas (no activas):
     // { id: 'dama', gpx: 'data/dama.gpx', color: '#b5651d', dashArray: null, numero: '', nombre: 'Ruta de Dama Roja', distancia: '9,14 km', duracion: '2h', dificultad: 'Moderada' },
 ];
