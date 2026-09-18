@@ -3174,6 +3174,37 @@ body.pagina-ruta main {
     .invasoras-seccion { padding: 3.2rem 1.5rem 3.6rem; }
 }
 
+/* ── Sobre el proyecto (index.html, antes del footer) ── */
+.sobre-seccion {
+    background-color: var(--verde);
+    border-top: 1px solid rgba(245, 234, 216, 0.08);
+    text-align: center;
+    padding: 4rem 2rem 3.2rem;
+}
+.sobre-contenido {
+    max-width: 540px;
+    margin: 0 auto;
+}
+.sobre-texto {
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.75;
+    color: var(--crema);
+    opacity: 0.72;
+    margin: 0 auto;
+}
+.sobre-creditos {
+    margin-top: 1.4rem;
+    font-family: 'CanvaSans', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+    color: var(--crema);
+    opacity: 0.35;
+}
+@media (max-width: 600px) {
+    .sobre-seccion { padding: 3rem 1.5rem 2.6rem; }
+}
+
 
 /* ═══════════════════════════════════════════════════════
    PÁGINAS LEGALES — Aviso legal, Privacidad, Cookies, Accesibilidad
