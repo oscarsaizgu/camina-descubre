@@ -19,7 +19,7 @@ var puntosInteres = [
         nombre: "Monumento a La Batalla de Ramales",
         foto: "fotos/guardamino/piedra.jpg",
         categoria: "Monumento histórico",
-        descripcion: "Monumento que conmemora la Batalla de Ramales, librada el 5 de mayo de 1839 durante la Primera Guerra Carlista. La victoria del general Espartero sobre las fuerzas carlistas fue tan decisiva que el municipio añadió 'de la Victoria' a su nombre.",
+        descripcion: "Monumento que conmemora la Batalla de Ramales, librada entre los días 17 de abril y 12 de mayo de 1839 durante la Primera Guerra Carlista. La victoria del general Espartero sobre las fuerzas carlistas fue tan decisiva que el municipio añadió 'de la Victoria' a su nombre.",
         historia: "El Monumento a la Batalla de Ramales se encuentra en la localidad de Ramales de la Victoria, en Cantabria, y conmemora la victoria del ejército liberal comandado por el general Baldomero Espartero frente a las tropas carlistas en 1839, durante la Primera Guerra Carlista.",
         informacionPractica: null,
         enlaceOficial: null
