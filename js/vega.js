@@ -20,11 +20,11 @@ var descripciones = {
 var puntosInteres = [
     {
         coords: [43.257757822382096, -3.469872258786685],
-        nombre: "Puente Romano",
+        nombre: "Puente Medieval",
         foto: "fotos/vega/puenteromano.png",
         encuadreClase: "poi-img--puenteromano",
         categoria: "Puente histórico",
-        descripcion: "Puente de piedra a la salida de Ramales en dirección a Vega, conocido popularmente como el Puente Romano. Cruza el río Asón y forma parte del camino histórico que conectaba los núcleos del valle.",
+        descripcion: "Puente de piedra a la salida de Ramales en dirección a Vega. Cruza el río Asón y forma parte del camino histórico que conectaba los núcleos del valle.",
         historia: null,
         informacionPractica: null,
         enlaceOficial: null
@@ -95,9 +95,8 @@ var puntosInteres = [
         foto: "fotos/vega/fuenteisena.png",
         encuadreClase: "poi-img--fuenteisena",
         categoria: "Fuente",
-        descripcion: "Fuente de agua en el entorno del barrio de Vega. Las fuentes de manantial son habituales a lo largo de la ruta, aprovechando la abundante red hídrica subterránea que alimenta el karst del Asón.",
+        descripcion: "Fuente de agua en el entorno del barrio de Vega. Las fuentes de manantial son habituales a lo largo de la ruta, aprovechando la abundante red hídrica subterránea que alimenta el karst del Asón.De este manantial, se toma el agua para alimentar la ETAP (Estación de Tratamiento de Agua Potable) que abastece la red de agua potable del municipio.",
         historia: null,
-        informacionPractica: "Agua potable.",
         enlaceOficial: null
     }
 ];

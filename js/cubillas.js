@@ -27,10 +27,10 @@ var puntosInteres = [
     },
     {
         coords: [43.266546944938824, -3.455966820850918],
-        nombre: "Pump track de Cubillas",
+        nombre: "Skate Park",
         foto: "fotos/cubillas/pumptrack.jpeg",
         categoria: "Instalación deportiva",
-        descripcion: "Circuito de pump track para bicicletas de montaña y BMX, con ondulaciones diseñadas para mantener la velocidad sin pedalear. Una instalación pensada para los jóvenes del municipio que practican deportes sobre ruedas.",
+        descripcion: "Skate park del municipio, una instalación pensada para los jóvenes que practican deportes sobre ruedas.",
         historia: null,
         informacionPractica: "Acceso libre. Recomendado casco y protecciones.",
         enlaceOficial: null
@@ -50,7 +50,7 @@ var puntosInteres = [
         nombre: "Piscina Municipal",
         foto: "fotos/cubillas/piscina.jpg",
         categoria: "Instalación deportiva",
-        descripcion: "Piscina municipal de Ramales de la Victoria en el barrio de Cubillas. El principal espacio de baño del municipio durante los meses de verano, con zona de baño y áreas de descanso.",
+        descripcion: "Piscina municipal de Ramales de la Victoria en el barrio de Cubillas.",
         historia: null,
         informacionPractica: "Apertura temporal en verano. Consultar horarios y precios en el Ayuntamiento de Ramales de la Victoria.",
         enlaceOficial: null

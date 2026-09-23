@@ -20,16 +20,16 @@ var puntosInteres = [
         foto: "fotos/guardamino/piedra.jpg",
         categoria: "Monumento histórico",
         descripcion: "Monumento que conmemora la Batalla de Ramales, librada el 5 de mayo de 1839 durante la Primera Guerra Carlista. La victoria del general Espartero sobre las fuerzas carlistas fue tan decisiva que el municipio añadió 'de la Victoria' a su nombre.",
-        historia: "El 5 de mayo de 1839, las tropas liberales del general Baldomero Espartero asaltaron las posiciones carlistas en la peña de Los Cuerpos de Guardamino. La batalla fue un punto de inflexión en la Primera Guerra Carlista, y el municipio fue rebautizado como 'Ramales de la Victoria' en honor al triunfo. La Piedra Carlista, una roca natural que servía de parapeto defensivo, es el principal vestigio material de la batalla.",
+        historia: "El Monumento a la Batalla de Ramales se encuentra en la localidad de Ramales de la Victoria, en Cantabria, y conmemora la victoria del ejército liberal comandado por el general Baldomero Espartero frente a las tropas carlistas en 1839, durante la Primera Guerra Carlista.",
         informacionPractica: null,
         enlaceOficial: null
     },
     {
         coords: [43.2620532187991, -3.4450485940378512],
-        nombre: "Iglesia de Nuestra Señora, Parroquia de San Pedro",
+        nombre: "Iglesia de Nuestra Señora de Guardamino",
         foto: "fotos/guardamino/iglesia.jpg",
         categoria: "Patrimonio religioso",
-        descripcion: "Iglesia parroquial de Ramales de la Victoria, dedicada a San Pedro. Elemento central del núcleo histórico del municipio, con una arquitectura que refleja las distintas etapas constructivas de la arquitectura religiosa cantábrica.",
+        descripcion: "Consta de una sola nave rectangular dividida en tres tramos. La de los pies alberga el coro, ligeramente menor en tamaño. La de cabecera también es algo estrecha respecto a la central. Todo ello está cubierto mediante bóveda de crucería, cuyos nervios se unen mediante cinco claves. En el exterior dispone de una espadaña en los pies con dos troneras, y tiene contrafuertes esquinados y un pórtico en el lado sur. El retablo mayor es obra del XIX de corte neoclásico y acoge imágenes del siglo XIV y del XVI.",
         historia: null,
         informacionPractica: null,
         enlaceOficial: null
@@ -39,8 +39,7 @@ var puntosInteres = [
         nombre: "Bolera Domingo Muguira",
         foto: "fotos/guardamino/bolera.jpg",
         categoria: "Deporte tradicional",
-        descripcion: "Bolera de pasabolo, el deporte autóctono de la comarca del Asón. En el pasabolo se lanzan bolas de piedra o madera contra unos bolos alineados en un tablón o una losa. La bolera está dedicada a Domingo Muguira, figura del pasabolo ramaliego.",
-        historia: "El pasabolo es el deporte tradicional por excelencia del valle del Asón. Su práctica se remonta a siglos atrás como forma de ocio y competición entre vecinos, y sigue siendo un referente de identidad cultural en la comarca. Existen dos modalidades principales: pasabolo tablón y pasabolo losa.",
+        descripcion: "En Cantabria, se practica una variante de los bolos llamada Pasabolo Tablón, que también es popular en provincias vecinas como Vizcaya, Álava y Burgos. En Cantabria, este juego se disfruta tanto en la zona oriental, en los valles de Soba, Asón, Agüera y Villaverde, como en el sur, en Valderredible. El terreno de juego, conocido como bolera o carrejo, se caracteriza por sus dimensiones generosas: aproximadamente 55 metros de largo por 20 de ancho. Está dividido en tres secciones principales: la zona de tiro, la zona del tablón y la zona de rayas. El objetivo es impactar con la bola los tres bolos colocados sobre un tablón, con la intención de lanzarlos lo más lejos posible sobre un campo de hierba. Algunos lanzamientos pueden alcanzar distancias notables, llegando a los 40-45 metros. Las bolas son de madera y los bolos se alinean en una tabla, no en una losa.",
         informacionPractica: null,
         enlaceOficial: null
     },
@@ -49,7 +48,7 @@ var puntosInteres = [
         nombre: "Camino secundario",
         foto: "fotos/guardamino/secundario.jpg",
         categoria: "Sendero",
-        descripcion: "Tramo de camino rural que conecta el barrio de La Casa con las zonas altas de Guardamino, ofreciendo vistas sobre el pueblo de Ramales y los macizos del Pico San Vicente y la Sierra del Hornijo.",
+        descripcion: "El camino secundario conecta el barrio bajo con el barrio alto, ofreciendo vistas sobre el pueblo de Ramales y los macizos del Pico San Vicente y la Sierra del Hornijo.",
         historia: null,
         informacionPractica: null,
         enlaceOficial: null

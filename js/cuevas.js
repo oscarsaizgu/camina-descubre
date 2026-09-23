@@ -22,9 +22,9 @@ var puntosInteres = [
         foto: "fotos/cuevas/covalanas.jpg",
         streetview: null,
         categoria: "Cueva prehistórica · Patrimonio UNESCO",
-        descripcion: "Declarada Patrimonio de la Humanidad por la UNESCO en 2008, junto al resto del Arte Rupestre del Paleolítico de la Cornisa Cantábrica. Alberga una extraordinaria procesión de 18 ciervas pintadas hace más de 25.000 años mediante una técnica de punteado única en el mundo.",
-        historia: "Descubierta en 1903 por Hermilio Alcalde del Río y Lorenzo Sierra. Las pinturas, realizadas en pigmento rojo mediante la técnica del trazado aureolado o punteado, son consideradas únicas en el arte rupestre mundial. Su hallazgo fue clave para el reconocimiento del arte paleolítico cantábrico.",
-        informacionPractica: "Precio: 3 € (general) / 1,50 € (reducida). Visitas de miércoles a domingo, en sesiones de 10:10, 11:10 y 12:10 h. Máximo 4 personas por sesión. Reserva imprescindible llamando al 942 59 84 25.",
+        descripcion: "Frente al Pico de San Vicente se localiza Covalanas, conocida como «cueva de las ciervas rojas», declarada Patrimonio de la Humanidad por la Unesco en 2008. Se trata de una cavidad estrecha y de dimensiones reducidas (65 m) que alberga representaciones rupestres de hace más de 25.000 años (Paleolítico superior). Las 18 ciervas, el ciervo, el uro y el caballo presentan un buen estado de conservación y belleza. Sus figuras están dotadas de gran realismo y movilidad gracias a su color rojizo, a la técnica de dibujo utilizada, «tamponado», y a su concentración en áreas bien delimitadas de la roca para resaltar y dar volumen. Una visita inolvidable que nos sumerge en el pasado.",
+        historia: null,
+        informacionPractica: "Localización: En el Monte Pando. A 2,5 km de Ramales, en dirección a Burgos, encontramos el parking. Desde aquí hay que andar 15 minutos. Grupos máximos: 7-8 personas. Imprescindible reservar. Información y reservas: 942 598 425. Más información: Cuevas Cultura Cantabria. Email: reservascuevas@culturadecantabria.es.",
         enlaceOficial: "https://cuevas.culturadecantabria.com"
     },
     {
@@ -66,9 +66,9 @@ var puntosInteres = [
         foto: "fotos/cuevas/cullalvera.jpg",
         streetview: null,
         categoria: "Cueva prehistórica · Patrimonio UNESCO",
-        descripcion: "Una de las cuevas más espectaculares de Cantabria por sus dimensiones monumentales: su boca mide 14 metros de alto por 28 de ancho. En el interior, una pasarela de 400 metros sobre el río subterráneo permite descubrir el mundo kárstico. La cueva es accesible para personas con movilidad reducida.",
-        historia: "Forma parte de un sistema kárstico de 12 kilómetros. A 600 y 1.200 metros del interior se conservan grabados paleolíticos declarados Patrimonio de la Humanidad por la UNESCO en 2008, aunque no son visitables en la actualidad. La cueva fue habilitada para visitas con infraestructura accesible.",
-        informacionPractica: "Precio: 3 € (general) / 1,50 € (reducida). Accesible para personas con movilidad reducida. Capacidad máxima: 30 personas por sesión. Reservas: 942 59 84 25.",
+        descripcion: "Cavidad kárstica de grandes dimensiones declarada Bien de Interés Cultural. En momentos de fuertes lluvias funciona como una surgencia, donde la acción del agua sobre la roca y el paso del tiempo han configurado una cueva mágica. La espectacular boca de la entrada, inmersa en un frondoso encinar cantábrico de gran valor ecológico, nos abre las puertas a asombrosas formaciones geológicas, arte rupestre a centenares de metros de profundidad (no visitables) y a un escenario donde la historia se dio cita con enfrentamientos durante la Guerra Civil. Todo ello hace de su visita una experiencia emocionante.",
+        historia: null,
+        informacionPractica: "Localización: En el centro de Ramales. Grupos máximos: 30 personas. Accesibilidad: Acondicionada para personas con discapacidad. Información y reservas: 942 598 425. Más información: Cuevas Cultura Cantabria. Email: reservascuevas@culturadecantabria.es.",
         enlaceOficial: "https://cuevas.culturadecantabria.com"
     },
     {
