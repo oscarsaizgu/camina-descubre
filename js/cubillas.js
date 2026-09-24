@@ -40,7 +40,7 @@ var puntosInteres = [
         nombre: "Campo de fútbol",
         foto: "fotos/cubillas/campofutbol.jpg",
         categoria: "Instalación deportiva",
-        descripcion: "Campo de fútbol del barrio de Cubillas, utilizado por el equipo local y para actividades deportivas municipales. Punto de referencia deportiva del municipio.",
+        descripcion: "Campo de fútbol del barrio de Cubillas, utilizado por el equipo local y para actividades deportivas municipales.",
         historia: null,
         informacionPractica: null,
         enlaceOficial: null

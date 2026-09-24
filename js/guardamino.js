@@ -26,7 +26,7 @@ var puntosInteres = [
     },
     {
         coords: [43.2620532187991, -3.4450485940378512],
-        nombre: "Iglesia de Nuestra Señora de Guardamino",
+        nombre: "Iglesia de Nuestra Señora",
         foto: "fotos/guardamino/iglesia.jpg",
         categoria: "Patrimonio religioso",
         descripcion: "Consta de una sola nave rectangular dividida en tres tramos. La de los pies alberga el coro, ligeramente menor en tamaño. La de cabecera también es algo estrecha respecto a la central. Todo ello está cubierto mediante bóveda de crucería, cuyos nervios se unen mediante cinco claves. En el exterior dispone de una espadaña en los pies con dos troneras, y tiene contrafuertes esquinados y un pórtico en el lado sur. El retablo mayor es obra del XIX de corte neoclásico y acoge imágenes del siglo XIV y del XVI.",
@@ -39,7 +39,7 @@ var puntosInteres = [
         nombre: "Bolera Domingo Muguira",
         foto: "fotos/guardamino/bolera.jpg",
         categoria: "Deporte tradicional",
-        descripcion: "En Cantabria, se practica una variante de los bolos llamada Pasabolo Tablón, que también es popular en provincias vecinas como Vizcaya, Álava y Burgos. En Cantabria, este juego se disfruta tanto en la zona oriental, en los valles de Soba, Asón, Agüera y Villaverde, como en el sur, en Valderredible. El terreno de juego, conocido como bolera o carrejo, se caracteriza por sus dimensiones generosas: aproximadamente 55 metros de largo por 20 de ancho. Está dividido en tres secciones principales: la zona de tiro, la zona del tablón y la zona de rayas. El objetivo es impactar con la bola los tres bolos colocados sobre un tablón, con la intención de lanzarlos lo más lejos posible sobre un campo de hierba. Algunos lanzamientos pueden alcanzar distancias notables, llegando a los 40-45 metros. Las bolas son de madera y los bolos se alinean en una tabla, no en una losa.",
+        descripcion: "Bolera de pasabolo tablón situada en la calle Salvador Pérez. Se inauguró en 1974 con el nombre de \"Los Guindos\" y en 2016 pasó a llamarse Domingo Muguira. Es la bolera del equipo de Ramales. El pasabolo tablón se juega en el oriente de Cantabria (valles de Soba, Asón, Agüera y Villaverde), en Valderredible y en zonas de Vizcaya, Álava y Burgos. El campo de juego, llamado bolera o carrejo, mide unos 55 m de largo por 20 de ancho y tiene tres partes: la zona de tiro, la del tablón y la de rayas. El jugador lanza una bola de madera contra tres bolos colocados sobre un tablón para mandarlos lo más lejos posible sobre la hierba. Los mejores tiros llegan a los 40-45 metros.",
         informacionPractica: null,
         enlaceOficial: null
     },
