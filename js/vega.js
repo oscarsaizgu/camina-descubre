@@ -35,7 +35,7 @@ var puntosInteres = [
         foto: "fotos/vega/presa.png",
         encuadreClase: "poi-img--presa",
         categoria: "Infraestructura hidráulica",
-        descripcion: "Pequeña presa histórica sobre el río Asón que reguló el caudal para uso agrícola e industrial en el valle. Hoy es un punto paisajístico del recorrido, con el río formando una lámina de agua tranquila.",
+        descripcion: "Presa sobre el Río Asón, asociada a un antiguo molino. Hoy es uno de los puntos más tranquilos del paseo, con el río remansado.",
         historia: null,
         informacionPractica: null,
         enlaceOficial: null
@@ -46,7 +46,7 @@ var puntosInteres = [
         foto: "fotos/vega/humilladero.png",
         encuadreClase: "poi-img--humilladero",
         categoria: "Patrimonio religioso",
-        descripcion: "Pequeña construcción religiosa popular que marca el acceso al núcleo rural. Los humilladeros son una forma de arquitectura devocional extendida por toda la Cantabria interior, donde vecinos y caminantes hacían una parada de oración.",
+        descripcion: "Pequeña construcción religiosa junto al camino. Los humilladeros solían levantarse en las entradas de los pueblos y en los cruces de caminos, para que quienes pasaban se detuvieran a rezar.",
         historia: null,
         informacionPractica: null,
         enlaceOficial: null
@@ -73,7 +73,7 @@ var puntosInteres = [
         foto: "fotos/vega/parquevega.png",
         encuadreClase: "poi-img--parquevega",
         categoria: "Espacio recreativo",
-        descripcion: "Área recreativa junto al cauce del Asón en el barrio de Vega, con zonas de sombra, merenderos y acceso al río. Un punto de descanso habitual para familias y senderistas que recorren el tramo bajo del valle.",
+        descripcion: "Área recreativa junto al río Asón, a kilómetro y medio de Ramales, con mesas, barbacoas, zonas de sombra, zona infantil y acceso al río. El Asón es aquí Zona Especial de Conservación (Red Natura 2000) y tiene frezaderos de salmón atlántico.",
         historia: null,
         informacionPractica: null,
         enlaceOficial: null
@@ -95,7 +95,7 @@ var puntosInteres = [
         foto: "fotos/vega/fuenteisena.png",
         encuadreClase: "poi-img--fuenteisena",
         categoria: "Fuente",
-        descripcion: "Fuente de agua en el entorno del barrio de Vega. Las fuentes de manantial son habituales a lo largo de la ruta, aprovechando la abundante red hídrica subterránea que alimenta el karst del Asón.De este manantial, se toma el agua para alimentar la ETAP (Estación de Tratamiento de Agua Potable) que abastece la red de agua potable del municipio.",
+        descripcion: "Surgencia kárstica, principal punto de drenaje de la Sierra del Hornijo. Desde 1950 sus aguas se derivan por un canal hacia la Central Electra Iseña, una pequeña central hidroeléctrica que abasteció de electricidad a Ramales. De este manantial, se toma el agua que abastece la red de agua potable del municipio.",
         historia: null,
         enlaceOficial: null
     }
