@@ -10,7 +10,7 @@ var puntosInteres = [
         nombre: "Puente de madera",
         foto: "fotos/cubillas/puente.jpg",
         categoria: "Infraestructura",
-        descripcion: "Pasarela de madera que cruza el arroyo Cubillas, conectando los distintos espacios recreativos del barrio. Un punto agradable del recorrido donde el sonido del agua acompaña la caminata.",
+        descripcion: "Pasarela de madera que cruza el Río Asón, conectando los distintos espacios recreativos del barrio. Un punto agradable del recorrido donde el sonido del agua acompaña la caminata.",
         historia: null,
         informacionPractica: null,
         enlaceOficial: null
@@ -20,7 +20,7 @@ var puntosInteres = [
         nombre: "Parque de Cubillas",
         foto: "fotos/cubillas/parquecubillas.jpg",
         categoria: "Parque",
-        descripcion: "Parque público del barrio de Cubillas, con zonas verdes y espacios de ocio al aire libre junto al arroyo. Punto de encuentro habitual para vecinos y familias del municipio.",
+        descripcion: "Parque público del barrio de Cubillas, con zonas verdes y espacios de ocio al aire libre junto al Río Asón. Punto de encuentro habitual para vecinos y familias del municipio.",
         historia: null,
         informacionPractica: null,
         enlaceOficial: null
