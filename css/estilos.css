@@ -441,11 +441,18 @@ footer {
     align-items: center;
     gap: 2rem;
 }
+.footer-logos a {
+    display: flex;
+    align-items: center;
+    line-height: 0;
+}
 footer img {
     height: 44px;
     width: auto;
     opacity: 0.9;
+    transition: opacity 0.2s;
 }
+.footer-logos a:hover img { opacity: 1; }
 
 /* Crédito de autoría + enlaces legales (jerarquía secundaria) */
 .footer-bottom {
